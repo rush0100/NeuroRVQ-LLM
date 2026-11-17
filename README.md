@@ -46,6 +46,10 @@ Recent breakthroughs in open-vocabulary brain-to-text decoding—specifically **
 
 ## 2. Architecture Overview
 
+![RUSH-EEG2Text Architecture Overview](./assets/fig_overview.png)
+
+*Figure 1: Complete end-to-end architecture of RUSH-EEG2Text: (a) 12-ROI & Riemannian connectome representation; (b) Stage 1 length-invariant EMA-RVQ pre-training with zero-leakage progress Fourier positional encoding; (c) Stage 2 teacher-forcing-free causal LLM decoding with Qwen2.5-7B-Instruct.*
+
 ```mermaid
 flowchart LR
     subgraph S0 ["4-Step Neuro-Connectome Preprocessor (src/data/neuro_connectome.py)"]
