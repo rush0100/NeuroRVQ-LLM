@@ -1,0 +1,80 @@
+# Paper 1 Default Configuration for NVIDIA DGX Spark (128 GB Coherent UMA)
+# Target Backbone: Qwen/Qwen2.5-7B-Instruct or Qwen/Qwen3-8B or meta-llama/Llama-3.1-8B-Instruct
+# Estimated Unified Memory Footprint: ~18.5 GB (BF16 base + Rank-16 LoRA + EEG-RVQ Bridge)
+
+experiment:
+  name: "rush_eeg2text_qwen8b_lora_zuco"
+  seed: 42
+  output_dir: "./checkpoints/rush_eeg2text_qwen8b_lora"
+  log_dir: "./logs/rush_eeg2text_qwen8b_lora"
+
+hardware:
+  device: "cuda"
+  precision: "bf16"              # Native Blackwell Tensor Core BF16
+  uma_drop_caches_hint: true     # Remind/check DGX Spark UMA buffer cache before heavy allocation
+  num_workers: 8                 # Utilize 20-core Grace ARM CPU (10x Cortex-X925 + 10x Cortex-A725)
+
+data:
+  dataset_root: "./datasets/processed_zuco"
+  raw_zuco_root: "./datasets/zuco_raw"
+  tasks: ["task1-SR", "task2-NR", "task2-NR-2.0"]   # Standard 3-task benchmark (10,710 samples, matching CET-MAE Table 1)
+  eeg_type: "GD"                                     # Gaze Duration (options: GD, FFD, TRT)
+  bands: ["_t1", "_t2", "_a1", "_a2", "_b1", "_b2", "_g1", "_g2"]
+  num_channels: 105
+  eeg_feature_dim: 840                               # 105 channels * 8 frequency bands
+  max_eeg_len: 58                                    # Word-level tokens + compulsory last sentence-level token
+  max_text_len: 64
+  split_strategy: "subject_independent"              # Options: "subject_independent" (LOSO/held-out subjects), "sentence_independent", "within_subject_811"
+  held_out_test_subjects: ["ZAB", "ZJM", "YAC", "YAG"]
+  held_out_val_subjects: ["ZDN", "YDR"]
+
+stage1_cet_rvq:
+  embed_dim: 1024
+  encoder_layers: 6
+  encoder_heads: 8
+  ffn_dim: 2048
+  dropout: 0.1
+  # Length-Invariant Latent Resampler (solves BrainECHO ACL 2025 Section 5 length-leakage limitation)
+  use_length_invariant_resampler: true
+  num_latent_queries: 32
+  # Residual Vector Quantizer (hierarchical discrete neural tokenization)
+  rvq_num_quantizers: 4
+  rvq_codebook_size: 512
+  rvq_commitment_weight: 0.25
+  # CET-MAE Dual Self-Supervised Objectives
+  eeg_mask_ratio: 0.75
+  compulsory_sentence_token_mask: true
+  mae_loss_weight: 0.5
+  contrastive_loss_weight: 1.0
+  rvq_loss_weight: 1.0
+  # Stage 1 Optimizer
+  epochs: 60
+  batch_size: 64
+  lr: 3.0e-4
+  weight_decay: 0.01
+
+stage2_llm:
+  llm_name_or_path: "./models/Qwen2.5-7B-Instruct"   # Locally cached on DGX Spark!
+  quantization: "none"                               # "none" (BF16) or "nf4" (4-bit QLoRA)
+  freeze_cet_rvq: false
+  use_lora: true
+  lora_r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  lora_target_modules: ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
+  # Exposure-bias mitigation (scheduled word dropout on target prefix during training)
+  scheduled_word_dropout_max: 0.50
+  prompt_template: "Decode the following neural brain signal tokens into an exact English sentence:\n<eeg_prefix>\nDecoded sentence:"
+  # Stage 2 Optimizer
+  epochs: 25
+  batch_size: 16
+  grad_accum_steps: 2
+  lr_projector: 2.0e-4
+  lr_eeg_encoder: 3.0e-5
+  lr_lora: 2.0e-5
+  weight_decay: 0.01
+  # Teacher-Forcing-Free Inference & Sanity Check (BrainECHO ACL 2025 Protocol)
+  eval_num_beams: 4
+  eval_repetition_penalty: 1.25
+  eval_no_repeat_ngram_size: 3
+  run_gaussian_noise_sanity_check: true

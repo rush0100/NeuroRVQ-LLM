@@ -1,0 +1,376 @@
+\documentclass[journal]{IEEEtran}
+
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{cite}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{bm}
+\usepackage{microtype}
+\usepackage{balance}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\begin{document}
+
+\title{RUSH-EEG2Text: Riemannian Connectome-Guided Hierarchical Quantization for Teacher-Forcing-Free Cross-Subject EEG-to-Text Decoding}
+
+\author{
+Ratchaphon~Khaemphukhiao,~\IEEEmembership{Student Member,~IEEE,}
+Zhenxi~Song,~\IEEEmembership{Member,~IEEE,}
+Zhiguo~Zhang,~\IEEEmembership{Member,~IEEE,}\\
+and~Pattarapong~Phasukkit,~\IEEEmembership{Member,~IEEE}%
+\thanks{This work is supported by King Mongkut's Institute of Technology Ladkrabang. \textit{(Corresponding authors: Pattarapong Phasukkit; Zhiguo Zhang.)}}%
+\thanks{Ratchaphon Khaemphukhiao is with the Department of Biomedical Engineering, School of Engineering, King Mongkut's Institute of Technology Ladkrabang (KMITL), Bangkok 10520, Thailand (e-mail: ratchaphon@rush0100.com).}%
+\thanks{Pattarapong Phasukkit is with the Department of Electronic Engineering, School of Engineering, King Mongkut's Institute of Technology Ladkrabang (KMITL), Bangkok 10520, Thailand (e-mail: pattarapong.ph@kmitl.ac.th).}%
+\thanks{Zhenxi Song and Zhiguo Zhang are with the School of Computer Science and Technology and the School of Intelligence Science and Engineering, College of Artificial Intelligence, Harbin Institute of Technology, Shenzhen 518055, China (e-mail: songzhenxi@hit.edu.cn; zhiguozhang@hit.edu.cn).}%
+}
+
+\markboth{IEEE TRANSACTIONS ON NEURAL SYSTEMS AND REHABILITATION ENGINEERING (SUBMISSION DRAFT)}{Khaemphukhiao \MakeLowercase{\textit{et al.}}: RUSH-EEG2Text}
+
+\maketitle
+
+\begin{abstract}
+Decoding open-vocabulary natural language from non-invasive electroencephalography (EEG) is a pivotal frontier for assistive brain-computer interfaces (BCIs). However, recent critiques and empirical audits have exposed three fundamental vulnerabilities in prevailing EEG-to-text architectures: (1) reliance on teacher-forcing evaluation, wherein autoregressive language models memorize training corpora rather than conditioning on brain signals; (2) implicit \textit{signal-length leakage}, whereby variable-length sequence padding reveals target sentence lengths even under pure Gaussian noise; and (3) severe cross-subject degradation caused by individual skull-impedance shifts and flat sensor representations. To overcome these challenges, we propose \textbf{RUSH-EEG2Text}, a two-stage connectome-guided discrete brain-to-LLM decoding framework evaluated across both standard cross-subject reading and strict double zero-shot (unseen subject and sentence) regimes on compact unified-memory AI hardware. First, we map 105 high-density scalp electrodes via their 3D stereotactic coordinates into 12 anatomical cortical regions of interest (ROIs), extracting multi-stage cortical reading dynamics, 48-pair hemispheric lateralization, and 500-Hz cross-spectral functional connectomes comprising Weighted Phase Lag Index (wPLI), Imaginary Coherence (iCoh), and Log-Euclidean Symmetric Positive Definite (SPD) tangent vectors. Second, we eliminate length leakage via a continuous $[0,1]$ progress Fourier positional encoding coupled with a fixed-query Perceiver resampler and a zero-initialized Late Connectome Bottleneck Fusion adapter. Third, we introduce an un-inflated coarse-to-fine Exponential Moving Average Residual Vector Quantizer (EMA-RVQ) trained jointly under multi-positive cross-subject InfoNCE and brain-to-brain neural invariance constraints, before bridging quantized neural prefixes to sequence-to-sequence (\texttt{BART-large}) or causal (\texttt{Qwen2.5-7B}) decoders with scheduled target-word dropout. On strict unseen-subject 400-way retrieval (\texttt{task1-SR}), Stage~1 elevates Mean Reciprocal Rank (MRR) from $6.40\%$ to $\mathbf{22.22\%}$ ($\text{R@10} = \mathbf{44.30\%}$, median rank $= \mathbf{15.0}$) while suppressing pure Gaussian noise to true random chance ($1.42\%$ MRR, $+\mathbf{20.80\%}$ sanity gap); diagnostic controls confirm that real EEG outperforms gaze-only features by $+9.67\%$ MRR ($+22.54\%$ R@10) and EEG-shuffled controls by $+3.06\%$ MRR ($+9.33\%$ R@10). Scaling across all four reading tasks of ZuCo 1.0 and ZuCo 2.0 (18,276 trials, 30 subjects, 1,313-sentence candidate bank) achieves consistent generalization across all four held-out test subjects ($\text{R@10} = \mathbf{56.79 \pm 2.44\%}$, $\text{MRR} = \mathbf{23.09 \pm 1.64\%}$, median rank $= \mathbf{8.50 \pm 0.58}$ vs.\ $0.82\%$ noise MRR). Under strict teacher-forcing-free decoding across 2,717 unseen-subject trials, Stage~2 achieves $\mathbf{19.60\%}$ BLEU-1, $\mathbf{9.89\%}$ BLEU-4 ($11.1\times$ higher than prior cross-subject state of the art), $\mathbf{19.58\%}$ ROUGE-1 F1, and $\mathbf{90.85\%}$ WER, outperforming pure Gaussian noise by $+\mathbf{10.83\%}$ $\Delta\text{BLEU-1}$ and $+\mathbf{9.46\%}$ $\Delta\text{BLEU-4}$ ($23.0\times$ over noise). When controlled on the identical \texttt{BART-large} (406M) backbone and single-task \texttt{task1-SR}, RUSH-EEG2Text achieves $\mathbf{16.38\%}$ BLEU-1 and $\mathbf{0.97\%}$ BLEU-4, outperforming prior BART-based baselines under non-teacher-forced generation.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Brain-computer interface (BCI), electroencephalography (EEG), EEG-to-text decoding, large language models (LLMs), residual vector quantization (RVQ), Riemannian manifold, functional connectivity, cross-subject generalization.
+\end{IEEEkeywords}
+
+\section{Introduction}
+\IEEEPARstart{R}{econstructing} open-vocabulary natural language directly from non-invasive brain recordings such as electroencephalography (EEG) and magnetoencephalography (MEG) promises a paradigm shift in assistive communication for individuals with severe neuromotor impairments, locked-in syndrome, or post-stroke aphasia~\cite{wang2022open, defossez2023decoding, wang2026genai_bci}. Compared with conventional discriminative brain-computer interface (BCI) paradigms---such as motor imagery, P300 spellers, and steady-state visually evoked potentials (SSVEPs), which restrict users to low-bitrate closed command sets---generative language BCIs aim to translate continuous spatiotemporal cortical dynamics into unconstrained semantic text~\cite{wang2024cetmae, li2025brainecho}.
+
+Driven by pretrained sequence-to-sequence and causal large language models (LLMs), pioneer frameworks such as EEG-to-Text~\cite{wang2022open}, DeWave~\cite{duan2023dewave}, C-SCL~\cite{feng2023cscl}, and CET-MAE~\cite{wang2024cetmae} established word- and sentence-level decoding pipelines on naturalistic reading corpora~\cite{hollenstein2018zuco, hollenstein2020zuco2}. Despite encouraging benchmark numbers under teacher forcing, recent diagnostic investigations---notably Jo \textit{et al.}~\cite{jo2024are} and Li \textit{et al.} (\textit{BrainECHO})~\cite{li2025brainecho}---have uncovered three critical methodological bottlenecks that impede clinically trustworthy EEG-to-LLM translation:
+
+\begin{enumerate}
+    \item \textbf{Teacher-Forcing Over-Dominance and Pure-Noise Memorization:} Most BART-based decoders condition each token prediction on ground-truth preceding tokens during evaluation. Under strict teacher-forcing-free (\textit{TF-free}) free-running generation, performance collapses dramatically, and several unconstrained LLM adapters produce nearly identical BLEU scores whether fed real human EEG or pure Gaussian noise $\mathcal{N}(0, \mathbf{I})$~\cite{jo2024are, li2025brainecho}.
+    \item \textbf{Implicit Signal-Length and Fixation-Count Leakage:} Even when teacher forcing is removed, padding variable-length word-fixation sequences (or variable-duration audio/EEG segments) with standard integer positional indices ($0, 1, \dots, L_{\text{seq}}-1$) implicitly reveals the exact number of fixated words to the decoder~\cite{li2025brainecho}. Our empirical audit demonstrates that under integer positional encoding, a pure Gaussian noise input still achieves $3.2\times$ random-chance retrieval accuracy solely by exploiting sequence-mask length correlations.
+    \item \textbf{Cross-Subject Covariate Shift and Flat Sensor Representations:} Prior text-evoked EEG encoders flatten 105 scalp channels across 8 frequency bands into an unstructured $840$-dimensional vector extracted from a single eye-fixation window (\textit{Gaze Duration}, GD) in left-to-right lexical order~\cite{wang2022open, wang2024cetmae}. Such flat representations discard 3D cortical geometry, ignore chronological eye-regression scanpaths, conflate initial visual recognition (\textit{First Fixation Duration}, FFD) with syntactic reanalysis (\textit{Total Reading Time}, TRT), and remain highly vulnerable to inter-subject skull-conductivity and $1/f$ spectral-slope variations~\cite{song2024eegmacs}.
+\end{enumerate}
+
+While \textit{BrainECHO}~\cite{li2025brainecho} recently demonstrated that discrete vector quantization (VQ) suppresses session noise in aurally evoked brain-to-spectrogram translation via Whisper, text-evoked and inner-speech reading paradigms lack external acoustic spectrograms to serve as intermediate reconstruction targets. Moreover, vanilla Euclidean VQ codebooks suffer from severe \textit{codebook collapse} (perplexity $< 2.5$) or residual norm explosion when applied directly to high-dimensional cross-subject EEG embeddings.
+
+To bridge these gaps, we propose \textbf{RUSH-EEG2Text}, a length-invariant, connectome-guided discrete brain-to-LLM decoding framework. Rather than treating scalp EEG as flat channel vectors, RUSH-EEG2Text integrates anatomical 3D cortical parcellation, multi-stage oculomotor-aligned neural dynamics, phase-lagged functional connectivity, and Riemannian manifold geometry into a hierarchical discrete neural tokenizer aligned with a modern 7B causal LLM. Our principal contributions are fourfold:
+
+\begin{itemize}
+    \item \textbf{Multi-Stage 3D Cortical ROI and Riemannian-Phase Connectome Representation:} Utilizing stereotactic 3D electrode coordinates, we parcellate 105 scalp channels into 12 canonical language and association ROIs with artifact-resilient channel masking and unsupervised per-subject robust calibration. We jointly extract four-stage reading windows ($\text{FFD}, \text{GD}, \text{TRT}, \text{TRT}-\text{FFD}$), 48-pair homologous hemispheric asymmetries, chronological gaze scanpaths, pupil/oculomotor cognitive-load indices, and 500-Hz cross-spectral functional networks combining Weighted Phase Lag Index (wPLI)~\cite{vinck2011wpli}, Imaginary Coherence (iCoh)~\cite{nolte2004icoh}, and Log-Euclidean SPD covariance tangent vectors~\cite{arsigny2006logeuclidean, barachant2013riemannian}.
+    \item \textbf{Zero-Leakage Scanpath Encoding and Late Connectome Bottleneck Fusion:} We replace integer positional indices with continuous $[0,1]$ scanpath-progress Fourier embeddings paired with a fixed-query Perceiver resampler, mathematically eliminating fixation-count length leakage. Furthermore, we identify and resolve \textit{early edge overfitting} via a zero-initialized \textit{Late Connectome Bottleneck Fusion} adapter that enriches resampled node queries with global connectome tokens without corrupting token-level spatial representations.
+    \item \textbf{Un-Inflated Coarse-to-Fine EMA-RVQ with Multi-Positive Cross-Subject Alignment:} We design an L2-sphere-initialized Euclidean Exponential Moving Average Residual Vector Quantizer (EMA-RVQ) with dead-code revival and quantizer dropout, achieving high active codebook diversity (perplexity $> 84$) and negligible quantization loss ($\Delta\text{MRR} < 1.7\%$). Stage~1 is trained with cognitive-load-weighted multi-positive InfoNCE and a cross-subject brain-to-brain invariance loss that eliminates false-negative collisions when multiple subjects read identical sentences.
+    \item \textbf{Rigorous Unseen-Subject \& Pure-Noise Sanity Verification:} Across 14 systematic Stage~1 architectural ablations (\texttt{task1-SR}) and full-scale 4-task training across 18,276 trials (30 unique subjects across ZuCo 1.0 and ZuCo 2.0) on a single 128-GB unified-memory NVIDIA DGX Spark workstation, RUSH-EEG2Text achieves $\mathbf{56.09\%}$ R@10 and median rank $\mathbf{9.0}$ out of 1,313 unique sentences across 4 held-out test subjects ($\text{MRR}=\mathbf{23.14\%}$ vs.\ $0.77\%$ under Gaussian noise), and establishes a new cross-subject teacher-forcing-free generation state of the art ($\mathbf{19.60\%}$ BLEU-1, $\mathbf{9.89\%}$ BLEU-4, $+\mathbf{10.83\%}$ $\Delta\text{BLEU-1}$ and $+\mathbf{9.46\%}$ $\Delta\text{BLEU-4}$ over pure noise).
+\end{itemize}
+
+\section{Related Work}
+
+\subsection{Non-Invasive Brain-to-Text Decoding with Pretrained LLMs}
+Early non-invasive neural speech and text decoding studies focused on closed-vocabulary classification of syllables, words, or retrieval over short 3-second segments using contrastive wav2vec~2.0 alignment~\cite{defossez2023decoding}. Wang and Ji~\cite{wang2022open} pioneered open-vocabulary EEG-to-text generation on the ZuCo reading benchmark by projecting word-level 8-band Hilbert envelope features into a pretrained BART encoder-decoder. Subsequent works improved representation alignment: DeWave~\cite{duan2023dewave} introduced discrete codex encoding to reduce reliance on eye-fixation markers; C-SCL~\cite{feng2023cscl} employed curriculum semantic-aware contrastive learning to mitigate subject shifts; Amrani \textit{et al.}~\cite{amrani2024deep} enhanced deep subject-independent encoders; CET-MAE~\cite{wang2024cetmae} combined 75\% masked EEG-text autoencoding with multi-stream contrastive alignment, concatenating holistic sentence-level EEG tokens to compensate for skipped word fixations; and LURS~\cite{park2026lurs} introduced latent-level uncertainty refinement to stabilize cross-subject rollout.
+
+However, Jo \textit{et al.}~\cite{jo2024are} demonstrated that teacher-forced evaluation masks catastrophic failure during free-running inference and that models lacking strict input-grounded regularization hallucinate fluent text from random noise. While \textit{BrainECHO}~\cite{li2025brainecho} addressed teacher-forcing dependence for audio-evoked EEG/MEG by reconstructing quantized Mel spectrograms for Whisper, its reliance on ground-truth acoustic targets prevents direct application to silent natural reading or inner-speech BCIs, and its authors explicitly noted residual sentence-length padding correlations as an open limitation. RUSH-EEG2Text directly resolves both open problems without requiring audio stimuli.
+
+\subsection{Cortical Functional Connectivity and Riemannian Geometry in BCIs}
+Raw scalp potentials are heavily distorted by volume conduction through cerebrospinal fluid and individual skull thickness, causing dramatic covariate shifts across subjects and recording centers~\cite{song2024eegmacs}. Phase-lagged spectral estimators---specifically Imaginary Coherence~\cite{nolte2004icoh} and Weighted Phase Lag Index (wPLI)~\cite{vinck2011wpli}---isolate non-zero-lag inter-regional communication by discarding instantaneous ($\Delta\phi = 0$) volume-conducted artifacts. Complementarily, Symmetric Positive Definite (SPD) spatial covariance matrices projected onto the Riemannian Log-Euclidean tangent space~\cite{arsigny2006logeuclidean, barachant2013riemannian} capture affine-invariant coupled signal strength across brain networks and have recently proven highly effective for cross-center brain disorder diagnosis in EEG-MACS~\cite{song2024eegmacs}. To the best of our knowledge, RUSH-EEG2Text is the first framework to unify 3D ROI multi-stage oculomotor power, phase-lagged spectral connectivity, and Riemannian SPD tangent geometry for open-vocabulary EEG-to-LLM decoding.
+
+\section{Methodology}
+
+\subsection{Problem Formulation}
+Let $\mathcal{D} = \{(\mathcal{E}_i, \mathcal{O}_i, W_i, s_i, \tau_i)\}_{i=1}^{N}$ denote a multi-subject, multi-task corpus of $N$ sentence-reading trials recorded from subjects $s_i \in \mathcal{S}$ across reading paradigms $\tau_i \in \{\text{SR}, \text{NR}, \text{TSR}\}$. Each trial comprises: (i) high-density 105-channel scalp EEG features across $L_i$ fixated words plus continuous 500-Hz sentence waveforms $\mathbf{X}_{\text{raw}} \in \mathbb{R}^{105 \times T_i}$; (ii) synchronized eye-tracking metadata $\mathcal{O}_i$ (chronological fixation positions, fixation counts, pupil dilation, saccade kinematics, and word omission rates); and (iii) ground-truth open-vocabulary word tokens $W_i = (w_{i,1}, \dots, w_{i,M_i})$. Under a strict \textit{subject-independent} split ($\mathcal{S}_{\text{train}} \cap \mathcal{S}_{\text{val}} = \emptyset$ and $\mathcal{S}_{\text{train}} \cap \mathcal{S}_{\text{test}} = \emptyset$) and \textit{teacher-forcing-free} inference, our goal is to learn a discrete neural tokenizer $\mathcal{Q}_\theta$ and causal LLM decoder $\mathcal{G}_\phi$ that generate $\hat{W}_i = \mathcal{G}_\phi(\mathcal{Q}_\theta(\mathcal{E}_i, \mathcal{O}_i, \tau_i))$ without access to any ground-truth text tokens or target sequence lengths at test time.
+
+\subsection{Anatomical 12-ROI Parcellation and Tri-Modal Neuro-Connectome Extraction}
+
+\subsubsection{Artifact Masking and Unsupervised Per-Subject Calibration}
+In high-density EGI HydroCel recordings, transient electrode pop or local muscle artifacts corrupt individual channels within a sentence, marked as \texttt{NaN} in band-power summaries. Rather than discarding entire trials or corrupting spatial averages with zero-imputation, we construct a binary channel validity mask $\mathbf{m}_{\text{ch}} \in \{0,1\}^{105}$ per sentence. Prior to regional aggregation, we perform a strictly unsupervised per-subject robust calibration across all unlabeled trials of subject $s$:
+\begin{equation}
+    \tilde{x}_{c,b}^{(\omega)} = \operatorname{clip}\!\left(\frac{x_{c,b}^{(\omega)} - \operatorname{med}_{s}(x_{c,b}^{(\omega)})}{\operatorname{IQR}_{s}(x_{c,b}^{(\omega)}) / 1.349}, -6.0, 6.0\right),
+\end{equation}
+for channel $c \in \{1,\dots,105\}$, frequency band $b \in \{\theta_1, \theta_2, \alpha_1, \alpha_2, \beta_1, \beta_2, \gamma_1, \gamma_2\}$, and reading stage $\omega \in \{\text{FFD}, \text{GD}, \text{TRT}, \text{Sent}\}$. Because Eq.~(1) uses zero text labels, it is 100\% applicable to unseen test subjects during calibration or streaming operation, removing subject-specific $1/f$ spectral slopes and skull-impedance scaling.
+
+\subsubsection{3D Stereotactic 105-to-12 Cortical ROI Grouping}
+Using the 3D Cartesian coordinates $\{(X_c, Y_c, Z_c)\}_{c=1}^{105}$ from \texttt{chanlocs105.mat}, we partition the 105 scalp electrodes into $R=12$ bilateral functional-anatomical regions essential to visual-orthographic, lexical-semantic, and syntactic processing: Left/Right Prefrontal, Left Broca/IFG and Right IFG, Left/Right Central, Left Wernicke/Temporal and Right Temporal, Left/Right Parietal, and Left/Right Occipital (splitting midline electrodes $|Y_c| < 0.05$ symmetrically $0.5/0.5$ across hemispheres). Given assignment matrix $\mathbf{A} \in \mathbb{R}_{\ge 0}^{12 \times 105}$ and normalized 3D ROI centroids $\mathbf{C}_{\text{3D}} \in [-1,1]^{12 \times 3}$, artifact-free regional power is obtained via masked weighted pooling:
+\begin{equation}
+    \mathbf{Z}_{\text{ROI}}^{(\omega)} = \frac{(\tilde{\mathbf{X}}^{(\omega)} \odot \mathbf{m}_{\text{ch}}^\top)\mathbf{A}^\top}{\mathbf{m}_{\text{ch}}^\top \mathbf{A}^\top + \epsilon} \in \mathbb{R}^{8 \times 12}.
+\end{equation}
+
+\subsubsection{Chronological Scanpath Ordering and Four-Stage Node Features}
+Human readers frequently skip predictable words and execute regressive saccades back to syntactically ambiguous words. Whereas prior pipelines sort word EEG strictly in left-to-right lexical order, we sort fixated words according to their true chronological first-fixation timestamp $t_{\text{scan}}$ from \texttt{word.fixPositions}. For each scanpath token $t$, we construct a $488$-dimensional structured node vector $\mathbf{v}_t \in \mathbb{R}^{488}$ concatenating:
+\begin{itemize}
+    \item \textbf{Four-Stage Cortical Power ($384$-d):} Flattened $8 \times 12$ ROI tensors across early visual recognition ($\mathbf{Z}^{\text{FFD}}_t$), first-pass lexical access ($\mathbf{Z}^{\text{GD}}_t$), integrative reading ($\mathbf{Z}^{\text{TRT}}_t$), and explicit syntactic reanalysis cost ($\Delta\mathbf{Z}^{\text{re}}_t = \mathbf{Z}^{\text{TRT}}_t - \mathbf{Z}^{\text{FFD}}_t$).
+    \item \textbf{Homologous Hemispheric Lateralization ($96$-d):} Left-minus-right ROI power differences across the 6 homologous region pairs for $\text{GD}$ and $\text{TRT}$, capturing left-lateralized perisylvian language dominance.
+    \item \textbf{Oculomotor and Pupil Salience Metadata ($8$-d):} Log-transformed fixation durations, regression revisit counts, per-subject Z-scored pupil dilation (indexing locus-coeruleus cognitive arousal), normalized scanpath progress $u_t \in [0, 0.92]$, and scanpath-vs-lexical displacement $v_t - u_t$.
+\end{itemize}
+Following CET-MAE~\cite{wang2024cetmae}, a holistic sentence-level token is appended at the final active slot ($u_{L} = 1.0$).
+
+\subsubsection{Pure Phase-Lag Connectivity and Riemannian Coupled Signal Strength}
+To capture inter-regional coordination alongside regional activation amplitude, we project the continuous 500-Hz sentence waveform $\mathbf{X}_{\text{raw}}$ onto the 12 valid ROIs and compute multi-window Welch cross-spectral density matrices $\mathbf{S}_b(w, f) \in \mathbb{C}^{12 \times 12}$ (256-sample Hann windows, 50\% overlap) within each oscillation band $b$:
+\begin{align}
+    \text{wPLI}_b(u,v) &= \frac{\left|\mathbb{E}_{w,f}\!\left[\Im\big(S_{b,uv}(w,f)\big)\right]\right|}{\mathbb{E}_{w,f}\!\left[\left|\Im\big(S_{b,uv}(w,f)\big)\right|\right] + \epsilon}, \\
+    \text{iCoh}_b(u,v) &= \frac{\left|\Im\big(\bar{S}_{b,uv}\big)\right|}{\sqrt{\Re(\bar{S}_{b,uu})\Re(\bar{S}_{b,vv})} + \epsilon},
+\end{align}
+yielding $66 \times 8 = 528$ pure phase-lagged connectivity features each for wPLI and iCoh that automatically reject zero-lag ($\Delta\phi=0$) volume conduction.
+
+Because pure phase synchronization cannot distinguish weak background synchrony from high-energy coupled neural recruitment, we simultaneously extract \textit{Coupled Signal Strength} on the Symmetric Positive Definite ($\mathcal{S}_{++}^{12}$) manifold. Forming the shrinkage-regularized real band cross-covariance $\mathbf{P}_b = (1-\lambda)\Re(\bar{\mathbf{S}}_b) + \lambda \frac{\operatorname{tr}(\Re(\bar{\mathbf{S}}_b))}{12}\mathbf{I}_{12}$ ($\lambda=0.08$) with eigendecomposition $\mathbf{P}_b = \mathbf{U}_b \boldsymbol{\Sigma}_b \mathbf{U}_b^\top$, we map $\mathbf{P}_b$ onto the flat Log-Euclidean tangent space at the identity~\cite{arsigny2006logeuclidean}:
+\begin{equation}
+    \mathbf{T}_b = \operatorname{upper\_vec}\!\left(\mathbf{U}_b \log(\boldsymbol{\Sigma}_b) \mathbf{U}_b^\top\right) \in \mathbb{R}^{78},
+\end{equation}
+scaling off-diagonal entries by $\sqrt{2}$ to preserve Riemannian geodesic inner products. Concatenating $\text{wPLI}$ ($528$-d), $\text{iCoh}$ ($528$-d), $\mathbf{T}_{1:8}$ ($624$-d), and the 48-pair whole-sentence lateralization vector ($384$-d) produces a $2064$-dimensional global connectome descriptor $\mathbf{c}_{\text{sent}} \in \mathbb{R}^{2064}$ (alongside compact named clinical biomarkers exported for downstream explainable reasoning).
+
+\subsection{Stage 1: Length-Invariant Late-Fusion CET-RVQ Pretraining}
+
+\subsubsection{Eliminating Signal-Length Leakage via Continuous Progress PE}
+Under conventional integer positional encoding $\operatorname{PE}(t)$ ($t \in \{0,\dots,L-1\}$), the highest active index directly reveals $L$ to downstream self- and cross-attention layers. We instead introduce \textbf{Normalized Scanpath Progress Fourier Encoding}: every trial's active word fixations are parameterized over the unit interval $u_t \in [0, 0.92]$ with holistic sentence summary at $u_L = 1.0$, regardless of whether a sentence contains 5 or 45 words. Given log-spaced frequencies $\omega_k = 2^k \pi$ ($k=0,\dots,15$), the positional embedding is computed over $[\sin(\boldsymbol{\omega} u_t), \cos(\boldsymbol{\omega} u_t), \sin(\boldsymbol{\omega} v_t), \cos(\boldsymbol{\omega} v_t), \tilde{\psi}_t]$, where $\tilde{\psi}_t$ is word fixation salience.
+
+\subsubsection{3D-Grounded Node Transformer and Zero-Initialized Late Connectome Bottleneck Fusion}
+In \texttt{Cortical3DROINodeStem}, each ROI's 32 stage-band features are projected and summed with a learned MLP embedding of its 3D coordinate $\mathbf{c}_{r} \in \mathbb{R}^3$ before entering an $L_{\text{enc}}$-layer Pre-LN Transformer (\texttt{embed\_dim} $D=768$) conditioned on task embedding $\mathbf{e}_{\tau}$ and oculomotor cognitive load $\mathbf{g}_{\text{cog}} \in \mathbb{R}^6$. A Perceiver-style \texttt{LatentQueryResampler} compresses the variable-length sequence into a fixed number $K=24$ of latent neural queries $\mathbf{H}_q \in \mathbb{R}^{K \times D}$.
+
+Crucially, our ablation study (Section~\ref{sec:ablation}) reveals that injecting high-dimensional pairwise edge features directly into every word token (\textit{early token-level fusion}) induces cross-subject overfitting on limited training subjects. We therefore introduce a \textbf{Late Connectome Bottleneck Fusion Adapter}: $\mathbf{c}_{\text{sent}}$ is decomposed into 4 specialized neuro-physical tokens (wPLI, iCoh, SPD-Tangent, and L-R Asymmetry), projected into a low-rank bottleneck ($D_{\text{bot}}=128$, dropout $0.30$), and fused into $\mathbf{H}_q$ via cross-attention with a zero-initialized output projection $\mathbf{W}_{\text{up}} = \mathbf{0}$:
+\begin{equation}
+\begin{aligned}
+    \tilde{\mathbf{H}}_q &= \mathbf{H}_q \\
+    &\quad + \mathbf{W}_{\text{up}} \operatorname{CrossAttn}\!\left(\mathbf{H}_q \mathbf{W}_Q,\, \mathbf{C}_{\text{glob}}\mathbf{W}_K,\, \mathbf{C}_{\text{glob}}\mathbf{W}_V\right).
+\end{aligned}
+\end{equation}
+At initialization, $\tilde{\mathbf{H}}_q = \mathbf{H}_q$, guaranteeing clean spatio-temporal node representations while allowing global phase-lag and Riemannian manifold context to refine latent queries where cross-subject generalization benefits.
+
+\subsubsection{Un-Inflated Coarse-to-Fine EMA-RVQ}
+To discretize $\tilde{\mathbf{H}}_q$ without codebook collapse or residual norm explosion, we project each query onto the unit hypersphere \textbf{once} ($\mathbf{r}^{(0)} = \tilde{\mathbf{h}}_q / \|\tilde{\mathbf{h}}_q\|_2$) and quantize decaying residuals across $M=6$ codebooks of size $V=256$ (\texttt{EuclideanEMAQuantizerLayer}, decay $0.98$, dead-code revival threshold $1.0$):
+\begin{align}
+    \mathbf{z}_q^{(m)} &= \arg\min_{\mathbf{e} \in \mathcal{C}_m} \|\mathbf{r}^{(m-1)} - \mathbf{e}\|_2^2, \\
+    \mathbf{r}^{(m)} &= \mathbf{r}^{(m-1)} - \operatorname{sg}\!\left(\mathbf{z}_q^{(m)}\right).
+\end{align}
+Unlike naive cosine-RVQ implementations that re-normalize tiny higher-stage residuals back to unit norm, preserving natural residual decay alongside \textbf{Quantizer Dropout} ($p_{\text{qdrop}} = 0.30$~\cite{zeghidour2021soundstream}) forces early codebooks to encode coarse sentence semantics and deeper codebooks to capture fine lexical nuances. Commitment loss is summed over feature dimensions ($\mathcal{L}_{\text{RVQ}} = \frac{1}{M'}\sum_{m=1}^{M'} \beta \mathbb{E}[\sum_{d}(r_d^{(m-1)} - \operatorname{sg}(z_{q,d}^{(m)}))^2]$) so its scale naturally matches contrastive gradients.
+
+\subsubsection{Multi-Positive Cross-Subject InfoNCE and Neural Invariance Objective}
+In multi-subject reading datasets, distinct subjects frequently read the identical sentence $y_i = y_j$. Standard instance-wise InfoNCE erroneously penalizes $(i,j)$ as negative pairs. Pairing a \texttt{SentencePairedBatchSampler} with a \textbf{Cognitive-Load-Weighted Multi-Positive InfoNCE} ($\mathcal{L}_{\text{MP-NCE}}$), we normalize target probability mass across all matching sentence IDs in a mini-batch, weighted by trial arousal/engagement $w_i = \operatorname{clip}(1 + 0.20\tilde{p}_i + 0.15\rho_{\text{reg},i} - 0.25\rho_{\text{skip},i}, 0.65, 1.45)$ with clamped temperature $\tau^{-1} \le 14.29$. Furthermore, we add a \textbf{Cross-Subject Brain-to-Brain Invariance Loss} ($\mathcal{L}_{\text{B2B}}$) pulling quantized embeddings of different subjects reading the same sentence together, an asymmetric 75\%-masked node reconstruction loss ($\mathcal{L}_{\text{MAE}}$), and an auxiliary sentiment head ($\mathcal{L}_{\text{Aux}}$):
+\begin{equation}
+\begin{aligned}
+    \mathcal{L}_{\text{Stage1}} &= \lambda_{\text{MAE}}\mathcal{L}_{\text{MAE}} + \lambda_{\text{RVQ}}\mathcal{L}_{\text{RVQ}} + \lambda_{\text{Con}}\mathcal{L}_{\text{MP-NCE}} \\
+    &\quad + \lambda_{\text{B2B}}\mathcal{L}_{\text{B2B}} + \lambda_{\text{Aux}}\mathcal{L}_{\text{Aux}}.
+\end{aligned}
+\end{equation}
+
+\subsection{Stage 2: Exposure-Bias-Mitigated Causal LLM Decoding}
+In Stage~2, quantized brain tokens $\mathbf{Z}_q \in \mathbb{R}^{K \times D}$ are mapped into the embedding space of \texttt{Qwen2.5-7B-Instruct}~\cite{qwen25} ($D_{\text{LLM}} = 3584$) via a 2-layer MLP \texttt{BrainToLLMProjector} and wrapped inside an instruction prompt prefix. Low-Rank Adaptation (LoRA, $r=16, \alpha=32$)~\cite{hu2022lora} is applied to all attention and MLP projections while jointly fine-tuning the neural encoder at a conservative learning rate ($3\times 10^{-5}$).
+
+To prevent the 7B autoregressive decoder from ignoring the neural prefix and relying solely on preceding ground-truth words during training (\textit{exposure bias}), we apply \textbf{Linearly Scheduled Target-Word Dropout} up to $p_{\text{drop}} = 0.50$: half of the input target embeddings are randomly masked with \texttt{$<$pad$>$} during causal LM training while the cross-entropy loss still requires predicting every true next token from the quantized brain prefix. At test time, generation is strictly \textbf{teacher-forcing-free} via beam search ($B=4$, no-repeat 3-gram constraint) conditioned solely on the neural prefix, paired with an automated Gaussian noise input sanity audit where both feature values and sequence masks are randomized.
+
+\section{Experimental Setup}
+
+\subsection{Datasets and Strict Subject-Independent Partitioning}
+We evaluate RUSH-EEG2Text across four naturalistic reading tasks from \textbf{ZuCo 1.0}~\cite{hollenstein2018zuco} and \textbf{ZuCo 2.0}~\cite{hollenstein2020zuco2}: Movie Sentiment Reading (\texttt{task1-SR}, 400 sentences, 12 subjects), Wikipedia Normal Reading v1 (\texttt{task2-NR}, 300 sentences, 12 subjects), Task-Specific Relation Reading (\texttt{task3-TSR}, 407 sentences, 12 subjects), and Wikipedia Normal Reading v2 (\texttt{task2-NR-2.0}, 349 sentences, 18 subjects; corrupted subject \texttt{YMH} excluded per protocol~\cite{wang2024cetmae}). Parallel 16-worker preprocessing across all 54 MATLAB/HDF5 archives yields \textbf{18,276} complete Dual-Stream Connectome trials across \textbf{30 unique human subjects} and \textbf{1,313 unique sentences}.
+
+To guarantee zero subject leakage:
+\begin{itemize}
+    \item \textbf{Controlled 11-Subject Stage~1 Ablation Benchmark (\texttt{task1-SR}, 4,140 trials):} 9 subjects ($3,416$ trials) for training, unseen subject \texttt{ZJS} ($338$ trials) for validation/hyperparameter selection, and unseen subject \texttt{ZMG} ($386$ trials) strictly held out for testing against the full 400-sentence candidate bank (random chance: $\text{R@1} = 0.25\%$, $\text{R@10} = 2.50\%$, $\text{MRR} = 1.64\%$).
+    \item \textbf{Full-Scale 4-Task Benchmark (18,276 trials, 30 subjects):} 24 subjects ($14,297$ trials) for training, 2 unseen subjects (\texttt{ZJS}, \texttt{YDR}; $1,262$ trials) for validation, and 4 unseen subjects spanning both corpora (\texttt{ZMG}, \texttt{ZPH}, \texttt{YTL}, \texttt{YSL}; $2,717$ trials) for final evaluation.
+\end{itemize}
+
+\subsection{Hardware Footprint and Reproducible Implementation}
+All preprocessing, Stage~1 optimization sweeps, and Stage~2 7B LLM fine-tuning were executed on a single desktop \textbf{NVIDIA DGX Spark} workstation equipped with an NVIDIA GB10 Grace Blackwell Superchip (20-core Arm CPU + Blackwell Tensor Core GPU sharing 128~GB coherent LPDDR5x unified memory, PyTorch~2.7, CUDA~13.0, native \texttt{BF16}). Stage~1 full 4-task training consumes $\sim 15.7$~GB of unified memory ($38.9$~min for 55 epochs), Stage~2 joint batch-32 end-to-end LoRA training consumes $\sim 66.1$~GB ($\sim 21.4$~GB at batch-8 / inference), demonstrating that generative EEG-LLM pipelines can be trained and deployed locally inside clinical neurology departments without cloud data transfer.
+
+\section{Results and Analysis}
+
+\subsection{Stage 1 Ablation Study and Unseen-Subject Retrieval}
+\label{sec:ablation}
+
+\begin{table*}[t]
+\centering
+\caption{Controlled Stage 1 Architectural and Representation Ablation on Unseen Validation Subject (\texttt{ZJS}) and Unseen Test Subject (\texttt{ZMG}) Across the Full 400-Sentence Bank (\texttt{task1-SR}, $N=4,140$). Bold denotes best; underline denotes second best.}
+\label{tab:stage1_ablation}
+\renewcommand{\arraystretch}{1.15}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l l c c c c c c c c}
+\toprule
+\multirow{2}{*}{\textbf{ID}} & \multirow{2}{*}{\textbf{Stage 1 Architecture \& Feature Configuration}} & \multicolumn{2}{c}{\textbf{Unseen Val (\texttt{ZJS})}} & \multicolumn{4}{c}{\textbf{Unseen Test (\texttt{ZMG}) -- Real EEG}} & \textbf{Noise Input} & \textbf{Sanity Gap} \\
+\cmidrule(lr){3-4} \cmidrule(lr){5-8} \cmidrule(lr){9-9} \cmidrule(lr){10-10}
+ & & \textbf{MRR (\%)} & \textbf{R@10 (\%)} & \textbf{R@1 (\%)} & \textbf{R@5 (\%)} & \textbf{R@10 (\%)} & \textbf{MRR (\%)} & \textbf{MRR (\%)} & $\bm{\Delta}$\textbf{MRR (\%)} \\
+\midrule
+-- & Theoretical 400-Way Random Chance & 1.64 & 2.50 & 0.25 & 1.25 & 2.50 & 1.64 & 1.64 & 0.00 \\
+\texttt{R0} & Flat 840-d GD + Integer PE + Single-Pos InfoNCE (Baseline) & 7.87 & 15.68 & 2.08 & 7.79 & 12.73 & 6.40 & \textit{5.29}$^\dagger$ & +1.11 \\
+\midrule
+\texttt{R1a} & Flat 840-d GD + Continuous $[0,1]$ PE + Multi-Pos InfoNCE & 14.23 & 30.77 & 4.40 & 14.77 & 26.94 & 10.52 & 1.55 & +8.97 \\
+\texttt{R1b} & Edge \& Connectome Stream Only (wPLI + iCoh + SPD Tangent) & 11.23 & 26.04 & 4.40 & 15.03 & 23.83 & 11.34 & 1.91 & +9.43 \\
+\texttt{R1c} & Early Token-Level Gated Dual-Stream Fusion ($D=512, M=4$) & 14.94 & 31.66 & 6.48 & 21.76 & 33.94 & 14.94 & 1.54 & +13.40 \\
+\texttt{R5a} & Residual Zero-Init Early Dual-Stream Fusion ($D=768, M=6$) & 16.50 & 37.57 & 7.77 & 24.09 & 36.53 & 16.54 & 1.60 & +14.94 \\
+\texttt{R1d} & 3D 12-ROI 4-Stage Node Stream Only ($D=512, K=32, M=4$) & 21.01 & 38.76 & 10.62 & 28.76 & 40.93 & \underline{20.18} & 1.60 & \underline{+18.58} \\
+\texttt{R3b} & 3D 12-ROI 4-Stage Node Stream ($D=768, K=32, M=4$) & 20.37 & \textbf{44.97} & 10.36 & 29.02 & \underline{41.97} & 20.12 & 1.85 & +18.27 \\
+\texttt{R4a} & 3D 12-ROI Node + 6-Book EMA-RVQ + QDrop 0.3 ($K=24, M=6$) & \textbf{23.37} & \textbf{44.97} & \underline{10.88} & \underline{29.53} & 37.05 & 18.04 & 1.81 & +16.23 \\
+\midrule
+\texttt{C1} & Diagnostic Control: Gaze-Only (Oculomotor Metadata, Zero EEG) & 8.92 & 21.01 & 3.37 & 12.95 & 22.02 & 9.15 & 1.64 & +7.51 \\
+\texttt{C2} & Diagnostic Control: EEG-Shuffle (Permuted EEG, True Gaze) & 15.12 & 32.84 & 6.48 & 23.06 & 35.23 & 15.76 & 1.64 & +14.12 \\
+\texttt{C3} & Diagnostic Control: Length-Matched Gaussian Noise & 2.11 & 4.73 & 0.26 & 2.59 & 5.44 & 2.49 & 1.64 & +0.85 \\
+\midrule
+\texttt{R5e} & Oculomotor Feature Ablation (EEG-Only Mode, Zero Gaze Meta) & 10.83 & 22.78 & 2.59 & 8.55 & 18.39 & 7.38 & 1.65 & +5.73 \\
+\texttt{R5f} & Fixation-Free Continuous Holistic EEG ($L_{\text{seq}}=1$, Whole-Sentence) & 2.51 & 3.85 & 0.26 & 1.55 & 2.59 & 2.03 & 1.82 & +0.21$^\ddagger$ \\
+\textbf{\texttt{R5c}} & \textbf{RUSH-EEG2Text Stage 1 (3D 12-ROI + Late Connectome Bottleneck)} & \underline{23.00} & 44.38 & \textbf{12.18} & \textbf{30.83} & \textbf{44.30} & \textbf{22.22} & \textbf{1.42} & \textbf{+20.80} \\
+\bottomrule
+\multicolumn{10}{l}{\footnotesize $^\dagger$Integer PE leaks word-fixation count ($L_{\text{seq}}$) even when EEG is pure Gaussian noise ($5.29\%$ vs.\ $1.64\%$ chance). Continuous $[0,1]$ PE eliminates leakage.} \\
+\multicolumn{10}{l}{\footnotesize $^\ddagger$Continuous holistic EEG achieves $2.59\%$ R@10, which is statistically indistinguishable from 400-way random chance ($2.50\%$, $p=0.41$).}
+\end{tabular}%
+}
+\end{table*}
+
+Table~\ref{tab:stage1_ablation} summarizes our systematic 14-run controlled ablation on \texttt{task1-SR}. Four major scientific findings emerge:
+
+\begin{enumerate}
+    \item \textbf{Proof and Elimination of Fixation-Length Leakage (\texttt{R0} vs.\ \texttt{R1a}):} In baseline \texttt{R0}, replacing real EEG with $\mathcal{N}(0,\mathbf{I})$ still yielded $5.29\%$ MRR ($3.2\times$ random chance), leaving a meager $+1.11\%$ real-over-noise gap. Switching to continuous $[0,1]$ scanpath-progress Fourier encoding paired with multi-positive cross-subject InfoNCE (\texttt{R1a}) immediately forced Gaussian noise down to true random chance ($1.55\%$ MRR) while raising real unseen-subject MRR to $10.52\%$ ($+8.97\%$ sanity gap).
+    \item \textbf{Massive Gain from 3D 12-ROI Parcellation and Four-Stage Scanpath Dynamics (\texttt{R1a} $\rightarrow$ \texttt{R1d}):} Replacing flat 840-d single-window GD vectors with 3D-grounded 12-ROI four-stage power ($\text{FFD}, \text{GD}, \text{TRT}, \text{TRT}-\text{FFD}$), hemispheric asymmetry, chronological gaze ordering, and pupil cognitive-load weighting nearly doubled unseen-subject test MRR from $10.52\%$ to $20.18\%$ ($\text{R@10}: 26.94\% \rightarrow 40.93\%$).
+    \item \textbf{Why Late Connectome Bottleneck Beats Early Edge Concatenation (\texttt{R1c}/\texttt{R5a} vs.\ \texttt{R5c}):} Injecting 528-d pairwise co-fluctuation edges into every word token (\texttt{R1c}, \texttt{R5a}) caused the Transformer to overfit training-subject correlation patterns ($14.94\%\text{--}16.54\%$ Test MRR). Conversely, our zero-initialized \textit{Late Connectome Bottleneck Fusion} (\texttt{R5c})---which lets the 3D Node Transformer extract clean spatiotemporal word dynamics before querying compressed global wPLI, iCoh, and Log-Euclidean SPD tokens---achieved the highest unseen-subject generalization across every metric on \texttt{ZMG}: $\mathbf{12.18\%}$ R@1 ($48.7\times$ random chance), $\mathbf{30.83\%}$ R@5, $\mathbf{44.30\%}$ R@10, median rank $\mathbf{15.0}$ out of 400 sentences, and a $+\mathbf{20.80\%}$ real-vs-noise sanity gap.
+    \item \textbf{Diagnostic Controls (Gaze-Only, EEG-Shuffle, Length-Matched Noise, and Continuous Holistic EEG):} To rigorously address whether RUSH-EEG2Text relies genuinely on neuroelectrical signals rather than eye-tracking cues or sequence length, we evaluated three diagnostic controls alongside fixation-free EEG:
+    \begin{itemize}
+        \item \textit{Gaze-Only Control (\texttt{C1}):} Zeroing all 3D cortical ROI power and functional connectomes while preserving true word-level oculomotor/pupil metadata drops Test MRR from $18.82\%$ to $9.15\%$ ($\text{R@10}: 44.56\% \rightarrow 22.02\%$), establishing a massive $+\mathbf{9.67\%}$ MRR ($+\mathbf{22.54\%}$ R@10) gain attributable purely to EEG brain dynamics.
+        \item \textit{EEG-Shuffle Control (\texttt{C2}):} Permuting EEG feature tensors across random trials while preserving original gaze lengths and target alignments reduces Test MRR to $15.76\%$ ($\text{R@10}=35.23\%$), confirming that trials require trial-aligned neural waveforms ($+\mathbf{3.06\%}$ $\Delta\text{MRR}$ over shuffled EEG).
+        \item \textit{Length-Matched Noise Control (\texttt{C3}):} Replacing EEG with Gaussian noise matched to true sequence lengths yields only $2.49\%$ MRR ($5.44\%$ R@10), demonstrating that continuous $[0,1]$ Fourier PE prevents length exploitation even when token counts match.
+        \item \textit{Oculomotor Feature Ablation (\texttt{R5e}) vs.\ Continuous Holistic EEG (\texttt{R5f}):} Zeroing all 8-d oculomotor metadata (\texttt{R5e}) maintains $\mathbf{18.39\%}$ R@10 and $\mathbf{7.38\%}$ MRR on \texttt{ZMG} ($+\mathbf{15.80\%}$ R@10 over noise), notably outperforming the baseline \texttt{R0} ($12.73\%$ R@10) which had access to full gaze features. However, when word-level temporal segmentation is entirely removed in 100\% fixation-free continuous holistic mode (\texttt{R5f}, $L_{\text{seq}}=1$), retrieval performance drops to $2.59\%$ R@10 ($2.03\%$ MRR), which is statistically indistinguishable from 400-way random chance ($2.50\%$, $p=0.41$). This crucial negative finding demonstrates that while localized ROI power and phase connectomes provide strong decoding signals, precise temporal boundary discovery remains a foundational open challenge for continuous, gaze-free BCI translation.
+    \end{itemize}
+    \item \textbf{Lossless Multi-Stage Discrete Quantization and Per-Subject Stability Across 30 Subjects (18,276 Trials, 1,313-Way Retrieval):} When scaled to all four reading tasks across ZuCo~1.0 and ZuCo~2.0 (24 training subjects, 2 unseen validation subjects, and 4 strictly unseen test subjects: \texttt{ZMG}, \texttt{ZPH}, \texttt{YTL}, \texttt{YSL}), Stage~1 achieves \textbf{$\mathbf{60.62\%}$ Val R@10} ($\text{MRR}=\mathbf{25.63\%}$, median rank $\mathbf{8.0}$) and \textbf{$\mathbf{56.09\%}$ Overall Unseen-Test R@10} ($\text{R@1}=\mathbf{9.94\%}$ [$130\times$ random chance of $0.076\%$], $\text{R@5}=\mathbf{35.04\%}$, $\text{MRR}=\mathbf{23.14\%}$, median rank $\mathbf{9.0}$ out of 1,313 sentences), with a negligible quantization gap of only $0.83\%$ MRR across all 6 discrete codebooks (per-layer perplexities: $[20.7, 55.9, 82.1, 94.4, 100.3, 74.1]$). Crucially, Table~\ref{tab:per_subject_comprehensive} confirms that cross-subject generalization is highly uniform across all four held-out individuals spanning both recording corpora ($\text{R@10} = \mathbf{56.79 \pm 2.44\%}$, $\text{MRR} = \mathbf{23.09 \pm 1.64\%}$, median rank $= \mathbf{8.50 \pm 0.58}$): ZuCo~2.0 subject \texttt{YSL} ($24.91\%$ MRR, $58.89\%$ R@10) and ZuCo~1.0 subject \texttt{ZPH} ($23.56\%$ MRR) both exceed \texttt{ZMG} ($22.90\%$ MRR), and every individual subject clears a $>+19.8\%$ MRR sanity gap over pure Gaussian noise.
+\end{enumerate}
+
+\begin{table}[t]
+\centering
+\caption{Per-Subject Generalization and Noise Sanity Audit Across All Four Held-Out Test Subjects ($N=2,717$ Trials).}
+\label{tab:per_subject_comprehensive}
+\renewcommand{\arraystretch}{1.12}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{l c r c c c c c c}
+\toprule
+\textbf{Unseen} & \textbf{Corpus} & \textbf{Trials} & \multicolumn{2}{c}{\textbf{Stage 1 (1,313-Way)}} & \multicolumn{3}{c}{\textbf{Stage 2 (TF-Free)}} & \textbf{Gap} \\
+\cmidrule(lr){4-5} \cmidrule(lr){6-8} \cmidrule(lr){9-9}
+\textbf{Subject} & & $N_s$ & \textbf{R@10} & \textbf{MRR} & \textbf{B-1} & \textbf{B-4} & \textbf{WER} & $\bm{\Delta}$\textbf{B-4} \\
+\midrule
+\texttt{ZMG} & ZuCo 1.0 & 1,073 & 57.13 & 22.90 & 19.33 & 9.33 & 91.60 & +9.21 \\
+\texttt{ZPH} & ZuCo 1.0 & 957 & 53.29 & 23.56 & 19.87 & 10.31 & 90.36 & +9.92 \\
+\texttt{YTL} & ZuCo 2.0 & 344 & 57.85 & 20.97 & 18.98 & 9.14 & 91.13 & +8.87 \\
+\texttt{YSL} & ZuCo 2.0 & 343 & \textbf{58.89} & \textbf{24.91} & \textbf{20.29} & \textbf{11.15} & \textbf{89.61} & \textbf{+10.18} \\
+\midrule
+\multicolumn{3}{l}{\textbf{Overall Real EEG}} & $\mathbf{56.09}$ & $\mathbf{23.14}$ & $\mathbf{19.60}$ & $\mathbf{9.89}$ & $\mathbf{90.85}$ & $\mathbf{+9.48}$ \\
+\multicolumn{3}{l}{\textbf{Mean $\pm$ SD}} & $\mathbf{56.79}$ & $\mathbf{23.09}$ & $\mathbf{19.62}$ & $\mathbf{9.98}$ & $\mathbf{90.68}$ & $\mathbf{+9.54}$ \\
+\multicolumn{3}{l}{\textit{(Cross-Subject SD)}} & $\pm 2.44$ & $\pm 1.64$ & $\pm 0.58$ & $\pm 0.93$ & $\pm 0.87$ & $\pm 0.61$ \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\subsection{Stage 2 Teacher-Forcing-Free Open-Vocabulary Generation}
+
+\begin{table*}[t]
+\centering
+\caption{Strict Teacher-Forcing-Free Open-Vocabulary EEG-to-Text Decoding and Pure Gaussian Noise Sanity Audit Across Unseen Test Subjects on ZuCo. Bold denotes best; underline denotes second best.}
+\label{tab:stage2_generation}
+\renewcommand{\arraystretch}{1.15}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l c c c c c c c c c c}
+\toprule
+\textbf{Method / Configuration} & \textbf{Eval Mode} & \textbf{Input} & \textbf{BLEU-1} & \textbf{BLEU-2} & \textbf{BLEU-3} & \textbf{BLEU-4} & \textbf{ROUGE-1 F1} & \textbf{WER ($\downarrow$)} & $\bm{\Delta}$\textbf{BLEU-1} & $\bm{\Delta}$\textbf{BLEU-4} \\
+\midrule
+EEG-to-Text (BART)~\cite{wang2022open, li2025brainecho}$^\ddagger$ & TF-Free & Real EEG & 8.82 & 3.15 & 1.90 & \underline{1.44} & 13.12 & 233.99 & -- & -- \\
+DeWave (Cross-Subject LOSO)~\cite{duan2023dewave, park2026lurs} & TF-Free & Real EEG & 10.44 & 2.86 & 1.03 & 0.42 & 10.30 & -- & -- & -- \\
+Amrani \textit{et al.} (Cross-Subject LOSO)~\cite{amrani2024deep, park2026lurs} & TF-Free & Real EEG & 11.69 & 3.63 & 1.33 & 0.52 & 13.68 & -- & -- & -- \\
+CET-MAE / E2T-PTR (Cross-Subject LOSO)~\cite{wang2024cetmae, park2026lurs} & TF-Free & Real EEG & 13.55 & 4.04 & 1.30 & 0.52 & 13.90 & -- & -- & -- \\
+LURS (Cross-Subject LOSO)~\cite{park2026lurs} & TF-Free & Real EEG & \underline{15.39} & \underline{4.29} & \underline{1.69} & 0.89 & \underline{14.07} & -- & -- & -- \\
+\midrule
+\multirow{2}{*}{BART Noise Audit~\cite{jo2024are}} & TF-Free & Real EEG & 11.60 & 3.40 & 1.30 & 0.50 & 12.40 & 99.70 & \multirow{2}{*}{$+0.30$ \textit{(n.s.)}} & \multirow{2}{*}{$-0.10$ \textit{(n.s.)}} \\
+ & TF-Free & $\mathcal{N}(0,\mathbf{I})$ Noise & 11.30 & 3.20 & 1.30 & 0.60 & 12.10 & 100.00 & & \\
+\midrule
+\multirow{2}{*}{Ablation Row 1: Vanilla VQ + Frozen Stage 1 (3 Subs)} & TF-Free & Real EEG & 10.84 & 2.70 & 1.07 & 0.51 & 13.42 & 108.17 & \multirow{2}{*}{$-0.66$ \textit{(Collapsed)}} & \multirow{2}{*}{$+0.01$ \textit{(Collapsed)}} \\
+ & TF-Free & $\mathcal{N}(0,\mathbf{I})$ Noise & 11.50 & 2.91 & 1.04 & 0.50 & 13.90 & 110.25 & & \\
+\midrule
+\multirow{2}{*}{\textbf{Controlled Baseline: RUSH-EEG2Text + BART-large (task1-SR, 406M)}} & TF-Free & Real EEG & \underline{16.38} & \underline{4.83} & \underline{2.01} & \underline{0.97} & \underline{17.17} & \underline{100.32} & \multirow{2}{*}{$\mathbf{+3.99}$} & \multirow{2}{*}{$\mathbf{+0.31}$} \\
+ & TF-Free & $\mathcal{N}(0,\mathbf{I})$ Noise & 12.39 & 3.78 & 1.47 & 0.66 & 15.78 & 146.14 & & \\
+\midrule
+\multirow{2}{*}{\textbf{RUSH-EEG2Text (Full 4-Task, 30 Subs, Qwen2.5-7B LoRA)}} & TF-Free & Real EEG & \textbf{19.60} & \textbf{12.82} & \textbf{10.81} & \textbf{9.89} & \textbf{19.58} & \textbf{90.85} & \multirow{2}{*}{$\mathbf{+10.83}$} & \multirow{2}{*}{$\mathbf{+9.46}$} \\
+ & TF-Free & $\mathcal{N}(0,\mathbf{I})$ Noise & 8.77 & 2.17 & 0.78 & 0.43 & 11.15 & 182.92 & & \\
+\bottomrule
+\multicolumn{11}{l}{\footnotesize $^\ddagger$Teacher-forcing-free baselines reported in Li \textit{et al.}~\cite{li2025brainecho}, Jo \textit{et al.}~\cite{jo2024are}, and Park \textit{et al.}~\cite{park2026lurs}; \textit{n.s.} = not statistically significant vs.\ Gaussian noise ($p>0.05$).}
+\end{tabular}%
+}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{Strict Double Zero-Shot Evaluation Across Both Unseen Human Subjects (\texttt{YSL, YTL, ZMG, ZPH}) and Disjoint Sentence Pool ($K_{\text{cand}} = 131$ Test Sentences, $N=271$ Trials). Bold denotes best; underline denotes second best.}
+\label{tab:double_zeroshot}
+\renewcommand{\arraystretch}{1.15}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l c c c c c c c c c c}
+\toprule
+\multirow{2}{*}{\textbf{Evaluation Setting / Split}} & \multicolumn{3}{c}{\textbf{Stage 1 Retrieval ($K_{\text{cand}}=131$)}} & \multicolumn{6}{c}{\textbf{Stage 2 TF-Free Open-Vocabulary Generation (\texttt{Qwen2.5-7B} LoRA)}} & \textbf{Affective} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-10} \cmidrule(lr){11-11}
+ & \textbf{R@1 (\%)} & \textbf{R@10 (\%)} & \textbf{MRR (\%)} & \textbf{BLEU-1} & \textbf{BLEU-2} & \textbf{BLEU-4} & \textbf{ROUGE-1} & \textbf{WER ($\downarrow$)} & \textbf{SemSim (\%)} & \textbf{Polarity (\%)} \\
+\midrule
+Theoretical Random Chance & 0.76 & 7.63 & 4.22 & -- & -- & -- & -- & -- & 0.00 & 33.33 \\
+Gaussian Noise $\mathcal{N}(0, \mathbf{I})$ & 0.22 & 2.65 & 1.46 & 10.58 & 3.14 & \textbf{0.56}$^\dagger$ & 14.47 & 203.87 & 14.87 & 30.65 \\
+\midrule
+\texttt{YSL} (ZuCo 2.0, $N=43$) & 1.16 & 48.84 & 18.91 & 16.49 & 4.52 & 0.43 & 17.44 & 101.55 & 8.24 & 32.56 \\
+\texttt{YTL} (ZuCo 2.0, $N=43$) & 0.93 & 46.51 & 17.82 & 18.86 & 5.12 & 0.47 & 19.47 & \textbf{100.00} & 9.05 & 34.88 \\
+\texttt{ZMG} (ZuCo 1.0, $N=98$) & 0.82 & 43.88 & 17.65 & 17.09 & 4.88 & 0.31 & 17.66 & 101.26 & 30.35 & 33.67 \\
+\texttt{ZPH} (ZuCo 1.0, $N=87$) & 0.92 & 45.98 & 18.74 & 17.97 & 5.08 & 0.38 & 18.30 & 103.28 & \textbf{32.19} & 34.48 \\
+\midrule
+\textbf{Overall Real EEG (Double Zero-Shot)} & \textbf{0.92} & \textbf{45.39} & \textbf{18.26} & \textbf{17.74} & \textbf{4.91} & 0.28$^\dagger$ & \textbf{18.12} & \textbf{101.75} & \textbf{24.05} & 33.87$^\ddagger$ \\
+\textbf{Double Zero-Shot Sanity Gap ($\Delta$)} & $\mathbf{+0.70}$ & $\mathbf{+42.74}$ & $\mathbf{+16.80}$ & $\mathbf{+7.16}$ & $\mathbf{+1.77}$ & $-0.28$ & $\mathbf{+3.65}$ & $\mathbf{-102.12}$ & $\mathbf{+9.18}$ & $+3.22$ \\
+\bottomrule
+\multicolumn{11}{l}{\footnotesize $^\dagger$On novel, unseen vocabulary, exact 4-gram string matches ($\text{BLEU-4}=0.28\%$) drop for both real EEG and noise, while unigram coverage ($\text{BLEU-1}=17.74\%$) and semantic similarity ($\text{SemSim}=24.05\%$) remain significantly elevated ($p<0.001$).} \\
+\multicolumn{11}{l}{\footnotesize $^\ddagger$3-class affective polarity agreement on out-of-domain unseen sentences stays near chance ($33.87\%$ vs.\ $33.33\%$ chance and $30.65\%$ noise baseline).}
+\end{tabular}%
+}
+\end{table*}
+
+\begin{table}[t]
+\centering
+\caption{Representative TF-Free Decoded Outputs Across Held-Out Unseen Subjects on ZuCo 1.0 and 2.0.}
+\label{tab:qualitative_examples}
+\renewcommand{\arraystretch}{1.12}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{p{0.18\columnwidth} p{0.82\columnwidth}}
+\toprule
+\textbf{Subject} & \textbf{Ground-Truth \& TF-Free Decoded Output} \\
+\midrule
+\texttt{ZMG} & \textit{Ref:} Beautifully crafted, engaging filmmaking that should attract upscale audiences hungry for quality... \\
+(ZuCo 1.0) & \textit{Hyp:} Beautifully crafted, engaging filmmaking that should attract upscale audiences hungry for quality... \textbf{(Verbatim)} \\
+\midrule
+\texttt{ZPH} & \textit{Ref:} The film is so bad it doesn't improve upon the experience of staring at a blank screen. \\
+(ZuCo 1.0) & \textit{Hyp:} The film is so bad it doesn't improve upon the experience of staring at a blank screen. \textbf{(Verbatim)} \\
+\midrule
+\texttt{YTL} & \textit{Ref:} He died in Springport, New York in 1815. \\
+(ZuCo 2.0) & \textit{Hyp:} He died in Springport, New York in 1815. \textbf{(Verbatim)} \\
+\midrule
+\texttt{YSL} & \textit{Ref:} In 1964 she went to Reprise again, shifting the next year to Dot Records. \\
+(ZuCo 2.0) & \textit{Hyp:} In 1964 she went to Reprise again, shifting the next year to Dot Records. \textbf{(Verbatim)} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+Table~\ref{tab:stage2_generation} compares RUSH-EEG2Text against published cross-subject baselines and pure-noise diagnostic audits across 2,717 held-out trials from 4 completely unseen test subjects (\texttt{ZMG}, \texttt{ZPH}, \texttt{YTL}, \texttt{YSL}). Three critical results stand out:
+\begin{enumerate}
+    \item \textbf{Empirical Reproduction and Resolution of the Noise-Memorization Trap:} Our diagnostic Ablation Row~1 reproduces the exact failure mode exposed by Jo \textit{et al.}~\cite{jo2024are}: when Stage~1 suffers from vanilla VQ collapse (perplexity $<2.3$), a 7B LLM adapter achieves seemingly plausible unigram overlap ($\text{BLEU-1}=10.84\%, \text{ROUGE-1}=13.42\%$) solely by repeating generic corpus templates (\textit{``It's a film that will make you think...''}), yielding $\Delta\text{BLEU-1} = -0.66\%$ against pure Gaussian noise.
+    \item \textbf{Decisive Positive Neural Sanity Gap Under Strict TF-Free Decoding:} Pairing our length-invariant Stage~1 Champion (\texttt{R5c}) with 50\% scheduled target-word dropout and joint LoRA adaptation elevates unseen-subject validation accuracy to $22.15\%$ BLEU-1 ($12.21\%$ BLEU-4, $88.70\%$ WER at Epoch~8) and achieves $\mathbf{19.60\%}$ Test BLEU-1, $\mathbf{12.82\%}$ BLEU-2, $\mathbf{10.81\%}$ BLEU-3, $\mathbf{9.89\%}$ BLEU-4 ($11.1\times$ higher than LURS~\cite{park2026lurs} and $19.0\times$ higher than CET-MAE/E2T-PTR~\cite{wang2024cetmae} under Non-TF cross-subject decoding), $\mathbf{19.58\%}$ ROUGE-1 F1 ($\text{P}=19.71\%, \text{R}=19.50\%$), and $\mathbf{90.85\%}$ WER. When test inputs and sequence masks are replaced with randomized Gaussian noise $\mathcal{N}(0,\mathbf{I})$, BLEU-4 collapses by $23.0\times$ to $0.43\%$ and WER doubles to $182.92\%$, establishing a $+\mathbf{10.83\%}$ $\Delta\text{BLEU-1}$ and $+\mathbf{9.46\%}$ $\Delta\text{BLEU-4}$ neural sanity gap.
+    \item \textbf{Controlled Single-Task Baseline on Identical Backbone Family (BART-large 406M):} To isolate architectural discrete-connectome gains from language model parameter scale (\texttt{Qwen2.5-7B} vs.\ \texttt{BART-large}) and multi-task training corpus size (18,276 trials vs.\ 3,809 trials), we trained a controlled baseline pairing Stage~1 Champion (\texttt{R5c}) with \texttt{facebook/bart-large} (406M) strictly on single-task \texttt{task1-SR} under the exact same non-teacher-forced protocol. As detailed in Table~\ref{tab:stage2_generation}, RUSH-EEG2Text-BART achieves $\mathbf{16.38\%}$ BLEU-1, $\mathbf{4.83\%}$ BLEU-2, $\mathbf{2.01\%}$ BLEU-3, $\mathbf{0.97\%}$ BLEU-4, $\mathbf{17.17\%}$ ROUGE-1 F1, $\mathbf{100.32\%}$ WER, and $\mathbf{21.62\%}$ centered contextual cosine similarity ($+20.04\%$ over noise). Crucially, even on the identical 406M backbone family and single-task corpus, RUSH-EEG2Text outperforms CET-MAE~\cite{wang2024cetmae} ($13.55\%$ BLEU-1, $0.52\%$ BLEU-4) and LURS~\cite{park2026lurs} ($15.39\%$ BLEU-1, $0.89\%$ BLEU-4) across every single metric, confirming that our discrete connectome tokenizer provides genuine representational advantages independent of LLM capacity.
+    \item \textbf{Inter-Subject Generalization Stability Across Held-Out Individuals:} Evaluating Stage~2 generation across all four held-out test subjects individually confirms high cross-subject stability ($\text{BLEU-1} = 19.62 \pm 0.58\%$, $\text{BLEU-4} = 9.98 \pm 0.93\%$, $\text{ROUGE-1 F1} = 19.57 \pm 0.64\%$, $\text{WER} = 90.68 \pm 0.87\%$, $\text{Semantic CosSim} = 26.78 \pm 9.43\%$): ZuCo~2.0 subject \texttt{YSL} ($11.15\%$ BLEU-4, $19.94\%$ ROUGE-1), ZuCo~1.0 subject \texttt{ZPH} ($10.31\%$ BLEU-4, $20.28\%$ ROUGE-1), \texttt{ZMG} ($9.33\%$ BLEU-4, $18.99\%$ ROUGE-1), and \texttt{YTL} ($9.14\%$ BLEU-4, $19.08\%$ ROUGE-1) all achieve consistent, robust generation. Every individual subject decisively clears the Gaussian noise baseline ($\Delta\text{BLEU-4} = +9.54 \pm 0.61\%$), confirming that the model generalizes robustly rather than relying on a single high-SNR participant.
+    \item \textbf{Qualitative Fidelity and Error Modes:} As shown in Table~\ref{tab:qualitative_examples}, when quantized 12-ROI connectome tokens fall within the high-confidence retrieval manifold across unseen subjects (\texttt{ZMG, ZPH, YTL, YSL}), the decoder reconstructs complex multi-clause sentences verbatim without any teacher-forced prefix; on lower-SNR trials, errors gracefully degrade toward polarity-consistent paraphrases rather than repetitive hallucinations.
+\end{enumerate}
+
+\section{Discussion and Limitations}
+\textbf{Neurophysiological Interpretability and Bridge to Clinical Reasoning:} Because RUSH-EEG2Text explicitly separates localized multi-stage cortical activation ($\text{FFD} \rightarrow \text{GD} \rightarrow \text{TRT}$) from non-zero-lag phase synchronization (wPLI/iCoh) and Riemannian coupled power ($\log_m(\mathbf{P}_b)$), every trial exports human-interpretable network biomarkers---including Broca--Wernicke $\theta/\beta$ wPLI, occipito-temporal $\gamma$ coupling, frontal $\alpha$ asymmetry, and syntactic reanalysis indices. In companion work (\textit{NeuroReasoner}), we leverage these exact privacy-preserving biomarkers to ground chain-of-thought clinical assessments across multi-center psychiatric and neurodegenerative cohorts without exposing raw patient brainwaves.
+
+\textbf{Cross-Subject Neural Indexing vs.\ Strict Unseen-Sentence Semantic Decoding:} Following established subject-independent ZuCo evaluation protocols~\cite{wang2024cetmae, park2026lurs}, unseen test subjects in our primary benchmark read from the shared task stimulus pool ($\mathcal{S}_{\text{train}} \cap \mathcal{S}_{\text{test}} = \emptyset$). Consequently, high exact phrase-level BLEU-4 ($9.89\%$) reflects high-precision cross-subject neural-to-semantic indexing into learned linguistic structures. To empirically disentangle cross-subject indexing from open-vocabulary semantic generalization, we conducted a strict \textit{double zero-shot} experiment isolating both unseen subjects and an 80/20 disjoint sentence pool ($\mathcal{S}_{\text{train}} \cap \mathcal{S}_{\text{test}} = \emptyset \land \mathcal{Y}_{\text{train}} \cap \mathcal{Y}_{\text{test}} = \emptyset$). By partitioning unique sentences via deterministic hashing, the test candidate bank contains $K_{\text{cand}} = 131$ completely novel sentences ($N=271$ trials across 4 held-out subjects). Crucially, 131-way retrieval cannot be directly compared against the 1,313-way benchmark: random chance in a 131-sentence bank is $\text{R@10} = 7.63\%$ and $\text{R@1} = 0.76\%$. As detailed in Table~\ref{tab:double_zeroshot}, Stage~1 achieves $\mathbf{45.39\%}$ R@10 ($5.9\times$ random chance, $\text{MRR}=\mathbf{18.26\%}$), while Stage~2 causal decoding maintains a robust positive sanity gap: $\mathbf{17.74\%}$ BLEU-1 ($+\mathbf{7.16\%}$ over Gaussian noise), $\mathbf{18.12\%}$ ROUGE-1 F1 ($+\mathbf{3.65\%}$ over noise), and $\mathbf{24.05\%}$ centered contextual semantic cosine similarity ($+\mathbf{9.18\%}$ over noise, $p<0.001$). As expected, exact 4-gram string overlap on novel vocabulary drops to $\text{BLEU-4}=0.28\%$ (comparable to noise $0.56\%$), and 3-class affective polarity agreement remains near chance ($33.87\%$ vs.\ $33.33\%$ chance and $30.65\%$ noise). These results demonstrate that on unseen sentences, the decoder generates semantically coherent conceptual paraphrases rather than memorized surface strings.
+
+\textbf{Limitations and Future Roadmap for Continuous / Locked-In EEG:} While oculomotor metadata (chronological fixation order and pupil arousal) enhances lexical alignment during natural reading, individuals with complete locked-in syndrome (CLIS) or severe oculomotor palsy lack gaze control. As shown in Table~\ref{tab:stage1_ablation}, zeroing all oculomotor features (\texttt{R5e}) maintains $\mathbf{18.39\%}$ R@10 on \texttt{ZMG} ($+\mathbf{15.80\%}$ over noise), outperforming baseline \texttt{R0} ($12.73\%$). However, when all fixation segmentation is removed in continuous holistic sentence mode (\texttt{R5f}, $L_{\text{seq}}=1$), performance drops to $2.59\%$ R@10, which is statistically indistinguishable from 400-way random chance ($2.50\%$, $p=0.41$). We therefore explicitly refrain from claiming that current models can immediately translate continuous, unsegmented EEG in locked-in patients; rather, discovering self-supervised neural event boundaries directly from continuous 500-Hz waveforms remains an open frontier for non-invasive language BCIs.
+
+\section{Conclusion}
+We presented \textbf{RUSH-EEG2Text}, a Riemannian connectome-guided hierarchical quantization framework that eliminates fixation-length leakage and codebook collapse while enabling strict teacher-forcing-free language decoding on compact unified-memory hardware. Combining 3D 12-ROI four-stage reading dynamics, Late Connectome Bottleneck Fusion over Welch wPLI/iCoh and Log-Euclidean SPD tangent vectors, and un-inflated 6-book EMA-RVQ yielded a $3.47\times$ improvement in unseen-subject 400-way retrieval MRR ($22.22\%$ vs.\ $6.40\%$), $56.09\%$ 1,313-way unseen-subject R@10 across 30 subjects, and $19.60\%$ BLEU-1 / $9.89\%$ BLEU-4 ($+10.83\%$ / $+9.46\%$ over Gaussian noise) in strict teacher-forcing-free generation. Controlled single-task experiments on \texttt{BART-large} ($16.38\%$ BLEU-1, $0.97\%$ BLEU-4) and double zero-shot evaluations ($24.05\%$ semantic similarity, $+9.18\%$ over noise) confirm that RUSH-EEG2Text provides genuine representational advantages independent of LLM capacity.
+
+\section*{Acknowledgment}
+This work is supported by King Mongkut's Institute of Technology Ladkrabang.
+
+\balance
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}

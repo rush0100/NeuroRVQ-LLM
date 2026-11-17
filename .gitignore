@@ -1,0 +1,35 @@
+# Byte-compiled / caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+.spark_pkgs/
+.hf_cache/
+
+# macOS & OS artifacts
+.DS_Store
+._*
+
+# Large raw & preprocessed EEG datasets (keep small zuco_metadata/ CSVs & chanlocs105.mat!)
+datasets/zuco_raw/
+datasets/processed_zuco*/
+datasets/synthetic_zuco/
+datasets/clinical_paper2/
+datasets/processed_clinical_neuroreasoner/
+
+# Model weights & training checkpoints (root-anchored so `src/models/` is tracked!)
+/checkpoints/
+/models/
+
+# Large transient logs (keep JSON benchmark reports & leaderboards!)
+logs/*.log
+logs/zuco_full_manifest.txt
+logs/HOLD_BEFORE_STAGE2
+logs/stage1_opt/
+logs/stage1_connectome/
+logs/smoke_test/
+logs/rush_eeg2text_qwen7b_real3sub/
+
+# Cloned external baseline git dir
+baselines/CET-MAE/.git/

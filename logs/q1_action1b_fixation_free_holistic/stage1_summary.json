@@ -1,0 +1,202 @@
+{
+  "experiment": "q1_action1b_fixation_free_holistic_task1sr",
+  "stream_mode": "dual_late_fusion",
+  "eeg_only_mode": "fixation_free_holistic",
+  "split_strategy": "subject_independent",
+  "best_epoch": 2,
+  "elapsed_sec": 156.4,
+  "num_unique_sentences": 400,
+  "best_val_unseen_subject": {
+    "post_rvq": {
+      "R@1": 0.89,
+      "R@5": 2.37,
+      "R@10": 3.85,
+      "MRR": 2.51,
+      "MedR": 187.0,
+      "CE_400way": 5.9907
+    },
+    "pre_rvq": {
+      "R@1": 0.89,
+      "R@5": 2.37,
+      "R@10": 4.14,
+      "MRR": 2.52,
+      "MedR": 188.0,
+      "CE_400way": 5.9952
+    },
+    "quantization_mrr_gap": 0.01,
+    "sentiment_acc": 28.44,
+    "fixed_tau_batch_infonce": 3.9496,
+    "mae_loss": 0.8331,
+    "rvq_loss": 0.0042,
+    "mean_perplexity": 10.65,
+    "per_layer_perplexity": [
+      2.6,
+      3.4,
+      6.5,
+      10.3,
+      18.8,
+      22.4
+    ]
+  },
+  "test_unseen_subject_real_eeg": {
+    "post_rvq": {
+      "R@1": 0.26,
+      "R@5": 1.55,
+      "R@10": 2.59,
+      "MRR": 2.03,
+      "MedR": 157.0,
+      "CE_400way": 5.9489
+    },
+    "pre_rvq": {
+      "R@1": 0.26,
+      "R@5": 1.55,
+      "R@10": 3.89,
+      "MRR": 2.14,
+      "MedR": 158.0,
+      "CE_400way": 5.9485
+    },
+    "quantization_mrr_gap": 0.11,
+    "sentiment_acc": 28.35,
+    "fixed_tau_batch_infonce": 3.633,
+    "mae_loss": 0.6801,
+    "rvq_loss": 0.003,
+    "mean_perplexity": 12.54,
+    "per_layer_perplexity": [
+      2.8,
+      3.8,
+      8.3,
+      14.3,
+      22.0,
+      24.0
+    ]
+  },
+  "test_unseen_subject_gaussian_noise": {
+    "post_rvq": {
+      "R@1": 0.26,
+      "R@5": 1.55,
+      "R@10": 3.11,
+      "MRR": 1.82,
+      "MedR": 195.0,
+      "CE_400way": 6.0286
+    },
+    "pre_rvq": {
+      "R@1": 0.26,
+      "R@5": 1.04,
+      "R@10": 2.85,
+      "MRR": 1.7,
+      "MedR": 195.0,
+      "CE_400way": 6.0339
+    },
+    "quantization_mrr_gap": -0.12,
+    "sentiment_acc": 31.23,
+    "fixed_tau_batch_infonce": 3.6843,
+    "mae_loss": 1.2579,
+    "rvq_loss": 0.0053,
+    "mean_perplexity": 7.74,
+    "per_layer_perplexity": [
+      1.7,
+      2.5,
+      2.3,
+      11.0,
+      10.8,
+      18.2
+    ]
+  },
+  "test_sanity_gap_mrr": 0.21,
+  "test_sanity_gap_r10": -0.52,
+  "test_sanity_gap_ce400": 0.0797,
+  "per_subject_test_breakdown": {
+    "ZMG": {
+      "n_trials": 386,
+      "tasks": [
+        "task1-SR"
+      ],
+      "real_eeg": {
+        "R@1": 0.26,
+        "R@5": 1.55,
+        "R@10": 2.59,
+        "MRR": 2.03,
+        "MedR": 157.0,
+        "CE_400way": 5.9489
+      },
+      "gaussian_noise": {
+        "R@1": 0.26,
+        "R@5": 1.04,
+        "R@10": 2.59,
+        "MRR": 1.71,
+        "MedR": 194.0,
+        "CE_400way": 6.0187
+      },
+      "sanity_gap_mrr": 0.32,
+      "sanity_gap_r10": 0.0,
+      "sentiment_acc": 28.35
+    }
+  },
+  "per_subject_mean_std": {},
+  "unseen_sentence_pool_eval": {
+    "candidate_pool_size": 386,
+    "real_eeg": {
+      "R@1": 0.26,
+      "R@5": 1.55,
+      "R@10": 2.59,
+      "MRR": 2.06,
+      "MedR": 151.0,
+      "CE_400way": 5.9138
+    },
+    "gaussian_noise": {
+      "R@1": 0.26,
+      "R@5": 1.3,
+      "R@10": 2.33,
+      "MRR": 1.65,
+      "MedR": 192.0,
+      "CE_400way": 5.9866
+    },
+    "sanity_gap_mrr": 0.41,
+    "sanity_gap_r10": 0.26,
+    "sentiment_acc": 28.35
+  },
+  "stage1_config": {
+    "stream_mode": "dual_late_fusion",
+    "embed_dim": 768,
+    "encoder_layers": 4,
+    "encoder_heads": 8,
+    "ffn_dim": 2048,
+    "dropout": 0.2,
+    "proj_dropout": 0.2,
+    "use_length_invariant_resampler": true,
+    "num_latent_queries": 24,
+    "use_attentive_pooler": true,
+    "use_task_conditioning": true,
+    "channel_dropout": 0.15,
+    "band_jitter": 0.1,
+    "sensor_noise": 0.04,
+    "token_dropout": 0.1,
+    "rvq_num_quantizers": 6,
+    "rvq_codebook_size": 256,
+    "rvq_commitment_weight": 0.25,
+    "rvq_quantizer_dropout": 0.3,
+    "rvq_ema_decay": 0.98,
+    "eeg_mask_ratio": 0.0,
+    "compulsory_sentence_token_mask": false,
+    "text_target_mode": "raw_last",
+    "use_multi_positive_infonce": true,
+    "paired_subject_sampling": true,
+    "use_cog_load_weighting": false,
+    "init_temperature": 0.07,
+    "learnable_temperature": true,
+    "max_logit_scale": 14.2857,
+    "mae_loss_weight": 0.1,
+    "contrastive_loss_weight": 1.25,
+    "rvq_loss_weight": 1.0,
+    "pre_rvq_contrast_ratio": 0.3,
+    "brain_invariance_weight": 0.3,
+    "aux_sentiment_weight": 0.25,
+    "label_smoothing": 0.05,
+    "epochs": 45,
+    "warmup_epochs": 4,
+    "early_stop_patience": 12,
+    "batch_size": 64,
+    "lr": 0.0003,
+    "weight_decay": 0.05
+  }
+}

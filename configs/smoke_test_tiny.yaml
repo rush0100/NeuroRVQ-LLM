@@ -1,0 +1,70 @@
+# Fast End-to-End Smoke Test Configuration (runs in <60 seconds on DGX Spark GB10!)
+# Verifies Synthetic/Subset ZuCo -> Stage 1 (CET-RVQ) -> Stage 2 (Decoder LLM LoRA) -> TF-Free + Noise Sanity Eval
+
+experiment:
+  name: "smoke_test_rush_eeg2text"
+  seed: 42
+  output_dir: "./checkpoints/smoke_test"
+  log_dir: "./logs/smoke_test"
+
+hardware:
+  device: "auto"                 # Automatically selects cuda (NVIDIA GB10) -> mps -> cpu
+  precision: "bf16"              # Native Blackwell BF16 Tensor Cores
+  uma_drop_caches_hint: false
+  num_workers: 0
+
+data:
+  dataset_root: "./datasets/synthetic_zuco"
+  raw_zuco_root: "./datasets/zuco_raw"
+  tasks: ["synthetic-NR"]
+  eeg_type: "GD"
+  bands: ["_t1", "_t2", "_a1", "_a2", "_b1", "_b2", "_g1", "_g2"]
+  num_channels: 105
+  eeg_feature_dim: 840
+  max_eeg_len: 32
+  max_text_len: 32
+  split_strategy: "subject_independent"
+  held_out_test_subjects: ["SUB05"]
+  held_out_val_subjects: ["SUB04"]
+
+stage1_cet_rvq:
+  embed_dim: 256
+  encoder_layers: 2
+  encoder_heads: 4
+  ffn_dim: 512
+  dropout: 0.1
+  use_length_invariant_resampler: true
+  num_latent_queries: 16
+  rvq_num_quantizers: 2
+  rvq_codebook_size: 128
+  rvq_commitment_weight: 0.25
+  eeg_mask_ratio: 0.75
+  compulsory_sentence_token_mask: true
+  mae_loss_weight: 1.0
+  contrastive_loss_weight: 0.2
+  rvq_loss_weight: 1.0
+  epochs: 8
+  batch_size: 8
+  lr: 5.0e-4
+  weight_decay: 0.01
+
+stage2_llm:
+  llm_name_or_path: "HuggingFaceTB/SmolLM2-135M-Instruct"   # 270 MB Llama-architecture causal LLM (q_proj/k_proj/v_proj/o_proj)
+  quantization: "none"
+  use_lora: true
+  lora_r: 8
+  lora_alpha: 16
+  lora_dropout: 0.05
+  lora_target_modules: ["q_proj", "k_proj", "v_proj", "o_proj"]
+  scheduled_word_dropout_max: 0.25
+  prompt_template: "Decode neural tokens to English:\n<eeg_prefix>\nSentence:"
+  epochs: 6
+  batch_size: 8
+  grad_accum_steps: 1
+  lr_projector: 5.0e-4
+  lr_lora: 1.0e-4
+  weight_decay: 0.01
+  eval_num_beams: 2
+  eval_repetition_penalty: 1.2
+  eval_no_repeat_ngram_size: 2
+  run_gaussian_noise_sanity_check: true

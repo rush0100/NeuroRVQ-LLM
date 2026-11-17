@@ -1,0 +1,71 @@
+# Paper 1 Fast Real-EEG Prototype Configuration on NVIDIA DGX Spark (128 GB UMA)
+# Uses 3 Real Human Subjects from ZuCo 1.0 `task1-SR` (1 Train Subject, 1 Val Subject, 1 Unseen Test Subject)
+# + Qwen/Qwen2.5-7B-Instruct with Native Blackwell BF16 LoRA (~18.5 GB Unified Memory)
+
+experiment:
+  name: "rush_eeg2text_qwen7b_lora_zuco_real3sub"
+  seed: 42
+  output_dir: "./checkpoints/rush_eeg2text_qwen7b_real3sub"
+  log_dir: "./logs/rush_eeg2text_qwen7b_real3sub"
+
+hardware:
+  device: "cuda"
+  precision: "bf16"
+  uma_drop_caches_hint: true
+  num_workers: 4
+
+data:
+  dataset_root: "./datasets/processed_zuco"
+  raw_zuco_root: "./datasets/zuco_raw"
+  tasks: ["task1-SR"]
+  eeg_type: "GD"
+  bands: ["_t1", "_t2", "_a1", "_a2", "_b1", "_b2", "_g1", "_g2"]
+  num_channels: 105
+  eeg_feature_dim: 840
+  max_eeg_len: 58
+  max_text_len: 64
+  split_strategy: "subject_independent"     # Auto-assigns 1 subject val, 1 subject unseen test when 3 subjects exist
+  held_out_test_subjects: []
+  held_out_val_subjects: []
+
+stage1_cet_rvq:
+  embed_dim: 1024
+  encoder_layers: 6
+  encoder_heads: 8
+  ffn_dim: 2048
+  dropout: 0.1
+  use_length_invariant_resampler: true
+  num_latent_queries: 32
+  rvq_num_quantizers: 4
+  rvq_codebook_size: 1024
+  rvq_commitment_weight: 0.25
+  eeg_mask_ratio: 0.75
+  compulsory_sentence_token_mask: true
+  mae_loss_weight: 1.0
+  contrastive_loss_weight: 0.2
+  rvq_loss_weight: 1.0
+  epochs: 40
+  batch_size: 32
+  lr: 2.0e-4
+  weight_decay: 0.01
+
+stage2_llm:
+  llm_name_or_path: "./models/Qwen2.5-7B-Instruct"
+  quantization: "none"
+  use_lora: true
+  lora_r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  lora_target_modules: ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
+  scheduled_word_dropout_max: 0.35
+  prompt_template: "Decode the following neural brain signal tokens into an exact English sentence:\n<eeg_prefix>\nDecoded sentence:"
+  epochs: 20
+  batch_size: 16
+  grad_accum_steps: 2
+  lr_projector: 1.0e-4
+  lr_lora: 2.0e-5
+  weight_decay: 0.01
+  eval_num_beams: 4
+  eval_repetition_penalty: 1.25
+  eval_no_repeat_ngram_size: 3
+  run_gaussian_noise_sanity_check: true

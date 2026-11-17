@@ -1,0 +1,87 @@
+[
+  {
+    "epoch": 1,
+    "train_loss": 2.3678,
+    "val_metrics": {
+      "BLEU-1": 17.35,
+      "BLEU-2": 5.38,
+      "BLEU-3": 1.86,
+      "BLEU-4": 0.42,
+      "ROUGE-1_P": 18.42,
+      "ROUGE-1_R": 17.9,
+      "ROUGE-1_F1": 17.9,
+      "ROUGE-L_F1": 14.41,
+      "WER": 100.08,
+      "Semantic_CosSim": 24.19,
+      "Sentiment_Agree": 37.14
+    }
+  },
+  {
+    "epoch": 2,
+    "train_loss": 1.5681,
+    "val_metrics": {
+      "BLEU-1": 12.96,
+      "BLEU-2": 3.2,
+      "BLEU-3": 0.77,
+      "BLEU-4": 0.22,
+      "ROUGE-1_P": 14.57,
+      "ROUGE-1_R": 12.6,
+      "ROUGE-1_F1": 13.39,
+      "ROUGE-L_F1": 11.01,
+      "WER": 97.36,
+      "Semantic_CosSim": 21.08,
+      "Sentiment_Agree": 22.86
+    }
+  },
+  {
+    "epoch": 3,
+    "train_loss": 1.1483,
+    "val_metrics": {
+      "BLEU-1": 13.26,
+      "BLEU-2": 3.31,
+      "BLEU-3": 0.37,
+      "BLEU-4": 0.12,
+      "ROUGE-1_P": 14.99,
+      "ROUGE-1_R": 12.36,
+      "ROUGE-1_F1": 13.45,
+      "ROUGE-L_F1": 10.67,
+      "WER": 96.34,
+      "Semantic_CosSim": 22.46,
+      "Sentiment_Agree": 22.86
+    }
+  },
+  {
+    "epoch": 4,
+    "train_loss": 1.0526,
+    "val_metrics": {
+      "BLEU-1": 12.29,
+      "BLEU-2": 3.71,
+      "BLEU-3": 1.07,
+      "BLEU-4": 0.28,
+      "ROUGE-1_P": 12.79,
+      "ROUGE-1_R": 11.42,
+      "ROUGE-1_F1": 12.01,
+      "ROUGE-L_F1": 9.92,
+      "WER": 96.93,
+      "Semantic_CosSim": 22.35,
+      "Sentiment_Agree": 45.71
+    }
+  },
+  {
+    "epoch": 5,
+    "train_loss": 1.0946,
+    "val_metrics": {
+      "BLEU-1": 11.32,
+      "BLEU-2": 2.27,
+      "BLEU-3": 0.61,
+      "BLEU-4": 0.18,
+      "ROUGE-1_P": 13.08,
+      "ROUGE-1_R": 11.37,
+      "ROUGE-1_F1": 12.09,
+      "ROUGE-L_F1": 10.03,
+      "WER": 96.61,
+      "Semantic_CosSim": 20.11,
+      "Sentiment_Agree": 37.14
+    }
+  }
+]

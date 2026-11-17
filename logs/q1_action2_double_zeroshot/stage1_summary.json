@@ -1,0 +1,306 @@
+{
+  "experiment": "q1_action2_double_zeroshot_unseen_subj_and_sent",
+  "stream_mode": "dual_late_fusion",
+  "eeg_only_mode": "none",
+  "split_strategy": "unseen_subject_and_sentence",
+  "best_epoch": 1,
+  "elapsed_sec": 402.7,
+  "num_unique_sentences": 1296,
+  "best_val_unseen_subject": {
+    "post_rvq": {
+      "R@1": 0.0,
+      "R@5": 4.38,
+      "R@10": 6.57,
+      "MRR": 2.63,
+      "MedR": 120.0,
+      "CE_400way": 6.2467
+    },
+    "pre_rvq": {
+      "R@1": 0.0,
+      "R@5": 2.92,
+      "R@10": 6.57,
+      "MRR": 2.6,
+      "MedR": 118.0,
+      "CE_400way": 6.2308
+    },
+    "quantization_mrr_gap": -0.03,
+    "sentiment_acc": 37.14,
+    "fixed_tau_batch_infonce": 2.8496,
+    "mae_loss": 0.8276,
+    "rvq_loss": 0.0172,
+    "mean_perplexity": 27.14,
+    "per_layer_perplexity": [
+      18.8,
+      17.3,
+      23.8,
+      29.6,
+      37.2,
+      36.1
+    ]
+  },
+  "test_unseen_subject_real_eeg": {
+    "post_rvq": {
+      "R@1": 0.74,
+      "R@5": 2.58,
+      "R@10": 4.06,
+      "MRR": 2.76,
+      "MedR": 142.0,
+      "CE_400way": 6.4772
+    },
+    "pre_rvq": {
+      "R@1": 0.74,
+      "R@5": 2.95,
+      "R@10": 4.43,
+      "MRR": 2.82,
+      "MedR": 143.0,
+      "CE_400way": 6.4685
+    },
+    "quantization_mrr_gap": 0.06,
+    "sentiment_acc": 40.32,
+    "fixed_tau_batch_infonce": 3.4976,
+    "mae_loss": 0.6925,
+    "rvq_loss": 0.0165,
+    "mean_perplexity": 24.09,
+    "per_layer_perplexity": [
+      15.1,
+      14.0,
+      22.5,
+      29.2,
+      31.3,
+      32.4
+    ]
+  },
+  "test_unseen_subject_gaussian_noise": {
+    "post_rvq": {
+      "R@1": 0.0,
+      "R@5": 0.74,
+      "R@10": 1.11,
+      "MRR": 0.71,
+      "MedR": 550.0,
+      "CE_400way": 9.5435
+    },
+    "pre_rvq": {
+      "R@1": 0.0,
+      "R@5": 0.74,
+      "R@10": 1.11,
+      "MRR": 0.69,
+      "MedR": 561.0,
+      "CE_400way": 9.554
+    },
+    "quantization_mrr_gap": -0.02,
+    "sentiment_acc": 40.32,
+    "fixed_tau_batch_infonce": 5.9606,
+    "mae_loss": 1.0991,
+    "rvq_loss": 0.0193,
+    "mean_perplexity": 14.77,
+    "per_layer_perplexity": [
+      6.3,
+      9.0,
+      12.7,
+      18.3,
+      19.5,
+      22.8
+    ]
+  },
+  "test_sanity_gap_mrr": 2.05,
+  "test_sanity_gap_r10": 2.95,
+  "test_sanity_gap_ce400": 3.0663,
+  "per_subject_test_breakdown": {
+    "YSL": {
+      "n_trials": 43,
+      "tasks": [
+        "task2-NR-2.0"
+      ],
+      "real_eeg": {
+        "R@1": 0.0,
+        "R@5": 0.0,
+        "R@10": 0.0,
+        "MRR": 0.85,
+        "MedR": 169.0,
+        "CE_400way": 6.8739
+      },
+      "gaussian_noise": {
+        "R@1": 0.0,
+        "R@5": 2.33,
+        "R@10": 2.33,
+        "MRR": 0.79,
+        "MedR": 556.0,
+        "CE_400way": 9.8402
+      },
+      "sanity_gap_mrr": 0.06,
+      "sanity_gap_r10": -2.33,
+      "sentiment_acc": 0.0
+    },
+    "YTL": {
+      "n_trials": 43,
+      "tasks": [
+        "task2-NR-2.0"
+      ],
+      "real_eeg": {
+        "R@1": 0.0,
+        "R@5": 0.0,
+        "R@10": 0.0,
+        "MRR": 0.92,
+        "MedR": 196.0,
+        "CE_400way": 6.8785
+      },
+      "gaussian_noise": {
+        "R@1": 0.0,
+        "R@5": 0.0,
+        "R@10": 0.0,
+        "MRR": 0.29,
+        "MedR": 630.0,
+        "CE_400way": 10.3883
+      },
+      "sanity_gap_mrr": 0.63,
+      "sanity_gap_r10": 0.0,
+      "sentiment_acc": 0.0
+    },
+    "ZMG": {
+      "n_trials": 98,
+      "tasks": [
+        "task1-SR",
+        "task2-NR",
+        "task3-TSR"
+      ],
+      "real_eeg": {
+        "R@1": 1.02,
+        "R@5": 4.08,
+        "R@10": 6.12,
+        "MRR": 3.7,
+        "MedR": 131.0,
+        "CE_400way": 6.2987
+      },
+      "gaussian_noise": {
+        "R@1": 0.0,
+        "R@5": 1.02,
+        "R@10": 2.04,
+        "MRR": 0.95,
+        "MedR": 555.0,
+        "CE_400way": 9.4348
+      },
+      "sanity_gap_mrr": 2.75,
+      "sanity_gap_r10": 4.08,
+      "sentiment_acc": 38.71
+    },
+    "ZPH": {
+      "n_trials": 87,
+      "tasks": [
+        "task1-SR",
+        "task2-NR",
+        "task3-TSR"
+      ],
+      "real_eeg": {
+        "R@1": 1.15,
+        "R@5": 3.45,
+        "R@10": 5.75,
+        "MRR": 3.56,
+        "MedR": 133.0,
+        "CE_400way": 6.2839
+      },
+      "gaussian_noise": {
+        "R@1": 0.0,
+        "R@5": 1.15,
+        "R@10": 1.15,
+        "MRR": 0.84,
+        "MedR": 597.0,
+        "CE_400way": 9.513
+      },
+      "sanity_gap_mrr": 2.72,
+      "sanity_gap_r10": 4.6,
+      "sentiment_acc": 41.94
+    }
+  },
+  "per_subject_mean_std": {
+    "R@1": {
+      "mean": 0.54,
+      "std": 0.63
+    },
+    "R@5": {
+      "mean": 1.88,
+      "std": 2.19
+    },
+    "R@10": {
+      "mean": 2.97,
+      "std": 3.43
+    },
+    "MRR": {
+      "mean": 2.26,
+      "std": 1.59
+    },
+    "MedR": {
+      "mean": 157.25,
+      "std": 31.18
+    },
+    "sanity_gap_mrr": {
+      "mean": 1.54,
+      "std": 1.4
+    }
+  },
+  "unseen_sentence_pool_eval": {
+    "candidate_pool_size": 131,
+    "real_eeg": {
+      "R@1": 6.64,
+      "R@5": 28.04,
+      "R@10": 45.39,
+      "MRR": 18.26,
+      "MedR": 13.0,
+      "CE_400way": 3.9458
+    },
+    "gaussian_noise": {
+      "R@1": 2.58,
+      "R@5": 7.75,
+      "R@10": 12.92,
+      "MRR": 6.83,
+      "MedR": 52.0,
+      "CE_400way": 7.1409
+    },
+    "sanity_gap_mrr": 11.43,
+    "sanity_gap_r10": 32.47,
+    "sentiment_acc": 40.32
+  },
+  "stage1_config": {
+    "stream_mode": "dual_late_fusion",
+    "embed_dim": 768,
+    "encoder_layers": 4,
+    "encoder_heads": 8,
+    "ffn_dim": 2048,
+    "dropout": 0.2,
+    "proj_dropout": 0.2,
+    "use_length_invariant_resampler": true,
+    "num_latent_queries": 24,
+    "use_attentive_pooler": true,
+    "use_task_conditioning": true,
+    "channel_dropout": 0.15,
+    "band_jitter": 0.1,
+    "sensor_noise": 0.04,
+    "token_dropout": 0.1,
+    "rvq_num_quantizers": 6,
+    "rvq_codebook_size": 256,
+    "rvq_commitment_weight": 0.25,
+    "rvq_quantizer_dropout": 0.3,
+    "rvq_ema_decay": 0.98,
+    "eeg_mask_ratio": 0.75,
+    "compulsory_sentence_token_mask": true,
+    "text_target_mode": "raw_last",
+    "use_multi_positive_infonce": true,
+    "paired_subject_sampling": true,
+    "use_cog_load_weighting": true,
+    "init_temperature": 0.07,
+    "learnable_temperature": true,
+    "max_logit_scale": 14.2857,
+    "mae_loss_weight": 0.3,
+    "contrastive_loss_weight": 1.25,
+    "rvq_loss_weight": 1.0,
+    "pre_rvq_contrast_ratio": 0.3,
+    "brain_invariance_weight": 0.25,
+    "aux_sentiment_weight": 0.3,
+    "label_smoothing": 0.05,
+    "epochs": 45,
+    "warmup_epochs": 4,
+    "early_stop_patience": 12,
+    "batch_size": 64,
+    "lr": 0.0003,
+    "weight_decay": 0.05
+  }
+}

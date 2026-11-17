@@ -1,0 +1,305 @@
+{
+  "experiment": "rush_eeg2text_full4task_champion_qwen7b_lora",
+  "split_strategy": "subject_independent",
+  "eeg_only_mode": "none",
+  "llm_backbone": "./models/Qwen2.5-7B-Instruct",
+  "real_eeg_tf_free_metrics": {
+    "BLEU-1": 19.6,
+    "BLEU-2": 12.82,
+    "BLEU-3": 10.81,
+    "BLEU-4": 9.89,
+    "ROUGE-1_P": 19.71,
+    "ROUGE-1_R": 19.5,
+    "ROUGE-1_F1": 19.58,
+    "ROUGE-L_F1": 17.48,
+    "WER": 90.85,
+    "Semantic_CosSim": 30.68,
+    "Sentiment_Agree": 37.32
+  },
+  "per_subject_real_eeg": {
+    "YSL": {
+      "BLEU-1": 20.29,
+      "BLEU-2": 13.94,
+      "BLEU-3": 12.04,
+      "BLEU-4": 11.15,
+      "ROUGE-1_P": 20.04,
+      "ROUGE-1_R": 19.89,
+      "ROUGE-1_F1": 19.94,
+      "ROUGE-L_F1": 17.96,
+      "WER": 89.61,
+      "Semantic_CosSim": 19.33,
+      "n_trials": 343
+    },
+    "YTL": {
+      "BLEU-1": 18.98,
+      "BLEU-2": 12.07,
+      "BLEU-3": 10.05,
+      "BLEU-4": 9.14,
+      "ROUGE-1_P": 19.24,
+      "ROUGE-1_R": 18.99,
+      "ROUGE-1_F1": 19.08,
+      "ROUGE-L_F1": 17.1,
+      "WER": 91.13,
+      "Semantic_CosSim": 18.13,
+      "n_trials": 344
+    },
+    "ZMG": {
+      "BLEU-1": 19.33,
+      "BLEU-2": 12.33,
+      "BLEU-3": 10.26,
+      "BLEU-4": 9.33,
+      "ROUGE-1_P": 19.15,
+      "ROUGE-1_R": 18.9,
+      "ROUGE-1_F1": 18.99,
+      "ROUGE-L_F1": 16.76,
+      "WER": 91.6,
+      "Semantic_CosSim": 32.98,
+      "n_trials": 1073
+    },
+    "ZPH": {
+      "BLEU-1": 19.87,
+      "BLEU-2": 13.22,
+      "BLEU-3": 11.24,
+      "BLEU-4": 10.31,
+      "ROUGE-1_P": 20.4,
+      "ROUGE-1_R": 20.22,
+      "ROUGE-1_F1": 20.28,
+      "ROUGE-L_F1": 18.24,
+      "WER": 90.36,
+      "Semantic_CosSim": 36.68,
+      "n_trials": 957
+    }
+  },
+  "decoded_examples": [
+    {
+      "subject": "YSL",
+      "reference": "In 1964 she went to Reprise again, shifting the next year to Dot Records.",
+      "decoded": "In 1964 she went to Reprise again, shifting the next year to Dot Records."
+    },
+    {
+      "subject": "YSL",
+      "reference": "He died in Springport, New York in 1815.",
+      "decoded": "He died in Springport, New York in 1815."
+    },
+    {
+      "subject": "YSL",
+      "reference": "He put up even more impressive numbers in his last season (3,819 yards, 36 touchdowns) and finished second in Heisman Trophy voting to The University of Michigan's Charles Woodson, although he was unable to beat arch rival University of Florida for the fourth consecutive time.",
+      "decoded": "He put up even more impressive numbers in his last season (3,819 yards, 36 touchdowns) and finished second in Heisman Trophy voting to The University of Michigan's Charles Woodson, although he was unable to beat arch rival University of Florida for the fourth consecutive time."
+    },
+    {
+      "subject": "YSL",
+      "reference": "He predicted in America's Economic Supremacy (1900) that New York would become the world trade center.",
+      "decoded": "He also played for the New Haven Eagles and Bronx Tigers of the Canadian-American Hockey League."
+    },
+    {
+      "subject": "YTL",
+      "reference": "He died in Springport, New York in 1815.",
+      "decoded": "He died in Springport, New York in 1815."
+    },
+    {
+      "subject": "YTL",
+      "reference": "Ferrer also had a recurring role as Julia Duffy's insanely wealthy Waspy father on the popular Newhart television sitcom in the U.S. in the 1980s.",
+      "decoded": "Ferrer also had a recurring role as Julia Duffy's insanely wealthy Waspy father on the popular Newhart television sitcom in the U.S. in the 1980s."
+    },
+    {
+      "subject": "YTL",
+      "reference": "He also had a memorable recurring role as elegant and flamboyant attorney Reuben Marino on the soap opera Another World in the early 1980s.",
+      "decoded": "He also had a memorable recurring role as elegant and flamboyant attorney Reuben Marino on the soap opera Another World in the early 1980s."
+    },
+    {
+      "subject": "YTL",
+      "reference": "He predicted in America's Economic Supremacy (1900) that New York would become the world trade center.",
+      "decoded": "He played William Barrett Travis in a movie about the Alamo called Thirteen Days of Glory."
+    },
+    {
+      "subject": "ZMG",
+      "reference": "Beautifully crafted, engaging filmmaking that should attract upscale audiences hungry for quality and a nostalgic, twisty yarn that will keep them guessing.",
+      "decoded": "Beautifully crafted, engaging filmmaking that should attract upscale audiences hungry for quality and a nostalgic, twisty yarn that will keep them guessing."
+    },
+    {
+      "subject": "ZMG",
+      "reference": "Bread, My Sweet has so many flaws it would be easy for critics to shred it.",
+      "decoded": "Bread, My Sweet has so many flaws it would be easy for critics to shred it."
+    },
+    {
+      "subject": "ZMG",
+      "reference": "Exudes the fizz of a Busby Berkeley musical and the visceral excitement of a sports extravaganza.",
+      "decoded": "Exudes the fizz of a Busby Berkeley musical and the visceral excitement of a sports extravaganza."
+    },
+    {
+      "subject": "ZMG",
+      "reference": "While serving abroad, he met Louisa Catherine Johnson, the daughter of an American merchant living abroad.",
+      "decoded": "He played William Barrett Travis in a movie about the Alamo called Thirteen Days of Glory."
+    },
+    {
+      "subject": "ZPH",
+      "reference": "Exudes the fizz of a Busby Berkeley musical and the visceral excitement of a sports extravaganza.",
+      "decoded": "Exudes the fizz of a Busby Berkeley musical and the visceral excitement of a sports extravaganza."
+    },
+    {
+      "subject": "ZPH",
+      "reference": "The film is so bad it doesn't improve upon the experience of staring at a blank screen.",
+      "decoded": "The film is so bad it doesn't improve upon the experience of staring at a blank screen."
+    },
+    {
+      "subject": "ZPH",
+      "reference": "I love the robust middle of this picture.",
+      "decoded": "I love the robust middle of this picture."
+    },
+    {
+      "subject": "ZPH",
+      "reference": "Baldwin, a liberal Democrat, has always had an active interest in politics and is frequently rumored to be a candidate for public office.",
+      "decoded": "Raymond Arrieta (born March 26, 1965 in San Juan, Puerto Rico) is considered by many to be one of Puerto Rico's greatest comedians."
+    }
+  ],
+  "gaussian_noise_metrics": {
+    "BLEU-1": 8.77,
+    "BLEU-2": 2.13,
+    "BLEU-3": 0.75,
+    "BLEU-4": 0.41,
+    "ROUGE-1_P": 9.62,
+    "ROUGE-1_R": 16.82,
+    "ROUGE-1_F1": 11.04,
+    "ROUGE-L_F1": 8.73,
+    "WER": 182.56,
+    "Semantic_CosSim": 11.23,
+    "Sentiment_Agree": 35.5
+  },
+  "per_subject_gaussian_noise": {
+    "YSL": {
+      "BLEU-1": 8.97,
+      "BLEU-2": 2.67,
+      "BLEU-3": 1.38,
+      "BLEU-4": 0.97,
+      "ROUGE-1_P": 10.14,
+      "ROUGE-1_R": 16.72,
+      "ROUGE-1_F1": 11.43,
+      "ROUGE-L_F1": 9.23,
+      "WER": 182.19,
+      "Semantic_CosSim": -0.19,
+      "n_trials": 343
+    },
+    "YTL": {
+      "BLEU-1": 8.51,
+      "BLEU-2": 2.19,
+      "BLEU-3": 0.66,
+      "BLEU-4": 0.27,
+      "ROUGE-1_P": 9.58,
+      "ROUGE-1_R": 16.25,
+      "ROUGE-1_F1": 10.82,
+      "ROUGE-L_F1": 8.68,
+      "WER": 181.21,
+      "Semantic_CosSim": 2.83,
+      "n_trials": 344
+    },
+    "ZMG": {
+      "BLEU-1": 8.58,
+      "BLEU-2": 1.9,
+      "BLEU-3": 0.41,
+      "BLEU-4": 0.12,
+      "ROUGE-1_P": 9.34,
+      "ROUGE-1_R": 16.65,
+      "ROUGE-1_F1": 10.81,
+      "ROUGE-L_F1": 8.49,
+      "WER": 184.72,
+      "Semantic_CosSim": 13.32,
+      "n_trials": 1073
+    },
+    "ZPH": {
+      "BLEU-1": 8.99,
+      "BLEU-2": 2.15,
+      "BLEU-3": 0.76,
+      "BLEU-4": 0.39,
+      "ROUGE-1_P": 9.78,
+      "ROUGE-1_R": 17.25,
+      "ROUGE-1_F1": 11.25,
+      "ROUGE-L_F1": 8.85,
+      "WER": 180.78,
+      "Semantic_CosSim": 15.99,
+      "n_trials": 957
+    }
+  },
+  "sanity_gap_bleu1": 10.83,
+  "sanity_gap_bleu4": 9.48,
+  "sanity_gap_semsim": 19.45,
+  "per_subject_summary_table": {
+    "YSL": {
+      "n_trials": 343,
+      "BLEU-1": 20.29,
+      "BLEU-4": 11.15,
+      "ROUGE-1_F1": 19.94,
+      "WER": 89.61,
+      "Semantic_CosSim": 19.33,
+      "Noise_BLEU-1": 8.97,
+      "Noise_BLEU-4": 0.97,
+      "Delta_BLEU-1": 11.32,
+      "Delta_BLEU-4": 10.18
+    },
+    "YTL": {
+      "n_trials": 344,
+      "BLEU-1": 18.98,
+      "BLEU-4": 9.14,
+      "ROUGE-1_F1": 19.08,
+      "WER": 91.13,
+      "Semantic_CosSim": 18.13,
+      "Noise_BLEU-1": 8.51,
+      "Noise_BLEU-4": 0.27,
+      "Delta_BLEU-1": 10.47,
+      "Delta_BLEU-4": 8.87
+    },
+    "ZMG": {
+      "n_trials": 1073,
+      "BLEU-1": 19.33,
+      "BLEU-4": 9.33,
+      "ROUGE-1_F1": 18.99,
+      "WER": 91.6,
+      "Semantic_CosSim": 32.98,
+      "Noise_BLEU-1": 8.58,
+      "Noise_BLEU-4": 0.12,
+      "Delta_BLEU-1": 10.75,
+      "Delta_BLEU-4": 9.21
+    },
+    "ZPH": {
+      "n_trials": 957,
+      "BLEU-1": 19.87,
+      "BLEU-4": 10.31,
+      "ROUGE-1_F1": 20.28,
+      "WER": 90.36,
+      "Semantic_CosSim": 36.68,
+      "Noise_BLEU-1": 8.99,
+      "Noise_BLEU-4": 0.39,
+      "Delta_BLEU-1": 10.88,
+      "Delta_BLEU-4": 9.92
+    }
+  },
+  "per_subject_mean_std": {
+    "BLEU-1": {
+      "mean": 19.62,
+      "std": 0.58
+    },
+    "BLEU-4": {
+      "mean": 9.98,
+      "std": 0.93
+    },
+    "ROUGE-1_F1": {
+      "mean": 19.57,
+      "std": 0.64
+    },
+    "WER": {
+      "mean": 90.68,
+      "std": 0.87
+    },
+    "Semantic_CosSim": {
+      "mean": 26.78,
+      "std": 9.43
+    },
+    "Delta_BLEU-1": {
+      "mean": 10.86,
+      "std": 0.35
+    },
+    "Delta_BLEU-4": {
+      "mean": 9.54,
+      "std": 0.61
+    }
+  }
+}

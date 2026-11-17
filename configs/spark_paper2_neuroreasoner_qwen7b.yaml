@@ -1,0 +1,63 @@
+experiment_name: "neuroreasoner_multicenter_cot_qwen7b"
+seed: 42
+device: "cuda"
+precision: "bf16"
+
+data:
+  processed_root: "./datasets/processed_clinical_neuroreasoner"
+  protocol: "multitask_cot"   # Options: multitask_cot | eeg_macs_crosscenter | ds004504_5fold | modma_crossdevice
+  fold_idx: 0
+  cohorts:
+    - "ds004504_cognitive"      # 88 subjects (36 AD, 23 FTD, 29 CN), 19-ch 10-20, MMSE [0..30]
+    - "unm_pd_crosscenter"      # 52 subjects (PD vs CTL), 60-ch 10-10, 500 Hz (EEG-MACS Train Center)
+    - "uiowa_pd_crosscenter"    # 28 subjects (14 PD, 14 CTL), 60-ch 10-10, 500 Hz (EEG-MACS Zero-Shot Test Center)
+    - "modma_128ch_affective"   # 53 subjects (24 MDD, 29 HC), 128-ch EGI, PHQ-9 & GAD-7
+    - "modma_3ch_affective"     # 55 subjects (26 MDD, 29 HC), 3-ch Wearable Fp1/Fpz/Fp2, PHQ-9 & GAD-7
+  max_eeg_len: 56
+  num_workers: 4
+
+eeg_encoder:
+  stream_mode: "dual_late_fusion"
+  embed_dim: 768
+  num_layers: 4
+  num_heads: 8
+  ffn_dim: 2048
+  dropout: 0.20
+  use_resampler: true
+  num_latent_queries: 24
+  use_task_conditioning: true
+  init_from_paper1_stage1: "./checkpoints/rush_eeg2text_full4task_champion_qwen7b/stage1_cet_rvq_best.pt"
+
+rvq:
+  num_quantizers: 6
+  codebook_size: 256
+  ema_decay: 0.98
+  commitment_weight: 0.25
+  quantizer_dropout: 0.25
+
+llm:
+  model_name_or_path: "./models/Qwen2.5-7B-Instruct"
+  quantization: "none"
+  use_lora: true
+  lora_r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  max_prompt_tokens: 128
+  max_new_tokens: 230
+  cot_evidence_grounding: true
+
+training:
+  paradigm: "federated_lora"   # federated_lora | centralized
+  dp_noise_std: 0.001          # Gaussian Local Differential Privacy across hospital silos
+  batch_size: 16
+  eval_batch_size: 32
+  grad_accum_steps: 2
+  epochs: 12
+  early_stop_patience: 4
+  lr_projector: 1.5e-4
+  lr_lora: 5.0e-5
+  lr_encoder: 2.5e-5
+  weight_decay: 0.02
+  rvq_loss_weight: 0.50
+  bio_loss_weight: 0.85
+  diag_loss_weight: 0.85

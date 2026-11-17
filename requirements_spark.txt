@@ -1,0 +1,22 @@
+# NVIDIA DGX Spark (GB10 Grace Blackwell aarch64, 128 GB Coherent UMA)
+# Note: On DGX Spark OS, install CUDA/Blackwell-enabled PyTorch from NVIDIA NGC / PyTorch nightly/stable cu128+ wheel first if not using NGC container.
+torch>=2.5.0
+transformers>=4.46.0
+accelerate>=1.1.0
+peft>=0.13.2
+bitsandbytes>=0.45.0
+datasets>=3.1.0
+evaluate>=0.4.3
+scipy>=1.14.0
+h5py>=3.12.0
+numpy>=1.26.0
+pyyaml>=6.0.2
+tqdm>=4.67.0
+nltk>=3.9.1
+rouge-score>=0.1.2
+jiwer>=3.0.5
+scikit-learn>=1.5.2
+einops>=0.8.0
+sentencepiece>=0.2.0
+requests>=2.32.0
+wandb>=0.18.7

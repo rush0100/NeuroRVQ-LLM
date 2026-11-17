@@ -1,0 +1,71 @@
+# Paper 1 Scaling Study Configuration for NVIDIA DGX Spark (128 GB Coherent UMA)
+# Target Backbone: Qwen/Qwen2.5-32B-Instruct or meta-llama/Llama-3.3-70B-Instruct via 4-bit NF4 QLoRA
+# Estimated Unified Memory Footprint: ~26 GB (32B QLoRA) to ~46 GB (70B QLoRA) — fits on 1x DGX Spark!
+
+experiment:
+  name: "rush_eeg2text_32b_qlora_zuco_scaling"
+  seed: 42
+  output_dir: "./checkpoints/rush_eeg2text_32b_qlora"
+  log_dir: "./logs/rush_eeg2text_32b_qlora"
+
+hardware:
+  device: "cuda"
+  precision: "bf16"
+  uma_drop_caches_hint: true
+  num_workers: 8
+
+data:
+  dataset_root: "./datasets/processed_zuco"
+  raw_zuco_root: "./datasets/zuco_raw"
+  tasks: ["task1-SR", "task2-NR", "task3-TSR", "task2-NR-2.0"]
+  eeg_type: "GD"
+  bands: ["_t1", "_t2", "_a1", "_a2", "_b1", "_b2", "_g1", "_g2"]
+  num_channels: 105
+  eeg_feature_dim: 840
+  max_eeg_len: 58
+  max_text_len: 64
+  split_strategy: "subject_independent"
+  held_out_test_subjects: ["ZAB", "ZJM", "YAC", "YAG"]
+  held_out_val_subjects: ["ZDN", "YDR"]
+
+stage1_cet_rvq:
+  embed_dim: 1024
+  encoder_layers: 6
+  encoder_heads: 8
+  ffn_dim: 2048
+  dropout: 0.1
+  use_length_invariant_resampler: true
+  num_latent_queries: 32
+  rvq_num_quantizers: 4
+  rvq_codebook_size: 1024
+  rvq_commitment_weight: 0.25
+  eeg_mask_ratio: 0.75
+  compulsory_sentence_token_mask: true
+  mae_loss_weight: 1.0
+  contrastive_loss_weight: 0.2
+  rvq_loss_weight: 1.0
+  epochs: 60
+  batch_size: 64
+  lr: 2.0e-4
+  weight_decay: 0.01
+
+stage2_llm:
+  llm_name_or_path: "Qwen/Qwen2.5-32B-Instruct"      # Or "meta-llama/Llama-3.3-70B-Instruct" on 128GB DGX Spark
+  quantization: "nf4"                                # 4-bit NormalFloat double quantization (QLoRA)
+  use_lora: true
+  lora_r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  lora_target_modules: ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
+  scheduled_word_dropout_max: 0.35
+  prompt_template: "Decode the following neural brain signal tokens into an exact English sentence:\n<eeg_prefix>\nDecoded sentence:"
+  epochs: 15
+  batch_size: 8
+  grad_accum_steps: 4
+  lr_projector: 1.0e-4
+  lr_lora: 1.5e-5
+  weight_decay: 0.01
+  eval_num_beams: 4
+  eval_repetition_penalty: 1.25
+  eval_no_repeat_ngram_size: 3
+  run_gaussian_noise_sanity_check: true

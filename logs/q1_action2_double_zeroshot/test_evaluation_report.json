@@ -1,0 +1,305 @@
+{
+  "experiment": "q1_action2_double_zeroshot_unseen_subj_and_sent",
+  "split_strategy": "unseen_subject_and_sentence",
+  "eeg_only_mode": "none",
+  "llm_backbone": "./models/Qwen2.5-7B-Instruct",
+  "real_eeg_tf_free_metrics": {
+    "BLEU-1": 17.74,
+    "BLEU-2": 4.91,
+    "BLEU-3": 1.37,
+    "BLEU-4": 0.28,
+    "ROUGE-1_P": 18.2,
+    "ROUGE-1_R": 18.48,
+    "ROUGE-1_F1": 18.12,
+    "ROUGE-L_F1": 14.06,
+    "WER": 101.75,
+    "Semantic_CosSim": 24.05,
+    "Sentiment_Agree": 33.87
+  },
+  "per_subject_real_eeg": {
+    "YSL": {
+      "BLEU-1": 16.49,
+      "BLEU-2": 4.47,
+      "BLEU-3": 1.37,
+      "BLEU-4": 0.43,
+      "ROUGE-1_P": 17.26,
+      "ROUGE-1_R": 17.74,
+      "ROUGE-1_F1": 17.44,
+      "ROUGE-L_F1": 13.78,
+      "WER": 101.55,
+      "Semantic_CosSim": 8.24,
+      "n_trials": 43
+    },
+    "YTL": {
+      "BLEU-1": 18.86,
+      "BLEU-2": 5.43,
+      "BLEU-3": 1.55,
+      "BLEU-4": 0.47,
+      "ROUGE-1_P": 19.25,
+      "ROUGE-1_R": 19.87,
+      "ROUGE-1_F1": 19.47,
+      "ROUGE-L_F1": 15.05,
+      "WER": 100.0,
+      "Semantic_CosSim": 9.05,
+      "n_trials": 43
+    },
+    "ZMG": {
+      "BLEU-1": 17.09,
+      "BLEU-2": 4.87,
+      "BLEU-3": 1.12,
+      "BLEU-4": 0.31,
+      "ROUGE-1_P": 18.04,
+      "ROUGE-1_R": 17.9,
+      "ROUGE-1_F1": 17.66,
+      "ROUGE-L_F1": 13.6,
+      "WER": 101.26,
+      "Semantic_CosSim": 30.35,
+      "n_trials": 98
+    },
+    "ZPH": {
+      "BLEU-1": 17.97,
+      "BLEU-2": 4.76,
+      "BLEU-3": 1.44,
+      "BLEU-4": 0.38,
+      "ROUGE-1_P": 18.31,
+      "ROUGE-1_R": 18.82,
+      "ROUGE-1_F1": 18.3,
+      "ROUGE-L_F1": 14.23,
+      "WER": 103.28,
+      "Semantic_CosSim": 32.19,
+      "n_trials": 87
+    }
+  },
+  "decoded_examples": [
+    {
+      "subject": "YSL",
+      "reference": "He was born in Overisel, Michigan.",
+      "decoded": "Clooney was born in Los Angeles, California."
+    },
+    {
+      "subject": "YSL",
+      "reference": "However, he was not satisfied by the immediate prospects.",
+      "decoded": "In 1964 he was elected to the United States Senate."
+    },
+    {
+      "subject": "YSL",
+      "reference": "He became submissive to upstart Johann Friedrich Struensee, who rose steadily in power in the late 1760s.",
+      "decoded": "In 1964, he was elected to the Republican National Committee and became chairman of the New Hampshire Republican Party."
+    },
+    {
+      "subject": "YSL",
+      "reference": "In 1879, he left home for the nearby city of Detroit to work as an apprentice machinist, first with James F. Flower & Bros., and later with the Detroit Dry Dock Co.",
+      "decoded": "In 1968, he was elected to the United States Senate, defeating the incumbent James O. Eastland, and was reelected four times, serving until January 3, 2001."
+    },
+    {
+      "subject": "YTL",
+      "reference": "He was born in Overisel, Michigan.",
+      "decoded": "Clooney was born in Los Angeles, California."
+    },
+    {
+      "subject": "YTL",
+      "reference": "He also played for the New Haven Eagles and Bronx Tigers of the Canadian-American Hockey League.",
+      "decoded": "In 1964, he was elected to the Republican National Committee and became chairman of the New Hampshire Republican Party."
+    },
+    {
+      "subject": "YTL",
+      "reference": "However, he was not satisfied by the immediate prospects.",
+      "decoded": "In 1964 he was elected to the United States Senate."
+    },
+    {
+      "subject": "YTL",
+      "reference": "In November 1977 he was sent to the Venezuelan capital of Caracas, in South America, to open a new operation for the bank.",
+      "decoded": "In 1968, he was elected to the United States Senate, defeating the incumbent James O. Eastland, and was reelected four times, serving until January 3, 2001."
+    },
+    {
+      "subject": "ZMG",
+      "reference": "He also was awarded the Presidential Medal of Freedom.",
+      "decoded": "In 1964 he was elected to the National Academy of Engineering."
+    },
+    {
+      "subject": "ZMG",
+      "reference": "He also was awarded the Presidential Medal of Freedom.",
+      "decoded": "In 1964 he was elected to the House of Representatives."
+    },
+    {
+      "subject": "ZMG",
+      "reference": "In a valley of the Rolling Fork River, this was some of the best farmland in the area.",
+      "decoded": "In 1964, he was elected to the U.S. House of Representatives as a Republican."
+    },
+    {
+      "subject": "ZMG",
+      "reference": "Dole graduated from High School in the spring of 1941, and enrolled at the University of Kansas the following Autumn.",
+      "decoded": "In 1968, he was elected to the U.S. House of Representatives as a Democrat from Mississippi's 2nd district."
+    },
+    {
+      "subject": "ZPH",
+      "reference": "He also was awarded the Presidential Medal of Freedom.",
+      "decoded": "In 1964 he was elected to the National Academy of Engineering."
+    },
+    {
+      "subject": "ZPH",
+      "reference": "He also was awarded the Presidential Medal of Freedom.",
+      "decoded": "In 1964, he was elected to the House of Representatives."
+    },
+    {
+      "subject": "ZPH",
+      "reference": "Received the Presidential Medal of Freedom in 1977.",
+      "decoded": "In 1964, he was elected to the House of Representatives."
+    },
+    {
+      "subject": "ZPH",
+      "reference": "Huxley was strongly influenced by F. Matthias Alexander and included him as a character in Eyeless in Gaza.",
+      "decoded": "In 1964, he was elected to the United States House of Representatives as a Republican."
+    }
+  ],
+  "gaussian_noise_metrics": {
+    "BLEU-1": 10.58,
+    "BLEU-2": 3.14,
+    "BLEU-3": 1.14,
+    "BLEU-4": 0.56,
+    "ROUGE-1_P": 11.92,
+    "ROUGE-1_R": 23.55,
+    "ROUGE-1_F1": 14.47,
+    "ROUGE-L_F1": 11.26,
+    "WER": 203.87,
+    "Semantic_CosSim": 14.87,
+    "Sentiment_Agree": 30.65
+  },
+  "per_subject_gaussian_noise": {
+    "YSL": {
+      "BLEU-1": 10.31,
+      "BLEU-2": 3.12,
+      "BLEU-3": 1.04,
+      "BLEU-4": 0.5,
+      "ROUGE-1_P": 11.3,
+      "ROUGE-1_R": 24.37,
+      "ROUGE-1_F1": 14.5,
+      "ROUGE-L_F1": 11.24,
+      "WER": 207.02,
+      "Semantic_CosSim": -1.85,
+      "n_trials": 43
+    },
+    "YTL": {
+      "BLEU-1": 11.48,
+      "BLEU-2": 3.35,
+      "BLEU-3": 1.1,
+      "BLEU-4": 0.53,
+      "ROUGE-1_P": 12.27,
+      "ROUGE-1_R": 24.35,
+      "ROUGE-1_F1": 15.47,
+      "ROUGE-L_F1": 12.35,
+      "WER": 196.83,
+      "Semantic_CosSim": 4.0,
+      "n_trials": 43
+    },
+    "ZMG": {
+      "BLEU-1": 10.44,
+      "BLEU-2": 3.18,
+      "BLEU-3": 1.28,
+      "BLEU-4": 0.64,
+      "ROUGE-1_P": 11.46,
+      "ROUGE-1_R": 23.79,
+      "ROUGE-1_F1": 14.3,
+      "ROUGE-L_F1": 11.01,
+      "WER": 206.58,
+      "Semantic_CosSim": 22.92,
+      "n_trials": 98
+    },
+    "ZPH": {
+      "BLEU-1": 10.41,
+      "BLEU-2": 2.99,
+      "BLEU-3": 1.03,
+      "BLEU-4": 0.51,
+      "ROUGE-1_P": 12.56,
+      "ROUGE-1_R": 22.47,
+      "ROUGE-1_F1": 14.16,
+      "ROUGE-L_F1": 11.01,
+      "WER": 202.81,
+      "Semantic_CosSim": 19.43,
+      "n_trials": 87
+    }
+  },
+  "sanity_gap_bleu1": 7.16,
+  "sanity_gap_bleu4": -0.28,
+  "sanity_gap_semsim": 9.18,
+  "per_subject_summary_table": {
+    "YSL": {
+      "n_trials": 43,
+      "BLEU-1": 16.49,
+      "BLEU-4": 0.43,
+      "ROUGE-1_F1": 17.44,
+      "WER": 101.55,
+      "Semantic_CosSim": 8.24,
+      "Noise_BLEU-1": 10.31,
+      "Noise_BLEU-4": 0.5,
+      "Delta_BLEU-1": 6.18,
+      "Delta_BLEU-4": -0.07
+    },
+    "YTL": {
+      "n_trials": 43,
+      "BLEU-1": 18.86,
+      "BLEU-4": 0.47,
+      "ROUGE-1_F1": 19.47,
+      "WER": 100.0,
+      "Semantic_CosSim": 9.05,
+      "Noise_BLEU-1": 11.48,
+      "Noise_BLEU-4": 0.53,
+      "Delta_BLEU-1": 7.38,
+      "Delta_BLEU-4": -0.06
+    },
+    "ZMG": {
+      "n_trials": 98,
+      "BLEU-1": 17.09,
+      "BLEU-4": 0.31,
+      "ROUGE-1_F1": 17.66,
+      "WER": 101.26,
+      "Semantic_CosSim": 30.35,
+      "Noise_BLEU-1": 10.44,
+      "Noise_BLEU-4": 0.64,
+      "Delta_BLEU-1": 6.65,
+      "Delta_BLEU-4": -0.33
+    },
+    "ZPH": {
+      "n_trials": 87,
+      "BLEU-1": 17.97,
+      "BLEU-4": 0.38,
+      "ROUGE-1_F1": 18.3,
+      "WER": 103.28,
+      "Semantic_CosSim": 32.19,
+      "Noise_BLEU-1": 10.41,
+      "Noise_BLEU-4": 0.51,
+      "Delta_BLEU-1": 7.56,
+      "Delta_BLEU-4": -0.13
+    }
+  },
+  "per_subject_mean_std": {
+    "BLEU-1": {
+      "mean": 17.6,
+      "std": 1.04
+    },
+    "BLEU-4": {
+      "mean": 0.4,
+      "std": 0.07
+    },
+    "ROUGE-1_F1": {
+      "mean": 18.22,
+      "std": 0.91
+    },
+    "WER": {
+      "mean": 101.52,
+      "std": 1.35
+    },
+    "Semantic_CosSim": {
+      "mean": 19.96,
+      "std": 13.09
+    },
+    "Delta_BLEU-1": {
+      "mean": 6.94,
+      "std": 0.64
+    },
+    "Delta_BLEU-4": {
+      "mean": -0.15,
+      "std": 0.13
+    }
+  }
+}

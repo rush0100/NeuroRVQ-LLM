@@ -1,0 +1,74 @@
+# Q1 Reviewer Defense — Action 1c: Full 4-Task Eye-Tracking-Free Mode (`eeg_only_no_oculomotor` across 30 subjects, 18,276 trials)
+# Zero oculomotor/pupil/saccade features, zero cog-load weighting, uniform sequence progression!
+
+experiment:
+  name: "q1_action1c_eeg_only_full4task"
+  seed: 42
+  output_dir: "./checkpoints/q1_action1c_eeg_only_full4task"
+  log_dir: "./logs/q1_action1c_eeg_only_full4task"
+
+hardware:
+  device: "cuda"
+  precision: "bf16"
+  num_workers: 4
+
+data:
+  dataset_root: "./datasets/processed_zuco_connectome_full"
+  tasks: ["task1-SR", "task2-NR", "task3-TSR", "task2-NR-2.0"]
+  eeg_type: "GD"
+  bands: ["_t1", "_t2", "_a1", "_a2", "_b1", "_b2", "_g1", "_g2"]
+  num_channels: 105
+  eeg_feature_dim: 840
+  max_eeg_len: 58
+  max_text_len: 64
+  split_strategy: "subject_independent"
+  eeg_only_mode: "eeg_only_no_oculomotor"
+  held_out_test_subjects: ["ZMG", "ZPH", "YTL", "YSL"]
+  held_out_val_subjects: ["ZJS", "YDR"]
+
+stage1_cet_rvq:
+  stream_mode: "dual_late_fusion"
+  embed_dim: 768
+  encoder_layers: 4
+  encoder_heads: 8
+  ffn_dim: 2048
+  dropout: 0.18
+  proj_dropout: 0.18
+  use_length_invariant_resampler: true
+  num_latent_queries: 24
+  use_attentive_pooler: true
+  use_task_conditioning: true
+  channel_dropout: 0.15
+  band_jitter: 0.10
+  sensor_noise: 0.04
+  token_dropout: 0.10
+  rvq_num_quantizers: 6
+  rvq_codebook_size: 256
+  rvq_commitment_weight: 0.25
+  rvq_quantizer_dropout: 0.30
+  rvq_ema_decay: 0.98
+  eeg_mask_ratio: 0.75
+  compulsory_sentence_token_mask: true
+  text_target_mode: "raw_last"
+  use_multi_positive_infonce: true
+  paired_subject_sampling: true
+  use_cog_load_weighting: false
+  init_temperature: 0.07
+  learnable_temperature: true
+  max_logit_scale: 14.2857
+  mae_loss_weight: 0.30
+  contrastive_loss_weight: 1.25
+  rvq_loss_weight: 1.0
+  pre_rvq_contrast_ratio: 0.30
+  brain_invariance_weight: 0.25
+  aux_sentiment_weight: 0.25
+  label_smoothing: 0.05
+  epochs: 45
+  warmup_epochs: 4
+  early_stop_patience: 12
+  batch_size: 64
+  lr: 3.0e-4
+  weight_decay: 0.05
+
+stage2_llm:
+  llm_name_or_path: "./models/Qwen2.5-7B-Instruct"

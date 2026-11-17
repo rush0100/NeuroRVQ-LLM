@@ -1,0 +1,101 @@
+{
+  "experiment": "q1_action3_rush_eeg2text_bart_large_singletask",
+  "split_strategy": "subject_independent",
+  "eeg_only_mode": "none",
+  "llm_backbone": "./models/bart-large",
+  "real_eeg_tf_free_metrics": {
+    "BLEU-1": 16.38,
+    "BLEU-2": 4.83,
+    "BLEU-3": 2.01,
+    "BLEU-4": 0.97,
+    "ROUGE-1_P": 18.21,
+    "ROUGE-1_R": 16.69,
+    "ROUGE-1_F1": 17.17,
+    "ROUGE-L_F1": 13.55,
+    "WER": 100.32,
+    "Semantic_CosSim": 21.62,
+    "Sentiment_Agree": 35.43
+  },
+  "per_subject_real_eeg": {
+    "ZMG": {
+      "BLEU-1": 16.38,
+      "BLEU-2": 4.83,
+      "BLEU-3": 2.01,
+      "BLEU-4": 0.97,
+      "ROUGE-1_P": 18.21,
+      "ROUGE-1_R": 16.69,
+      "ROUGE-1_F1": 17.17,
+      "ROUGE-L_F1": 13.55,
+      "WER": 100.32,
+      "Semantic_CosSim": 21.62,
+      "n_trials": 386
+    }
+  },
+  "decoded_examples": [
+    {
+      "subject": "ZMG",
+      "reference": "The cumulative effect of the movie is repulsive and depressing.",
+      "decoded": "The movie is a blast of energy and vitality."
+    },
+    {
+      "subject": "ZMG",
+      "reference": "... a roller-coaster ride of a movie",
+      "decoded": "The movie is a blast of energy and vitality."
+    },
+    {
+      "subject": "ZMG",
+      "reference": "A work of astonishing delicacy and force.",
+      "decoded": "The movie is a blast of energy and vitality."
+    },
+    {
+      "subject": "ZMG",
+      "reference": "It's a fanboy `what if?'",
+      "decoded": "A bittersweet comedy of manners."
+    }
+  ],
+  "gaussian_noise_metrics": {
+    "BLEU-1": 12.39,
+    "BLEU-2": 3.78,
+    "BLEU-3": 1.47,
+    "BLEU-4": 0.66,
+    "ROUGE-1_P": 14.88,
+    "ROUGE-1_R": 20.33,
+    "ROUGE-1_F1": 15.78,
+    "ROUGE-L_F1": 12.21,
+    "WER": 146.14,
+    "Semantic_CosSim": 1.58,
+    "Sentiment_Agree": 35.7
+  },
+  "per_subject_gaussian_noise": {
+    "ZMG": {
+      "BLEU-1": 12.39,
+      "BLEU-2": 3.78,
+      "BLEU-3": 1.47,
+      "BLEU-4": 0.66,
+      "ROUGE-1_P": 14.88,
+      "ROUGE-1_R": 20.33,
+      "ROUGE-1_F1": 15.78,
+      "ROUGE-L_F1": 12.21,
+      "WER": 146.14,
+      "Semantic_CosSim": 1.58,
+      "n_trials": 386
+    }
+  },
+  "sanity_gap_bleu1": 3.99,
+  "sanity_gap_bleu4": 0.31,
+  "sanity_gap_semsim": 20.04,
+  "per_subject_summary_table": {
+    "ZMG": {
+      "n_trials": 386,
+      "BLEU-1": 16.38,
+      "BLEU-4": 0.97,
+      "ROUGE-1_F1": 17.17,
+      "WER": 100.32,
+      "Semantic_CosSim": 21.62,
+      "Noise_BLEU-1": 12.39,
+      "Noise_BLEU-4": 0.66,
+      "Delta_BLEU-1": 3.99,
+      "Delta_BLEU-4": 0.31
+    }
+  }
+}

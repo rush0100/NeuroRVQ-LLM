@@ -1,0 +1,81 @@
+{
+  "experiment": "rush_eeg2text_full4task_champion_qwen7b_lora",
+  "split_strategy": "subject_independent",
+  "llm_backbone": "./models/Qwen2.5-7B-Instruct",
+  "real_eeg_tf_free_metrics": {
+    "BLEU-1": 19.6,
+    "BLEU-2": 12.82,
+    "BLEU-3": 10.81,
+    "BLEU-4": 9.89,
+    "ROUGE-1_P": 19.71,
+    "ROUGE-1_R": 19.5,
+    "ROUGE-1_F1": 19.58,
+    "ROUGE-L_F1": 17.48,
+    "WER": 90.85
+  },
+  "decoded_examples": [
+    {
+      "subject": "ZMG",
+      "reference": "Presents a good case while failing to provide a reason for us to care beyond the very basic dictums of human decency.",
+      "decoded": "Despite the holes in the story and the somewhat predictable plot, moments of the movie caused me to jump in my chair..."
+    },
+    {
+      "subject": "ZMG",
+      "reference": "Beautifully crafted, engaging filmmaking that should attract upscale audiences hungry for quality and a nostalgic, twisty yarn that will keep them guessing.",
+      "decoded": "Beautifully crafted, engaging filmmaking that should attract upscale audiences hungry for quality and a nostalgic, twisty yarn that will keep them guessing."
+    },
+    {
+      "subject": "ZMG",
+      "reference": "Bread, My Sweet has so many flaws it would be easy for critics to shred it.",
+      "decoded": "Bread, My Sweet has so many flaws it would be easy for critics to shred it."
+    },
+    {
+      "subject": "ZMG",
+      "reference": "Slow, silly and unintentionally hilarious.",
+      "decoded": "It's a fanboy `what if?'"
+    },
+    {
+      "subject": "ZMG",
+      "reference": "Ultimately feels empty and unsatisfying, like swallowing a Communion wafer without the wine.",
+      "decoded": "It's not a particularly good film, but neither is it a monsterous one."
+    },
+    {
+      "subject": "ZMG",
+      "reference": "Exudes the fizz of a Busby Berkeley musical and the visceral excitement of a sports extravaganza.",
+      "decoded": "Exudes the fizz of a Busby Berkeley musical and the visceral excitement of a sports extravaganza."
+    },
+    {
+      "subject": "ZMG",
+      "reference": "The film rehashes several old themes and is capped with pointless extremes -- it's insanely violent and very graphic.",
+      "decoded": "It briefly flirts with player masochism, but the point of real interest -- audience sadism -- is evaded completely."
+    },
+    {
+      "subject": "ZMG",
+      "reference": "Ryan Gosling is, in a word, brilliant as the conflicted Daniel.",
+      "decoded": "The stupidest, most insulting movie of 2002's first quarter."
+    },
+    {
+      "subject": "ZMG",
+      "reference": "If Deuces Wild had been tweaked up a notch it would have become a camp adventure, one of those movies that's so bad it starts to become good.",
+      "decoded": "A strong script, powerful direction and splendid production design allows us to be transported into the life of Wladyslaw Szpilman, who is also a pianist."
+    },
+    {
+      "subject": "ZMG",
+      "reference": "The film's stagecrafts are intimate and therefore bolder than the otherwise calculated artifice that defines and overwhelms the film's production design.",
+      "decoded": "The Ring is worth a look, if you don't demand much more than a few cheap thrills from your Halloween entertainment."
+    }
+  ],
+  "gaussian_noise_metrics": {
+    "BLEU-1": 8.77,
+    "BLEU-2": 2.17,
+    "BLEU-3": 0.78,
+    "BLEU-4": 0.43,
+    "ROUGE-1_P": 9.74,
+    "ROUGE-1_R": 16.95,
+    "ROUGE-1_F1": 11.15,
+    "ROUGE-L_F1": 8.85,
+    "WER": 182.92
+  },
+  "sanity_gap_bleu1": 10.83,
+  "sanity_gap_bleu4": 9.46
+}

@@ -1,0 +1,520 @@
+[
+  {
+    "epoch": 1,
+    "train_loss": 6.9062,
+    "val": {
+      "post_rvq": {
+        "R@1": 0.0,
+        "R@5": 1.48,
+        "R@10": 3.55,
+        "MRR": 1.72,
+        "MedR": 193.0,
+        "CE_400way": 5.9907
+      },
+      "pre_rvq": {
+        "R@1": 0.0,
+        "R@5": 1.48,
+        "R@10": 3.25,
+        "MRR": 1.66,
+        "MedR": 192.0,
+        "CE_400way": 5.9904
+      },
+      "quantization_mrr_gap": -0.06,
+      "sentiment_acc": 35.63,
+      "fixed_tau_batch_infonce": 3.9472,
+      "mae_loss": 0.7816,
+      "rvq_loss": 0.0034,
+      "mean_perplexity": 2.48,
+      "per_layer_perplexity": [
+        1.4,
+        1.3,
+        2.1,
+        2.5,
+        3.3,
+        4.3
+      ]
+    },
+    "selection_score": -9.0189
+  },
+  {
+    "epoch": 2,
+    "train_loss": 6.8119,
+    "val": {
+      "post_rvq": {
+        "R@1": 0.89,
+        "R@5": 2.37,
+        "R@10": 3.85,
+        "MRR": 2.51,
+        "MedR": 187.0,
+        "CE_400way": 5.9907
+      },
+      "pre_rvq": {
+        "R@1": 0.89,
+        "R@5": 2.37,
+        "R@10": 4.14,
+        "MRR": 2.52,
+        "MedR": 188.0,
+        "CE_400way": 5.9952
+      },
+      "quantization_mrr_gap": 0.01,
+      "sentiment_acc": 28.44,
+      "fixed_tau_batch_infonce": 3.9496,
+      "mae_loss": 0.8331,
+      "rvq_loss": 0.0042,
+      "mean_perplexity": 10.65,
+      "per_layer_perplexity": [
+        2.6,
+        3.4,
+        6.5,
+        10.3,
+        18.8,
+        22.4
+      ]
+    },
+    "selection_score": -8.1239
+  },
+  {
+    "epoch": 3,
+    "train_loss": 6.7734,
+    "val": {
+      "post_rvq": {
+        "R@1": 0.3,
+        "R@5": 1.78,
+        "R@10": 4.14,
+        "MRR": 2.15,
+        "MedR": 170.0,
+        "CE_400way": 5.9933
+      },
+      "pre_rvq": {
+        "R@1": 0.3,
+        "R@5": 1.78,
+        "R@10": 4.14,
+        "MRR": 2.16,
+        "MedR": 167.0,
+        "CE_400way": 5.9946
+      },
+      "quantization_mrr_gap": 0.01,
+      "sentiment_acc": 34.73,
+      "fixed_tau_batch_infonce": 3.946,
+      "mae_loss": 0.779,
+      "rvq_loss": 0.0015,
+      "mean_perplexity": 12.54,
+      "per_layer_perplexity": [
+        4.0,
+        3.7,
+        8.5,
+        15.5,
+        20.0,
+        23.5
+      ]
+    },
+    "selection_score": -8.3876
+  },
+  {
+    "epoch": 4,
+    "train_loss": 6.6053,
+    "val": {
+      "post_rvq": {
+        "R@1": 0.3,
+        "R@5": 0.89,
+        "R@10": 1.78,
+        "MRR": 1.61,
+        "MedR": 210.0,
+        "CE_400way": 6.406
+      },
+      "pre_rvq": {
+        "R@1": 0.3,
+        "R@5": 0.89,
+        "R@10": 1.78,
+        "MRR": 1.61,
+        "MedR": 208.0,
+        "CE_400way": 6.4083
+      },
+      "quantization_mrr_gap": 0.0,
+      "sentiment_acc": 31.44,
+      "fixed_tau_batch_infonce": 4.1307,
+      "mae_loss": 0.8447,
+      "rvq_loss": 0.0016,
+      "mean_perplexity": 20.64,
+      "per_layer_perplexity": [
+        8.8,
+        13.5,
+        12.7,
+        23.8,
+        33.5,
+        31.5
+      ]
+    },
+    "selection_score": -10.579
+  },
+  {
+    "epoch": 5,
+    "train_loss": 6.1239,
+    "val": {
+      "post_rvq": {
+        "R@1": 0.0,
+        "R@5": 0.3,
+        "R@10": 1.18,
+        "MRR": 1.11,
+        "MedR": 212.0,
+        "CE_400way": 6.9796
+      },
+      "pre_rvq": {
+        "R@1": 0.0,
+        "R@5": 0.3,
+        "R@10": 1.78,
+        "MRR": 1.13,
+        "MedR": 215.0,
+        "CE_400way": 6.9873
+      },
+      "quantization_mrr_gap": 0.02,
+      "sentiment_acc": 30.84,
+      "fixed_tau_batch_infonce": 4.4725,
+      "mae_loss": 0.7687,
+      "rvq_loss": 0.0021,
+      "mean_perplexity": 20.3,
+      "per_layer_perplexity": [
+        13.1,
+        14.8,
+        17.7,
+        30.1,
+        15.2,
+        30.9
+      ]
+    },
+    "selection_score": -12.4362
+  },
+  {
+    "epoch": 6,
+    "train_loss": 5.8132,
+    "val": {
+      "post_rvq": {
+        "R@1": 0.59,
+        "R@5": 2.07,
+        "R@10": 2.66,
+        "MRR": 1.74,
+        "MedR": 236.0,
+        "CE_400way": 7.5665
+      },
+      "pre_rvq": {
+        "R@1": 0.59,
+        "R@5": 1.78,
+        "R@10": 2.96,
+        "MRR": 1.76,
+        "MedR": 235.0,
+        "CE_400way": 7.5663
+      },
+      "quantization_mrr_gap": 0.02,
+      "sentiment_acc": 32.63,
+      "fixed_tau_batch_infonce": 4.8373,
+      "mae_loss": 0.7546,
+      "rvq_loss": 0.0045,
+      "mean_perplexity": 31.09,
+      "per_layer_perplexity": [
+        17.6,
+        21.6,
+        35.9,
+        41.4,
+        39.0,
+        31.0
+      ]
+    },
+    "selection_score": -12.462
+  },
+  {
+    "epoch": 7,
+    "train_loss": 5.5329,
+    "val": {
+      "post_rvq": {
+        "R@1": 0.0,
+        "R@5": 0.89,
+        "R@10": 2.37,
+        "MRR": 1.38,
+        "MedR": 183.0,
+        "CE_400way": 7.7078
+      },
+      "pre_rvq": {
+        "R@1": 0.0,
+        "R@5": 0.89,
+        "R@10": 2.37,
+        "MRR": 1.36,
+        "MedR": 181.0,
+        "CE_400way": 7.7055
+      },
+      "quantization_mrr_gap": -0.02,
+      "sentiment_acc": 30.54,
+      "fixed_tau_batch_infonce": 5.0573,
+      "mae_loss": 0.7431,
+      "rvq_loss": 0.0038,
+      "mean_perplexity": 34.42,
+      "per_layer_perplexity": [
+        14.9,
+        22.3,
+        40.2,
+        43.0,
+        44.0,
+        42.0
+      ]
+    },
+    "selection_score": -13.2061
+  },
+  {
+    "epoch": 8,
+    "train_loss": 5.2538,
+    "val": {
+      "post_rvq": {
+        "R@1": 0.3,
+        "R@5": 0.89,
+        "R@10": 0.89,
+        "MRR": 1.3,
+        "MedR": 211.0,
+        "CE_400way": 8.8195
+      },
+      "pre_rvq": {
+        "R@1": 0.3,
+        "R@5": 0.89,
+        "R@10": 0.89,
+        "MRR": 1.28,
+        "MedR": 211.0,
+        "CE_400way": 8.818
+      },
+      "quantization_mrr_gap": -0.02,
+      "sentiment_acc": 34.73,
+      "fixed_tau_batch_infonce": 5.5704,
+      "mae_loss": 0.7471,
+      "rvq_loss": 0.0043,
+      "mean_perplexity": 41.68,
+      "per_layer_perplexity": [
+        19.2,
+        33.3,
+        30.8,
+        53.1,
+        60.2,
+        53.6
+      ]
+    },
+    "selection_score": -16.0275
+  },
+  {
+    "epoch": 9,
+    "train_loss": 5.0098,
+    "val": {
+      "post_rvq": {
+        "R@1": 0.0,
+        "R@5": 0.89,
+        "R@10": 1.18,
+        "MRR": 1.21,
+        "MedR": 193.0,
+        "CE_400way": 8.864
+      },
+      "pre_rvq": {
+        "R@1": 0.0,
+        "R@5": 0.89,
+        "R@10": 1.18,
+        "MRR": 1.16,
+        "MedR": 192.0,
+        "CE_400way": 8.8826
+      },
+      "quantization_mrr_gap": -0.05,
+      "sentiment_acc": 35.33,
+      "fixed_tau_batch_infonce": 5.5858,
+      "mae_loss": 0.7307,
+      "rvq_loss": 0.0074,
+      "mean_perplexity": 38.95,
+      "per_layer_perplexity": [
+        15.4,
+        31.4,
+        39.1,
+        55.5,
+        45.2,
+        47.0
+      ]
+    },
+    "selection_score": -16.105
+  },
+  {
+    "epoch": 10,
+    "train_loss": 4.7895,
+    "val": {
+      "post_rvq": {
+        "R@1": 0.3,
+        "R@5": 0.89,
+        "R@10": 1.78,
+        "MRR": 1.32,
+        "MedR": 218.0,
+        "CE_400way": 8.9477
+      },
+      "pre_rvq": {
+        "R@1": 0.3,
+        "R@5": 0.89,
+        "R@10": 1.78,
+        "MRR": 1.32,
+        "MedR": 221.0,
+        "CE_400way": 8.9346
+      },
+      "quantization_mrr_gap": 0.0,
+      "sentiment_acc": 34.73,
+      "fixed_tau_batch_infonce": 5.5124,
+      "mae_loss": 0.7424,
+      "rvq_loss": 0.0073,
+      "mean_perplexity": 38.17,
+      "per_layer_perplexity": [
+        19.0,
+        25.4,
+        32.6,
+        33.8,
+        54.6,
+        63.7
+      ]
+    },
+    "selection_score": -15.9524
+  },
+  {
+    "epoch": 11,
+    "train_loss": 4.5697,
+    "val": {
+      "post_rvq": {
+        "R@1": 0.59,
+        "R@5": 1.78,
+        "R@10": 2.37,
+        "MRR": 2.08,
+        "MedR": 196.0,
+        "CE_400way": 9.3874
+      },
+      "pre_rvq": {
+        "R@1": 0.3,
+        "R@5": 1.78,
+        "R@10": 2.37,
+        "MRR": 1.91,
+        "MedR": 198.0,
+        "CE_400way": 9.3966
+      },
+      "quantization_mrr_gap": -0.17,
+      "sentiment_acc": 35.03,
+      "fixed_tau_batch_infonce": 5.6731,
+      "mae_loss": 0.7393,
+      "rvq_loss": 0.0171,
+      "mean_perplexity": 33.1,
+      "per_layer_perplexity": [
+        14.9,
+        18.7,
+        28.8,
+        34.8,
+        35.8,
+        65.6
+      ]
+    },
+    "selection_score": -15.8653
+  },
+  {
+    "epoch": 12,
+    "train_loss": 4.4332,
+    "val": {
+      "post_rvq": {
+        "R@1": 0.59,
+        "R@5": 2.07,
+        "R@10": 2.96,
+        "MRR": 1.95,
+        "MedR": 210.0,
+        "CE_400way": 8.8165
+      },
+      "pre_rvq": {
+        "R@1": 0.59,
+        "R@5": 2.07,
+        "R@10": 3.25,
+        "MRR": 1.99,
+        "MedR": 204.0,
+        "CE_400way": 8.747
+      },
+      "quantization_mrr_gap": 0.04,
+      "sentiment_acc": 34.73,
+      "fixed_tau_batch_infonce": 5.3311,
+      "mae_loss": 0.7437,
+      "rvq_loss": 0.0152,
+      "mean_perplexity": 40.16,
+      "per_layer_perplexity": [
+        18.3,
+        31.1,
+        43.9,
+        41.5,
+        56.2,
+        49.8
+      ]
+    },
+    "selection_score": -14.647
+  },
+  {
+    "epoch": 13,
+    "train_loss": 4.3037,
+    "val": {
+      "post_rvq": {
+        "R@1": 0.3,
+        "R@5": 1.18,
+        "R@10": 2.37,
+        "MRR": 1.56,
+        "MedR": 198.0,
+        "CE_400way": 9.0118
+      },
+      "pre_rvq": {
+        "R@1": 0.3,
+        "R@5": 1.18,
+        "R@10": 2.37,
+        "MRR": 1.56,
+        "MedR": 195.0,
+        "CE_400way": 8.9644
+      },
+      "quantization_mrr_gap": 0.0,
+      "sentiment_acc": 32.63,
+      "fixed_tau_batch_infonce": 5.2876,
+      "mae_loss": 0.7465,
+      "rvq_loss": 0.0115,
+      "mean_perplexity": 45.16,
+      "per_layer_perplexity": [
+        16.7,
+        31.7,
+        53.2,
+        53.3,
+        51.9,
+        64.1
+      ]
+    },
+    "selection_score": -15.6341
+  },
+  {
+    "epoch": 14,
+    "train_loss": 4.1798,
+    "val": {
+      "post_rvq": {
+        "R@1": 0.59,
+        "R@5": 1.18,
+        "R@10": 2.96,
+        "MRR": 1.78,
+        "MedR": 185.0,
+        "CE_400way": 8.6982
+      },
+      "pre_rvq": {
+        "R@1": 0.3,
+        "R@5": 1.18,
+        "R@10": 2.96,
+        "MRR": 1.59,
+        "MedR": 187.0,
+        "CE_400way": 8.5968
+      },
+      "quantization_mrr_gap": -0.19,
+      "sentiment_acc": 34.13,
+      "fixed_tau_batch_infonce": 5.1125,
+      "mae_loss": 0.7489,
+      "rvq_loss": 0.0181,
+      "mean_perplexity": 41.09,
+      "per_layer_perplexity": [
+        19.2,
+        28.9,
+        44.4,
+        39.4,
+        52.6,
+        62.0
+      ]
+    },
+    "selection_score": -14.5804
+  }
+]
