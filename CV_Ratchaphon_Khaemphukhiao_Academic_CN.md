@@ -66,6 +66,35 @@
 
 ---
 
+## 产学研转化与工程系统落地经历 (Professional Engineering Experience)
+
+**创始人兼首席技术官 (CTO) / CEO — SC AI Co., Ltd. & Kaset AI Co., Ltd.**  
+*泰国 · 2025年8月 – 至今*
+- **7Being 脑机接口全栈系统:** 带领团队自主研发全套 BCI 身心健康监测平台：涵盖脑电头带与智能戒指的低功耗蓝牙（BLE）固件开发、手机摄像头 rPPG 实时心率感知、脑电/心率实时神经生物反馈微服务架构，并在中东及东南亚 6 个国家（巴林、约旦、沙特、阿曼、印尼、印度）实现落地合作。
+- **医学影像 AI 与大模型系统:** 研发脑部 CT 颅内出血检测与分割医学影像辅助诊断系统（DICOM）；开发并部署支持多租户高并发的企业级 RAG 大模型知识库系统。
+- **科研基金与产业加速:** 主导完成泰国科技部 TED Fund (150 万泰铢) 与 SIBB (30 万泰铢) 官方创新基金交付结项；入选 NVIDIA Inception（初创加速计划）成员，获批 Google for Startups 320 万泰铢云算力支持。
+
+**资深 MLOps 与 AI 算力系统顾问 — Siametrics Consulting**  
+*泰国曼谷 · 2025年1月 – 2025年7月*
+- 担任商业银行超个性化营销大模型与泰国证券交易所（SET）ATLAS 上市公司智能投研分析系统的核心技术负责人。
+- 负责基于 NVIDIA A100/H100 高性能计算集群的 MLOps/LLMOps 架构设计、CI/CD 自动化流水线、模型版本追踪与高并发低延迟部署。
+
+**资深机器学习算力基础设施工程师 — VISAI.ai**  
+*泰国曼谷 · 2022年5月 – 2024年12月*
+- **国家级 AI 基础设施:** 负责泰国国家电信（NT）AI Connect 项目及 VISAI AI 云平台 (`acp.visai.ai`) 的 NVIDIA A100 多集群微服务系统底层架构设计与落地。
+- **政府级高安全 NLP 系统:** 为泰国中央调查局（Central Investigation Bureau）设计并部署基于 NVIDIA A100 的私有化自然语言处理与大模型分析系统。
+- 长期担任泰国国家电信与政府部门工程师的 Docker 与 Kubernetes 高级架构培训导师。
+
+**医学人工智能助理研究员 — CMKL University (卡耐基梅隆-KMITL 联合大学)**  
+*泰国曼谷 · 2019年8月 – 2021年8月*
+- 与儿童专科医院合作研发早产儿视网膜病变（ROP）深度学习辅助诊断系统；与 KMITL 医学院合作开展心音听诊 AI 分类研究。
+
+**嵌入式与智能传感助理研究员 — BURN LAB, KMITL**  
+*泰国曼谷 · 2015年8月 – 2019年8月*
+- 基于 FPGA 与声发射（Acoustic Emission）信号研发铁轨探伤实时 AI 监测硬件系统；研发基于 Kinect 的非接触式跌倒检测系统（荣获 Chevron 泰国青年发明家大赛全国总冠军）。
+
+---
+
 ## 国际学术论文 (IEEE / BMEiCON)
 
 1. **R. Khaemphukhiao**, et al., “Cardiorespiratory Agreement and Complementary Data Yield of a Piezoelectric Sensor and mmWave Radar,” in *Proc. International Conference on Biomedical Engineering (BMEiCON)*, 2026.

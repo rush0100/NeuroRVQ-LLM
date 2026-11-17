@@ -11,9 +11,9 @@
 
 ## Academic Executive Summary
 
-Ph.D. candidate in Biomedical Engineering at King Mongkut's Institute of Technology Ladkrabang (KMITL) under the **KMITL Doctoral Scholarship (ทุนปริญญาเอกพระจอมเกล้าลาดกระบัง)**. Formally awarded the **KMITL Overseas Short-Term Research Mobility Grant (400,000 THB / ~82,000 RMB under Scholarship Clause 10.2)** to conduct visiting research abroad, with **Harbin Institute of Technology, Shenzhen (HIT Shenzhen)** designated as the primary desired research destination. 
+Ph.D. candidate in Biomedical Engineering at King Mongkut's Institute of Technology Ladkrabang (KMITL) under the **KMITL Doctoral Scholarship (ทุนปริญญาเอกพระจอมเกล้าลาดกระบัง)**. Formally awarded the **KMITL Overseas Short-Term Research Mobility Grant (400,000 THB / ~82,000 RMB under Scholarship Clause 10.2)** to conduct visiting research abroad, with **Harbin Institute of Technology, Shenzhen (HIT Shenzhen)** designated as the primary desired research destination.
 
-Ten years of end-to-end expertise spanning biosignal instrumentation (TI ADS1299 EEG analog front-end, high-density 105/128-ch EEG, mmWave radar), Riemannian manifold geometry, and large language model (LLM) architectures. Lead researcher of **RUSH-EEG2Text**, a fully implemented, teacher-forcing-free EEG-to-text decoding framework directly extending HIT Shenzhen's CET-MAE (ACL 2024) and BrainECHO (ACL 2025). Possesses dedicated local AI compute infrastructure (**NVIDIA DGX Spark**, Grace Blackwell GB10, 128 GB unified memory). Author of 5 peer-reviewed IEEE / BMEiCON papers; recipient of the **Platinum Award and Gold Medal with Jury Congratulations at BME IIF 2026 (Fukuoka, Japan)**. 
+Ten years of end-to-end expertise spanning biosignal instrumentation (TI ADS1299 EEG analog front-end, high-density 105/128-ch EEG, mmWave radar), Riemannian manifold geometry, and large language model (LLM) architectures. Lead researcher of **RUSH-EEG2Text**, a fully implemented, teacher-forcing-free EEG-to-text decoding framework directly extending HIT Shenzhen's CET-MAE (ACL 2024) and BrainECHO (ACL 2025). Possesses dedicated local AI compute infrastructure (**NVIDIA DGX Spark**, Grace Blackwell GB10, 128 GB unified memory). Author of 5 peer-reviewed IEEE / BMEiCON papers; recipient of the **Platinum Award and Gold Medal with Jury Congratulations at BME IIF 2026 (Fukuoka, Japan)**.
 
 *Personal Context & Research Passion:* Frequently visits Shenzhen (spouse's family domicile in Shenzhen). Deeply inspired by China's vibrant technological and scientific innovation ecosystem; visiting strictly for academic collaboration and joint research, not seeking commercial employment.
 
@@ -61,6 +61,35 @@ Ten years of end-to-end expertise spanning biosignal instrumentation (TI ADS1299
 - Engineered end-to-end wearable and clinical biosignal acquisition architecture: TI ADS1299 analog front-end, Bluetooth Low Energy (BLE) streaming, real-time DSP band-power decomposition, and rPPG camera vital-sensing.
 - Collected longitudinal EEG recordings during specialized meditation and cognitive tasks.
 - **Honors:** Awarded **Platinum Award and Gold Medal with Jury Congratulations at BME IIF 2026 (Fukuoka, Japan)**.
+
+---
+
+## Professional & Engineering Leadership Experience (Industry-Academia Translation)
+
+**Founder & CTO / CEO — SC AI Co., Ltd. & Kaset AI Co., Ltd.**  
+*Pathum Thani, Thailand · Aug 2025 – Present*
+- **7Being BCI Platform:** Engineered end-to-end BCI wellness and cognitive monitoring system: BLE firmware for EEG headsets and smart rings, on-device rPPG heart-rate computer vision, real-time EEG biofeedback, microservices backend, and international partner deployment across 6 countries (Bahrain, Jordan, Saudi Arabia, Oman, Indonesia, India).
+- **Medical AI Solutions:** Developed DICOM viewer with intracranial hemorrhage detection and segmentation on brain CT scans; deployed multi-tenant enterprise RAG LLM platforms.
+- **Grants & Accreditations:** Raised THB 1.8M in government competitive innovation grants (TED Fund THB 1.5M, SIBB THB 300K, both delivered and closed), THB 3.2M Google Cloud for Startups credits; member of NVIDIA Inception Program.
+
+**Senior MLOps & Applied AI Infrastructure Consultant — Siametrics Consulting**  
+*Bangkok, Thailand · Jan 2025 – Jul 2025*
+- Lead technical architect for commercial bank's hyper-personalized AI marketing engine and the Stock Exchange of Thailand (SET ATLAS) automated financial intelligence system.
+- Designed enterprise-grade model versioning, automated testing, and inference pipelines on NVIDIA A100/H100 clusters.
+
+**Senior Machine Learning Infrastructure Engineer — VISAI.ai**  
+*Bangkok, Thailand · May 2022 – Dec 2024*
+- **National Telecom AI Infrastructure:** Designed and deployed the NVIDIA A100 multi-cluster microservices architecture powering National Telecom's AI Connect and VISAI AI Cloud Platform (`acp.visai.ai`).
+- **Government AI Systems:** Engineered high-security NLP and automated inference infrastructure on NVIDIA A100 for Thailand's Central Investigation Bureau.
+- Technical instructor on Docker and Kubernetes for state enterprise and government engineering teams.
+
+**Research Assistant — CMKL University (Medical AI)**  
+*Bangkok, Thailand · Aug 2019 – Aug 2021*
+- Co-developed deep learning models for Retinopathy of Prematurity (ROP) screening with Queen Sirikit National Institute of Child Health, and AI heart-sound classification with KMITL Faculty of Medicine.
+
+**Research Assistant — BURN LAB, KMITL**  
+*Bangkok, Thailand · Aug 2015 – Aug 2019*
+- Researched FPGA-based acoustic emission sensing with real-time AI classification for rail flaw detection; developed contactless fall detection using Kinect (national first prize in Chevron Young Makers Thailand).
 
 ---
 
