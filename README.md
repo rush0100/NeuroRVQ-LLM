@@ -4,6 +4,7 @@
 [![Hugging Face Models](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-RUSH0100%2FRUSH--EEG2Text--Qwen2.5--7B-FFD21E)](https://huggingface.co/RUSH0100/RUSH-EEG2Text-Qwen2.5-7B)
 [![Hardware](https://img.shields.io/badge/Hardware-NVIDIA%20DGX%20Spark%20(GB10%20128GB%20UMA)-76B900)](./configs/spark_full4task_champion_qwen7b.yaml)
 [![Status: Pre-Submission Draft](https://img.shields.io/badge/Status-Draft%20%26%20Collaboration%20Proposal-orange.svg)](./paper_q1/COLLABORATION_NOTE_HIT_SHENZHEN.md)
+[![Explainer Video](https://img.shields.io/badge/%F0%9F%8E%A5%20Video-Explainer%20MP4-red)](./assets/rush-eeg2text-explained-simply.mp4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 
 > **Pre-Submission Working Draft & Academic Collaboration Proposal:**  
@@ -17,7 +18,17 @@
 >   - `[Invited Co-Author Slot: Dr. Zhenxi Song, Harbin Institute of Technology, Shenzhen]`  
 >   - `[Invited Co-Author & Co-Corresponding Author Slot: Prof. Zhiguo Zhang, Harbin Institute of Technology, Shenzhen]`  
 > - **Status:** Fully reproducible prototype & pre-submission manuscript draft submitted as an academic invitation to collaborate during an upcoming visiting research stay.  
-> - **Manuscript Draft (IEEE Double-Column PDF):** [`paper_q1/RUSH_EEG2Text_IEEE_TNSRE_Draft.pdf`](./paper_q1/RUSH_EEG2Text_IEEE_TNSRE_Draft.pdf)
+> - **Manuscript Draft (IEEE Double-Column PDF):** [`paper_q1/RUSH_EEG2Text_IEEE_TNSRE_Draft.pdf`](./paper_q1/RUSH_EEG2Text_IEEE_TNSRE_Draft.pdf)  
+> - **Conceptual Video Explainer:** [`assets/rush-eeg2text-explained-simply.mp4`](./assets/rush-eeg2text-explained-simply.mp4)
+
+---
+
+### 🎥 Executive Video Presentation & Plain-Language Explainer
+A plain-language audio-visual explainer walking through the motivation, Riemannian connectome mapping, length-leakage elimination, and non-teacher-forced LLM decoding:
+- **Local File in Repository:** [`assets/rush-eeg2text-explained-simply.mp4`](./assets/rush-eeg2text-explained-simply.mp4)
+- **Direct GitHub Video Link:** [Click to view / download video (`assets/rush-eeg2text-explained-simply.mp4`)](https://github.com/rush0100/RUSH-EEG2Text/raw/main/assets/rush-eeg2text-explained-simply.mp4)
+
+---
 
 ---
 

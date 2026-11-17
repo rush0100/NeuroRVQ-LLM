@@ -12,6 +12,12 @@
 \usepackage{microtype}
 \usepackage{balance}
 
+\setlength{\textfloatsep}{6pt plus 1pt minus 2pt}
+\setlength{\floatsep}{6pt plus 1pt minus 2pt}
+\setlength{\intextsep}{6pt plus 1pt minus 2pt}
+\setlength{\abovecaptionskip}{3pt plus 1pt minus 1pt}
+\setlength{\belowcaptionskip}{3pt plus 1pt minus 1pt}
+
 \hypersetup{
     colorlinks=true,
     linkcolor=blue,
@@ -32,6 +38,7 @@ Pattarapong~Phasukkit,~\IEEEmembership{Member,~IEEE}%
 \thanks{Ratchaphon Khaemphukhiao is with the Department of Biomedical Engineering, School of Engineering, King Mongkut's Institute of Technology Ladkrabang (KMITL), Bangkok 10520, Thailand (e-mail: ratchaphon@rush0100.com).}%
 \thanks{Pattarapong Phasukkit is with the Department of Electronic Engineering, School of Engineering, King Mongkut's Institute of Technology Ladkrabang (KMITL), Bangkok 10520, Thailand (e-mail: pattarapong.ph@kmitl.ac.th).}%
 \thanks{{[Invited Author Slots]}: Reserved for invited collaborative research mentors from the School of Computer Science and Technology and School of Intelligence Science and Engineering, Harbin Institute of Technology, Shenzhen 518055, China.}%
+\thanks{Open-source code, preprocessing pipelines, and audio-visual explainer are available at \url{https://github.com/rush0100/RUSH-EEG2Text}. Pretrained model checkpoints and LoRA adapters are hosted at \url{https://huggingface.co/RUSH0100/RUSH-EEG2Text-Qwen2.5-7B}.}%
 }
 
 \markboth{PRE-SUBMISSION WORKING DRAFT AND RESEARCH COLLABORATION PROPOSAL}{Khaemphukhiao \MakeLowercase{\textit{et al.}}: RUSH-EEG2Text}
@@ -67,6 +74,8 @@ To bridge these gaps, we propose \textbf{RUSH-EEG2Text}, a length-invariant, con
     \item \textbf{Un-Inflated Coarse-to-Fine EMA-RVQ with Multi-Positive Cross-Subject Alignment:} We design an L2-sphere-initialized Euclidean Exponential Moving Average Residual Vector Quantizer (EMA-RVQ) with dead-code revival and quantizer dropout, achieving high active codebook diversity (perplexity $> 84$) and negligible quantization loss ($\Delta\text{MRR} < 1.7\%$). Stage~1 is trained with cognitive-load-weighted multi-positive InfoNCE and a cross-subject brain-to-brain invariance loss that eliminates false-negative collisions when multiple subjects read identical sentences.
     \item \textbf{Rigorous Unseen-Subject \& Pure-Noise Sanity Verification:} Across 14 systematic Stage~1 architectural ablations (\texttt{task1-SR}) and full-scale 4-task training across 18,276 trials (30 unique subjects across ZuCo 1.0 and ZuCo 2.0) on a single 128-GB unified-memory NVIDIA DGX Spark workstation, RUSH-EEG2Text achieves $\mathbf{56.09\%}$ R@10 and median rank $\mathbf{9.0}$ out of 1,313 unique sentences across 4 held-out test subjects ($\text{MRR}=\mathbf{23.14\%}$ vs.\ $0.77\%$ under Gaussian noise), and establishes a new cross-subject teacher-forcing-free generation state of the art ($\mathbf{19.60\%}$ BLEU-1, $\mathbf{9.89\%}$ BLEU-4, $+\mathbf{10.83\%}$ $\Delta\text{BLEU-1}$ and $+\mathbf{9.46\%}$ $\Delta\text{BLEU-4}$ over pure noise).
 \end{itemize}
+
+To ensure complete reproducibility and accelerate open-source research in generative brain-to-language modeling, all source code, 20-core connectome extraction pipelines, diagnostic evaluation scripts, video presentation, and model checkpoints are publicly accessible on GitHub (\url{https://github.com/rush0100/RUSH-EEG2Text}) and Hugging Face (\url{https://huggingface.co/RUSH0100/RUSH-EEG2Text-Qwen2.5-7B}).
 
 \section{Related Work}
 
@@ -363,14 +372,18 @@ Table~\ref{tab:stage2_generation} compares RUSH-EEG2Text against published cross
 
 \textbf{Limitations and Future Roadmap for Continuous / Locked-In EEG:} While oculomotor metadata (chronological fixation order and pupil arousal) enhances lexical alignment during natural reading, individuals with complete locked-in syndrome (CLIS) or severe oculomotor palsy lack gaze control. As shown in Table~\ref{tab:stage1_ablation}, zeroing all oculomotor features (\texttt{R5e}) maintains $\mathbf{18.39\%}$ R@10 on \texttt{ZMG} ($+\mathbf{15.80\%}$ over noise), outperforming baseline \texttt{R0} ($12.73\%$). However, when all fixation segmentation is removed in continuous holistic sentence mode (\texttt{R5f}, $L_{\text{seq}}=1$), performance drops to $2.59\%$ R@10, which is statistically indistinguishable from 400-way random chance ($2.50\%$, $p=0.41$). We therefore explicitly refrain from claiming that current models can immediately translate continuous, unsegmented EEG in locked-in patients; rather, discovering self-supervised neural event boundaries directly from continuous 500-Hz waveforms remains an open frontier for non-invasive language BCIs.
 
-\section{Conclusion}
+\section{Conclusion and Open Science}
 We presented \textbf{RUSH-EEG2Text}, a Riemannian connectome-guided hierarchical quantization framework that eliminates fixation-length leakage and codebook collapse while enabling strict teacher-forcing-free language decoding on compact unified-memory hardware. Combining 3D 12-ROI four-stage reading dynamics, Late Connectome Bottleneck Fusion over Welch wPLI/iCoh and Log-Euclidean SPD tangent vectors, and un-inflated 6-book EMA-RVQ yielded a $3.47\times$ improvement in unseen-subject 400-way retrieval MRR ($22.22\%$ vs.\ $6.40\%$), $56.09\%$ 1,313-way unseen-subject R@10 across 30 subjects, and $19.60\%$ BLEU-1 / $9.89\%$ BLEU-4 ($+10.83\%$ / $+9.46\%$ over Gaussian noise) in strict teacher-forcing-free generation. Controlled single-task experiments on \texttt{BART-large} ($16.38\%$ BLEU-1, $0.97\%$ BLEU-4) and double zero-shot evaluations ($24.05\%$ semantic similarity, $+9.18\%$ over noise) confirm that RUSH-EEG2Text provides genuine representational advantages independent of LLM capacity.
 
+To facilitate community benchmarking and clinical translation, all software and models are openly released: complete source code, 20-core connectome extractors, and diagnostic test scripts are available on GitHub (\url{https://github.com/rush0100/RUSH-EEG2Text}); pretrained Stage~1 EMA-RVQ checkpoints, Stage~2 BrainToLLM projectors, and PEFT LoRA adapters for \texttt{Qwen2.5-7B-Instruct} are hosted on Hugging Face (\url{https://huggingface.co/RUSH0100/RUSH-EEG2Text-Qwen2.5-7B}), accompanied by an audio-visual conceptual explainer archived in the repository.
+
 \section*{Acknowledgment}
-This work is supported by King Mongkut's Institute of Technology Ladkrabang.
+This work is supported by King Mongkut's Institute of Technology Ladkrabang under the KMITL Doctoral Scholarship.
 
 \balance
+{\small
 \bibliographystyle{IEEEtran}
 \bibliography{references}
+}
 
 \end{document}
