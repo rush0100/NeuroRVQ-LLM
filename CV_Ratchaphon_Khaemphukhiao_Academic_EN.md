@@ -56,7 +56,7 @@ Ten years of end-to-end expertise spanning biosignal instrumentation (TI ADS1299
   3. **MODMA Clinical Depression:** 128-channel clinical EEG and 3-channel wearable EEG with PHQ-9 and GAD-7 regression.
 - **Evidence-Grounding Bridge:** Predicts 11 quantitative EEG biomarkers (frontal alpha asymmetry, theta/beta ratio, Wernicke-Broca wPLI, Riemannian spectral power) into dedicated LLM tokens to enforce hallucination-free clinical chain-of-thought (`<think>...</think>`) reasoning under Local Differential Privacy (ε, δ).
 
-### 3. Baojai: High-Density EEG & Physiological Biofeedback Platform
+### 3. 7Being: High-Density EEG & Physiological Biofeedback Platform
 *Principal Architect & Investigator*
 - Engineered end-to-end wearable and clinical biosignal acquisition architecture: TI ADS1299 analog front-end, Bluetooth Low Energy (BLE) streaming, real-time DSP band-power decomposition, and rPPG camera vital-sensing.
 - Collected longitudinal EEG recordings during specialized meditation and cognitive tasks.
