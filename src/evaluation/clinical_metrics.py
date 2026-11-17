@@ -68,8 +68,8 @@ def biomarkers_dict_to_norm_vec(bm: Dict[str, Any]) -> np.ndarray:
 def parse_neuroreasoner_cot_output(text: str, domain: str) -> Dict[str, Any]:
     """Extract `<neural_evidence>`, `<clinical_reasoning>`, and `<assessment>` blocks with robust fallback."""
     ev_match = re.search(r"<neural_evidence>\s*(\{.*?\})\s*</neural_evidence>", text, flags=re.DOTALL)
-    rs_match = re.search(r"<clinical_reasoning>(.*?)</clinical_reasoning>", text, flags=re.DOTALL)
-    as_match = re.search(r"<assessment>\s*(\{.*?\})\s*</assessment>", text, flags=re.DOTALL)
+    rs_match = re.search(r"<clinical_reasoning>(.*?)(?:</clinical_reasoning>|<assessment>|$)", text, flags=re.DOTALL)
+    as_match = re.search(r"<assessment>\s*(\{.*?\})\s*(?:</assessment>|$)", text, flags=re.DOTALL)
 
     ev_dict: Dict[str, float] = {}
     ev_valid = False
@@ -89,13 +89,27 @@ def parse_neuroreasoner_cot_output(text: str, domain: str) -> Dict[str, Any]:
     assess_dict: Dict[str, Any] = {}
     as_valid = False
     if as_match:
+        raw_as = as_match.group(1).strip()
         try:
-            loaded_a = json.loads(as_match.group(1))
+            loaded_a = json.loads(raw_as)
             if isinstance(loaded_a, dict):
                 assess_dict = loaded_a
                 as_valid = "diagnosis" in assess_dict
         except Exception:
-            as_valid = False
+            # Fallback regex for diagnosis & scores inside incomplete JSON
+            m_diag = re.search(r'["\']diagnosis["\']\s*:\s*["\']([A-Za-z]+)["\']', raw_as)
+            if m_diag:
+                assess_dict["diagnosis"] = m_diag.group(1)
+                as_valid = True
+            m_mmse = re.search(r'["\']estimated_mmse["\']\s*:\s*([0-9.]+)', raw_as)
+            if m_mmse:
+                assess_dict["estimated_mmse"] = float(m_mmse.group(1))
+            m_phq = re.search(r'["\']estimated_phq9["\']\s*:\s*([0-9.]+)', raw_as)
+            if m_phq:
+                assess_dict["estimated_phq9"] = float(m_phq.group(1))
+            m_gad = re.search(r'["\']estimated_gad7["\']\s*:\s*([0-9.]+)', raw_as)
+            if m_gad:
+                assess_dict["estimated_gad7"] = float(m_gad.group(1))
 
     valid_codes = DOMAIN_VALID_LABELS.get(domain, ["CN", "AD", "FTD", "CTL", "PD", "HC", "MDD"])
     pred_diag = str(assess_dict.get("diagnosis", "")).strip().upper()

@@ -415,7 +415,7 @@ class NeuroReasonerModel(nn.Module):
         batch: Dict[str, Any],
         device: torch.device,
         max_prompt_tokens: int = 128,
-        max_new_tokens: int = 240,
+        max_new_tokens: int = 430,
         replace_with_gaussian_noise: bool = False,
     ) -> List[str]:
         """Strict Teacher-Forcing-Free Chain-of-Thought Clinical Report Generation."""

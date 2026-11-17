@@ -26,9 +26,20 @@ docker run --rm --gpus all --ipc=host --network=host \
     echo "================================================================================"
     echo "[Paper 2 | Run 1/3] Proposed NeuroReasoner (Federated-LoRA + CoT Evidence Grounding)"
     echo "================================================================================"
-    /workspace/.venv/bin/python -u -m src.train_neuroreasoner \
-      --config configs/spark_paper2_neuroreasoner_qwen7b.yaml \
-      --paradigm federated_lora
+    if [[ -f "checkpoints/neuroreasoner_multicenter_cot_qwen7b/neuroreasoner_privacy_state_best.pt" ]]; then
+      echo "Resuming Continual Fine-Tuning from existing 12-round checkpoint with 430-token CoT budget (4 rounds)..."
+      /workspace/.venv/bin/python -u -m src.train_neuroreasoner \
+        --config configs/spark_paper2_neuroreasoner_qwen7b.yaml \
+        --resume-from-checkpoint checkpoints/neuroreasoner_multicenter_cot_qwen7b/neuroreasoner_privacy_state_best.pt \
+        --epochs 4 \
+        --lr-lora 3e-5 \
+        --max-target-tokens 430 \
+        --max-new-tokens 430
+    else
+      /workspace/.venv/bin/python -u -m src.train_neuroreasoner \
+        --config configs/spark_paper2_neuroreasoner_qwen7b.yaml \
+        --paradigm federated_lora
+    fi
 
     echo "================================================================================"
     echo "[Paper 2 | Run 2/3] Ablation: Naive Multimodal EEG-LLM (w/o Evidence Grounding)"

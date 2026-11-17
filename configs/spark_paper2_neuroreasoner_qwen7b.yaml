@@ -43,7 +43,7 @@ llm:
   lora_alpha: 32
   lora_dropout: 0.05
   max_prompt_tokens: 128
-  max_new_tokens: 230
+  max_new_tokens: 430
   cot_evidence_grounding: true
 
 training:
@@ -61,3 +61,4 @@ training:
   rvq_loss_weight: 0.50
   bio_loss_weight: 0.85
   diag_loss_weight: 0.85
+  max_target_tokens: 430

@@ -235,6 +235,11 @@ def main() -> None:
     parser.add_argument("--paradigm", type=str, default=None, choices=["federated_lora", "centralized"])
     parser.add_argument("--disable-grounding", action="store_true", help="Ablation: disable explicit biomarker/diagnostic bridge losses")
     parser.add_argument("--exp-suffix", type=str, default="", help="Optional experiment name suffix")
+    parser.add_argument("--resume-from-checkpoint", type=str, default=None, help="Resume continual training from existing privacy state checkpoint")
+    parser.add_argument("--epochs", type=int, default=None, help="Override number of training rounds/epochs")
+    parser.add_argument("--lr-lora", type=float, default=None, help="Override LoRA learning rate")
+    parser.add_argument("--max-target-tokens", type=int, default=None, help="Override max target tokens")
+    parser.add_argument("--max-new-tokens", type=int, default=None, help="Override max new tokens for generation")
     parser.add_argument("--eval-only", action="store_true")
     args = parser.parse_args()
 
@@ -247,6 +252,14 @@ def main() -> None:
         cfg["llm"]["cot_evidence_grounding"] = False
     if args.exp_suffix:
         cfg["experiment_name"] = f"{cfg['experiment_name']}_{args.exp_suffix}"
+    if args.epochs is not None:
+        cfg["training"]["epochs"] = args.epochs
+    if args.lr_lora is not None:
+        cfg["training"]["lr_lora"] = args.lr_lora
+    if args.max_target_tokens is not None:
+        cfg["training"]["max_target_tokens"] = args.max_target_tokens
+    if args.max_new_tokens is not None:
+        cfg["llm"]["max_new_tokens"] = args.max_new_tokens
 
     exp_name = cfg["experiment_name"]
     out_dir = os.path.join("./checkpoints", exp_name)
@@ -325,9 +338,16 @@ def main() -> None:
     patience = int(tr_cfg.get("early_stop_patience", 5))
     num_workers = int(cfg["data"].get("num_workers", 4))
     max_p_toks = int(llm_cfg.get("max_prompt_tokens", 128))
-    max_new_toks = int(llm_cfg.get("max_new_tokens", 230))
+    max_new_toks = int(llm_cfg.get("max_new_tokens", 430))
+    max_tgt_toks = int(tr_cfg.get("max_target_tokens", max_new_toks))
 
     best_ckpt_path = os.path.join(out_dir, "neuroreasoner_privacy_state_best.pt")
+
+    resume_path = args.resume_from_checkpoint or tr_cfg.get("resume_from_checkpoint")
+    if resume_path and os.path.exists(resume_path):
+        res_sd = torch.load(resume_path, map_location="cpu", weights_only=False)
+        model.load_privacy_preserving_state(res_sd)
+        print(f"[NeuroReasoner] Resumed trainable model state from `{resume_path}`!")
 
     print(
         f"[NeuroReasoner] Exp=`{exp_name}` | Paradigm=`{paradigm}` | Grounding=`{use_grounding}` (DP={dp_noise}) | "
@@ -400,7 +420,7 @@ def main() -> None:
                         device=device,
                         grad_accum=grad_accum,
                         max_prompt_tokens=max_p_toks,
-                        max_target_tokens=max_new_toks,
+                        max_target_tokens=max_tgt_toks,
                         rvq_weight=rvq_w,
                         bio_weight=bio_w,
                         diag_weight=diag_w,
@@ -439,7 +459,7 @@ def main() -> None:
                     device=device,
                     grad_accum=grad_accum,
                     max_prompt_tokens=max_p_toks,
-                    max_target_tokens=max_new_toks,
+                    max_target_tokens=max_tgt_toks,
                     rvq_weight=rvq_w,
                     bio_weight=bio_w,
                     diag_weight=diag_w,
