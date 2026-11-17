@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  rush-eeg2text-inference:
+    build:
+      context: ../..
+      dockerfile: deploy/tensorrt_llm/Dockerfile
+    image: rush-eeg2text-trtllm:latest
+    container_name: rush_eeg2text_trtllm_server
+    restart: unless-stopped
+    network_mode: host
+    ipc: host
+    ulimits:
+      memlock: -1
+      stack: 67108864
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - PYTHONPATH=/workspace
+      - PORT=8000
+    volumes:
+      - ../..:/workspace
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    command: >
+      bash -c "
+        python3 deploy/tensorrt_llm/export_and_merge_lora.py &&
+        bash deploy/tensorrt_llm/build_engine.sh || true &&
+        python3 deploy/tensorrt_llm/eeg_trtllm_infer.py &&
+        python3 -m uvicorn deploy.tensorrt_llm.server_trtllm:app --host 0.0.0.0 --port 8000
+      "
