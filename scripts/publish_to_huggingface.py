@@ -76,6 +76,7 @@ pipeline_tag: text-generation
 
 - **Project Status:** Pre-Submission Working Draft & Academic Collaboration Proposal (KMITL Overseas Research Mobility Grant)
 - **GitHub Repository (Code, Preprocessing, & LaTeX Draft):** [github.com/rush0100/RUSH-EEG2Text](https://github.com/rush0100/RUSH-EEG2Text)
+- **Conceptual Video Explainer:** [Watch on GitHub](https://github.com/rush0100/RUSH-EEG2Text/raw/main/assets/rush-eeg2text-explained-simply.mp4)
 - **Primary Authors:** Ratchaphon Khaemphukhiao (Ph.D. Candidate, KMITL) & Assoc. Prof. Pattarapong Phasukkit, D.Eng. (Principal Advisor, KMITL)
 - **Invited Co-Author Slots (Open for Joint Collaboration):**
   - `[Invited Co-Author Slot: Dr. Zhenxi Song, Harbin Institute of Technology, Shenzhen]`
