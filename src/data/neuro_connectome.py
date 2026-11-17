@@ -1,5 +1,5 @@
 """
-Neuro-Connectome & Full 8-Metadata Signal Processing Engine for Paper 1 (RUSH-EEG2Text) & Paper 2 (NeuroReasoner).
+Neuro-Connectome & Full 8-Metadata Signal Processing Engine for Paper 1 (NeuroRVQ-LLM) & Paper 2 (NeuroReasoner).
 
 Implements:
   1. Official 3D Electrode Coordinates (`chanlocs105.mat`, 105 EGI HydroCel scalp channels) -> 12 Anatomical Cortical ROIs

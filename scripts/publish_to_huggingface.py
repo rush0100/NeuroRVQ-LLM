@@ -74,8 +74,12 @@ pipeline_tag: text-generation
 
 **Riemannian Connectome-Guided Hierarchical Quantization for Teacher-Forcing-Free Cross-Subject EEG-to-Text Decoding**
 
+- **Project Status:** Pre-Submission Working Draft & Academic Collaboration Proposal (KMITL Overseas Research Mobility Grant)
 - **GitHub Repository (Code, Preprocessing, & LaTeX Draft):** [github.com/rush0100/RUSH-EEG2Text](https://github.com/rush0100/RUSH-EEG2Text)
-- **Authors:** Ratchaphon Khaemphukhiao (KMITL), Zhenxi Song (HIT Shenzhen), Zhiguo Zhang (HIT Shenzhen), and Assoc. Prof. Pattarapong Phasukkit, D.Eng. (KMITL)
+- **Primary Authors:** Ratchaphon Khaemphukhiao (Ph.D. Candidate, KMITL) & Assoc. Prof. Pattarapong Phasukkit, D.Eng. (Principal Advisor, KMITL)
+- **Invited Co-Author Slots (Open for Joint Collaboration):**
+  - `[Invited Co-Author Slot: Dr. Zhenxi Song, Harbin Institute of Technology, Shenzhen]`
+  - `[Invited Co-Author & Co-Corresponding Author Slot: Prof. Zhiguo Zhang, Harbin Institute of Technology, Shenzhen]`
 - **Base Causal LLM:** `Qwen/Qwen2.5-7B-Instruct` (adapted via Rank-16 BF16 LoRA + 50% Scheduled Target-Word Dropout)
 - **Training Corpus:** All 4 Naturalistic Reading Tasks of **ZuCo 1.0 & ZuCo 2.0** (`task1-SR`, `task2-NR`, `task3-TSR`, `task2-NR-2.0` — **18,276 trials across 30 unique subjects**)
 - **Evaluation Protocol:** Strictly **Subject-Independent** (4 completely unseen test subjects: `ZMG`, `ZPH`, `YTL`, `YSL` — 2,717 test trials) & **100% Teacher-Forcing-Free** Beam Search (`num_beams=4`) verified against a Pure Gaussian Noise ($\\mathcal{{N}}(0, \\mathbf{{I}})$) Sanity Audit.

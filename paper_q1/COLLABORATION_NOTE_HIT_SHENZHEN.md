@@ -10,43 +10,63 @@
 
 Dear Prof. Zhiguo Zhang and Dr. Zhenxi Song,
 
-I hope this email finds you well. My name is **Ratchaphon Khaemphukhiao**, a Ph.D. researcher in Biomedical Engineering at **King Mongkut's Institute of Technology Ladkrabang (KMITL)**, Bangkok, Thailand, advised by **Assoc. Prof. Pattarapong Phasukkit, D.Eng.** (`pattarapong.ph@kmitl.ac.th`). Previously, I have published five IEEE/BMEiCON papers on biosignal processing and EEG/radar sensing and received the Platinum Award & Gold Medal at BME IIF 2026 (Fukuoka). My wife is from Shenzhen, and I spend regular time in Shenzhen with dedicated local AI compute infrastructure (**NVIDIA DGX Spark**, 128 GB Grace Blackwell unified memory).
+I hope this email finds you well. My name is **Ratchaphon Khaemphukhiao**, a Ph.D. candidate in Biomedical Engineering at **King Mongkut's Institute of Technology Ladkrabang (KMITL)**, Bangkok, Thailand, advised by **Assoc. Prof. Pattarapong Phasukkit, D.Eng.** (`pattarapong.ph@kmitl.ac.th`). Previously, I have published five IEEE/BMEiCON papers on biosignal processing and EEG/radar sensing and received the Platinum Award & Gold Medal at BME IIF 2026 (Fukuoka).
 
-Under the **KMITL Doctoral Scholarship Program** (which includes dedicated KMITL funding for short-term overseas collaborative research in Shenzhen), Assoc. Prof. Phasukkit and I would be deeply honored to explore a joint research collaboration with your group at **Harbin Institute of Technology, Shenzhen**, targeting two high-impact Q1 journal papers:
+I have been awarded a dedicated **400,000 THB (~82,000 RMB) overseas short-term research mobility grant** under the **KMITL Doctoral Scholarship** (Clause 10.2). Among all global institutions, the place I genuinely desire to conduct this visiting research is **Harbin Institute of Technology, Shenzhen (HIT Shenzhen)**. 
 
-1. **Paper 1 (Working Code, 14-Run Ablation, & IEEE Manuscript Draft Ready):**  
-   ***NeuroRVQ-LLM: Connectome-Guided Residual Vector Quantization for Length-Invariant and Teacher-Forcing-Free Cross-Subject EEG-to-Text Decoding***
-   - Directly inspired by your group's **[CET-MAE (ACL 2024)](https://aclanthology.org/2024.acl-long.393.pdf)** and the open future directions noted in Section 5 of **[BrainECHO (ACL 2025)](https://aclanthology.org/2025.findings-acl.142/)** (specifically eliminating signal-length padding correlations and achieving teacher-forcing-free open-vocabulary LLM decoding on silent reading EEG).
-   - **What we have built and verified so far on all 4 tasks of ZuCo 1.0 & 2.0 (18,276 trials, 30 subjects):**
-     - Identified and eliminated fixation-count length leakage via continuous `[0,1]` scanpath-progress Fourier positional encoding (reducing pure Gaussian noise retrieval on unseen subjects from `5.29%` down to exact random chance `1.42%` / `0.77%`).
-     - Mapped the 105 scalp channels (`chanlocs105.mat`) into 12 3D cortical ROIs across four cognitive reading windows (`FFD, GD, TRT, TRT-FFD`), paired with a **Zero-Initialized Late Connectome Bottleneck Adapter** fusing 500-Hz Welch **wPLI**, **Imaginary Coherence**, and **Log-Euclidean Riemannian SPD Tangent** vectors.
-     - Designed an un-inflated 6-codebook **EMA-RVQ** with multi-positive cross-subject InfoNCE, achieving **`56.09%` zero-shot R@10 (median rank `9.0` out of 1,313 unique sentences, `130×` random chance R@1)** across 4 strictly unseen test subjects (`ZMG`, `ZPH`, `YTL`, `YSL`).
-     - In Stage 2 strict **Teacher-Forcing-Free** open-vocabulary generation with `Qwen2.5-7B-Instruct` (BF16 LoRA + 50% scheduled target-word dropout), achieved **`19.60%` BLEU-1, `9.89%` BLEU-4, `19.58%` ROUGE-1 F1, and `90.85%` WER** on the 2,717 unseen-subject test trials, outperforming pure Gaussian noise (`8.77%` BLEU-1, `0.43%` BLEU-4, `182.92%` WER) by **`+10.83%` $\Delta$BLEU-1 and `+9.46%` $\Delta$BLEU-4 (`23.0×` over noise)** and surpassing recent cross-subject Non-TF baselines (`LURS` EMNLP 2026: `15.39%` BLEU-1 / `0.89%` BLEU-4).
+My wife is Chinese, and her family domicile is in Shenzhen, which has given me frequent opportunities to visit the city. Over my visits, I have been deeply captivated and inspired by China's remarkable technological progress and vibrant innovation ecosystem. Every time I am in Shenzhen, I feel an extraordinary surge of energy, inspiration, and motivation to conduct cutting-edge research and build impactful technological breakthroughs. I would like to clarify that my visit is driven strictly by academic passion—**I am not seeking employment in China**, but rather aiming to dedicate this visiting period to high-impact scientific collaboration in brain-computer interfaces (BCI) and neuro-symbolic AI under your esteemed mentorship.
 
-2. **Paper 2 (Planned Shenzhen Visiting Phase — Extending *EEG-MACS* & *GCAN*):**  
+Assoc. Prof. Phasukkit and I would be deeply honored to invite you and Dr. Song to **co-author our completed first paper** and explore hosting a short-term visiting research stay (3–6 months fully funded by my KMITL scholarship grant) at HIT Shenzhen:
+
+1. **Paper 1 (Working Code, Weights, Benchmark Audits, & IEEE Manuscript Ready):**  
+   ***RUSH-EEG2Text: Riemannian Connectome-Guided Hierarchical Quantization for Teacher-Forcing-Free Cross-Subject EEG-to-Text Decoding***
+   - Directly builds upon and extends your group's landmark papers **[CET-MAE (ACL 2024)](https://aclanthology.org/2024.acl-long.393.pdf)** and the open future directions highlighted in Section 5 of **[BrainECHO (ACL 2025)](https://aclanthology.org/2025.findings-acl.142/)** (specifically eliminating sequence-length padding correlation artifacts and achieving true teacher-forcing-free open-vocabulary LLM decoding on silent reading EEG).
+   - **Empirical Breakthroughs on all 4 tasks of ZuCo 1.0 & 2.0 (18,276 trials, 30 subjects):**
+     - **Length Leakage Eliminated:** Continuous `[0,1]` scanpath-progress Fourier positional encoding reduces pure Gaussian noise retrieval on unseen subjects to exact random chance (`0.77%` MRR).
+     - **Riemannian Connectome Fusion:** Scalp channels mapped to 12 3D cortical ROIs across 4 cognitive reading stages (`FFD, GD, TRT, TRT-FFD`), fused with continuous 500-Hz **wPLI**, **Imaginary Coherence**, and **Log-Euclidean Riemannian SPD Tangent vectors** via a zero-initialized residual cross-attention adapter.
+     - **EMA-RVQ & Zero-Shot Generalization:** 6-codebook EMA-RVQ achieves **`56.79 ± 2.44%` zero-shot R@10 across strictly unseen test subjects (`ZMG`, `ZPH`, `YTL`, `YSL`)**, and **`24.05%` semantic cosine similarity on 131 completely disjoint, unseen sentences** (Action 2 double zero-shot benchmark).
+     - **Strict Teacher-Forcing-Free LLM Decoding:** Beam-search ($B=4$) decoding with `Qwen2.5-7B-Instruct` (BF16 LoRA) reaches **`19.60%` BLEU-1, `9.89%` BLEU-4, `19.58%` ROUGE-1 F1, and `90.85%` WER** (outperforming length-matched Gaussian noise by **`+10.83%` $\Delta$BLEU-1 and `+9.46%` $\Delta$BLEU-4**, a `23.0×` signal-to-noise ratio).
+     - **Controlled Backbone Parity:** Also verified on `facebook/bart-large` (406M) under single-task `task1-SR` Non-TF decoding (**`16.38%` BLEU-1 / `0.97%` BLEU-4**), demonstrating clear superiority over recent Non-TF baselines (`LURS` EMNLP 2026).
+
+2. **Paper 2 (Planned HIT Shenzhen Visiting Phase):**  
    ***NeuroReasoner: Privacy-Preserving Multimodal EEG-LLM with Chain-of-Thought Neural Evidence Grounding for Cross-Center Cognitive and Affective Assessment***
-   - Reuses the exact privacy-preserving 12-ROI wPLI / Riemannian SPD biomarkers from Paper 1 to ground hallucination-free `<think>...</think>` clinical reasoning on a local DGX Spark appliance across heterogeneous hospital EEG montages.
+   - Actively running on local NVIDIA DGX Spark across 3 multi-hospital clinical cohorts (OpenNeuro `ds004504`, UNM/UIowa Parkinson's, and MODMA) with local differential privacy and evidence-grounded reasoning.
 
-To make reviewing effortless, we have organized our full reproducible codebase, 14-run ablation logs, and a 7-page IEEE Transactions draft here:
-- **GitHub Repository:** `https://github.com/rush0100/NeuroRVQ-LLM`
-- **Hugging Face Checkpoints & Model Card:** `https://huggingface.co/RUSH0100/NeuroRVQ-LLM-Qwen2.5-7B`
-- **Compiled IEEE Draft PDF:** `paper_q1/NeuroRVQ_LLM_IEEE_TNSRE_Draft.pdf` (also attached)
+**Invitation to Co-Author and Review:**  
+We would be deeply privileged to have you and Dr. Song as **co-authors** on *RUSH-EEG2Text*. We would be profoundly grateful if you could review the attached 9-page IEEE draft, assess its potential academic impact, and advise whether any additional experiments or positioning refinements are recommended to ensure acceptance in top journals such as *IEEE TNSRE* or *IEEE JBHI*.
 
-Would you and Dr. Song be open to a brief 20-minute online meeting (or an in-person visit at HIT Shenzhen University Town at your convenience) to discuss aligning this manuscript and a short-term visiting research plan with your lab's roadmap?
+- **GitHub Repository:** https://github.com/rush0100/RUSH-EEG2Text
+- **Hugging Face Checkpoints & Model Card:** https://huggingface.co/RUSH0100/RUSH-EEG2Text-Qwen2.5-7B
+- **Attached PDF:** `RUSH_EEG2Text_IEEE_TNSRE_Draft.pdf` (9-page IEEE Transactions format)
+
+Would you and Dr. Song be open to a brief 20-minute online meeting (or an in-person discussion at HIT Shenzhen University Town during my next visit) to discuss the manuscript and formalizing the visiting scholarship arrangement?
 
 ---
 
-### 中文摘要（供张治国教授与宋振溪老师审阅）
+### 中文版本（供张治国教授与宋振溪老师审阅）
 
 尊敬的张治国教授、宋振溪老师：
 
-您好！我是泰国先皇理工大学（KMITL）生物医学工程系的博士研究生 **Ratchaphon Khaemphukhiao**（导师为 **Pattarapong Phasukkit** 副教授）。我的妻子是深圳人，同时我受 KMITL 博士奖学金（含海外短期访学专项经费）资助，非常希望能有机会与哈工大（深圳）团队开展联合科研合作。
+您好！我是泰国先皇理工大学（KMITL）生物医学工程系的博士研究生 **Ratchaphon Khaemphukhiao**（导师为 **Pattarapong Phasukkit** 副教授）。
 
-拜读了贵课题组在 **ACL 2024 (`CET-MAE`)**、**ACL 2025 (`BrainECHO`)** 及 **ACM MM 2024 (`EEG-MACS`)** 的系列前沿工作后，我们针对 `BrainECHO` 第五节指出的**“序列填充长度泄露（Length Leakage）”**以及**“静默阅读缺乏声学中间模态时的跨被试离散化坍缩与 Teacher-Forcing 依赖”**问题，在本地 **NVIDIA DGX Spark (128GB 统一内存)** 上完成了第一篇合作论文原型 **NeuroRVQ-LLM** 的代码实现与全量 **ZuCo 1.0 + 2.0（4个任务、30名被试、18,276条样本）** 实验验证：
-1. **消除长度泄露**：提出连续 `[0,1]` 眼动扫描进度傅里叶位置编码，使纯高斯噪声输入下的跨被试检索退回理论随机水平（1,313句候选池下 Noise MRR = `0.77%`）。
-2. **三维脑区多阶段功率 + 晚融合脑网络瓶颈（wPLI / iCoh / 黎曼流形 SPD 切空间）+ 6层无膨胀 EMA-RVQ**：在严格未见被试（Unseen Subjects）的 **1,313句零样本检索**中达到 **`R@10 = 56.09%`（中位排名第 `9.0` 名，`R@1` 达随机水平的 `130` 倍）**；在第二阶段 `Qwen2.5-7B` 严格**无 Teacher-Forcing（TF-Free）**生成评估（2,717条未见被试测试样本）中达到 **`BLEU-1 = 19.60%`、`BLEU-4 = 9.89%`、`ROUGE-1 F1 = 19.58%`、`WER = 90.85%`**，显著超越纯高斯噪声对照（`BLEU-4 = 0.43%`，净增益 **`+10.83%` $\Delta$BLEU-1 / `+9.46%` $\Delta$BLEU-4**）及最新跨被试非 Teacher-Forcing 基线。
+我已正式获得 KMITL 博士生奖学金第 10.2 条设立的**海外短期访学专项科研经费 400,000 泰铢（约合 82,000 人民币 / 全额自费资助）**。在所有海外高校中，**哈尔滨工业大学（深圳）是我最向往、也是唯一最希望能前往开展学术访学与联合研究的高校**。
 
-完整开源代码、14组消融实验日志及 IEEE Transactions 双栏初稿已整理在 GitHub 仓库中。诚挚期待能与您和宋老师线上简短交流，或在我到访深圳期间前往哈工大（深圳）当面请教！
+我的妻子是中国人，其家庭籍贯就在深圳，因此我经常有机会到访深圳。在多次的深圳之行中，我对中国前沿科技的飞速发展和创新生态充满敬意与向往。每次置身深圳，我都深切感受到一种强大的科研能量与创新动力，激发起我在前沿科学与工程技术领域不断探索与创新的极大热情。需要向二位老师特别说明的是，我的初衷完全出于学术追求与科研热情——**我绝非前往中国寻求工作或就职**，而是希望将这笔由泰国校方全额资助的海外访学经费，纯粹投入到脑机接口（BCI）与脑电-大语言模型（EEG-LLM）的前沿科学探索中，在您的团队指导下产出顶级学术成果。
+
+拜读了贵课题组在 **ACL 2024 (`CET-MAE`)** 与 **ACL 2025 (`BrainECHO`)** 等领域的奠基性工作后，针对 `BrainECHO` 提出的**“序列填充长度泄露（Length Leakage）”**以及**“跨被试离散表征坍缩与无 Teacher-Forcing 开集生成”**难题，我们在本地 **NVIDIA DGX Spark (128GB Unified Memory)** 上已独立完成了第一篇完整论文 **RUSH-EEG2Text** 的全流程研发，并在 **ZuCo 1.0 + 2.0 全任务（30名被试、18,276条样本）** 上完成了严格验证：
+1. **消除长度泄露**：提出连续 `[0,1]` 眼动扫描傅里叶位置编码，使高斯噪声输入下的跨被试检索退回理论随机水平（MRR = `0.77%`）。
+2. **三维脑区黎曼脑网络晚融合 + 6层 EMA-RVQ**：在 4 名严格未见被试上达到 **`56.79 ± 2.44%` R@10**；在 131 句完全未见句子的双零样本测试中取得 **`24.05%` 语义余弦相似度（超越噪声基线 `+9.18%`）**。
+3. **严格 Teacher-Forcing-Free 开集生成**：结合 `Qwen2.5-7B-Instruct`（BF16 LoRA）无教师强制解码达到 **`BLEU-1 = 19.60%`、`BLEU-4 = 9.89%`**，信噪比达高斯噪声的 **`23.0` 倍**；并在同构公平基线 `BART-large`（406M）单任务上取得 **`16.38%` BLEU-1**，显著超越近期基线。
+
+**诚挚邀请共同署名（Co-Author）与学术指导：**  
+我和导师 Assoc. Prof. Pattarapong Phasukkit 诚挚地邀请张教授与宋老师作为本篇论文的**共同作者（Co-Author）**。我们非常渴望能聆听二位老师对本文学术影响力的宝贵评价，并指点是否需要补充实验或调整定位，以确保顺利发表在 *IEEE TNSRE* 或 *IEEE JBHI* 等顶刊上。同时，我也极为期盼能在 400,000 泰铢全额经费支持下，赴哈工大（深圳）开展为期 3–6 个月的访学研究，并与团队共同推进第二篇跨中心临床大模型论文 **NeuroReasoner**。
+
+完整可复现代码、模型权重与 9 页 IEEE 双栏初稿已全部就绪：
+- **开源代码仓库:** https://github.com/rush0100/RUSH-EEG2Text
+- **Hugging Face 模型权重:** https://huggingface.co/RUSH0100/RUSH-EEG2Text-Qwen2.5-7B
+- **随信附带初稿:** `RUSH_EEG2Text_IEEE_TNSRE_Draft.pdf`
+
+不知张教授与宋老师近期是否方便安排一次 20 分钟的线上交流，或在我下次到访深圳时前往哈工大（深圳）大学城校区当面拜访请教？
 
 With warm regards,  
 **Ratchaphon Khaemphukhiao**  

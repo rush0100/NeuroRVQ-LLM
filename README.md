@@ -3,11 +3,20 @@
 [![Target Venue](https://img.shields.io/badge/Target-IEEE%20TNSRE%20%2F%20JBHI%20(Q1)-00629B)](./paper_q1/RUSH_EEG2Text_IEEE_TNSRE_Draft.pdf)
 [![Hugging Face Models](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-RUSH0100%2FRUSH--EEG2Text--Qwen2.5--7B-FFD21E)](https://huggingface.co/RUSH0100/RUSH-EEG2Text-Qwen2.5-7B)
 [![Hardware](https://img.shields.io/badge/Hardware-NVIDIA%20DGX%20Spark%20(GB10%20128GB%20UMA)-76B900)](./configs/spark_full4task_champion_qwen7b.yaml)
+[![Status: Pre-Submission Draft](https://img.shields.io/badge/Status-Draft%20%26%20Collaboration%20Proposal-orange.svg)](./paper_q1/COLLABORATION_NOTE_HIT_SHENZHEN.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 
-> **Proposed Joint Research Collaboration:**  
-> **King Mongkut's Institute of Technology Ladkrabang (KMITL, Bangkok, Thailand)** $\times$ **Harbin Institute of Technology, Shenzhen (HIT Shenzhen, China)**  
-> - **Authors:** Ratchaphon Khaemphukhiao (KMITL), Zhenxi Song (HIT Shenzhen), Zhiguo Zhang (HIT Shenzhen), and Assoc. Prof. Pattarapong Phasukkit, D.Eng. (KMITL)  
+> **Pre-Submission Working Draft & Academic Collaboration Proposal:**  
+> **Prepared under the KMITL Doctoral Scholarship Overseas Research Mobility Grant (400,000 THB / ~82,000 RMB)**  
+> **Target Visiting Research Institution:** Harbin Institute of Technology, Shenzhen (HIT Shenzhen, China)  
+> 
+> - **Lead Researchers:**  
+>   - **Ratchaphon Khaemphukhiao** *(Lead Ph.D. Researcher, Dept. of Biomedical Engineering, KMITL)*  
+>   - **Assoc. Prof. Pattarapong Phasukkit, D.Eng.** *(Advisor & Principal Corresponding Author, Dept. of Electronic Engineering, KMITL)*  
+> - **Invited Co-Author Slots (Open for Joint Research Collaboration):**  
+>   - `[Invited Co-Author Slot: Dr. Zhenxi Song, Harbin Institute of Technology, Shenzhen]`  
+>   - `[Invited Co-Author & Co-Corresponding Author Slot: Prof. Zhiguo Zhang, Harbin Institute of Technology, Shenzhen]`  
+> - **Status:** Fully reproducible prototype & pre-submission manuscript draft submitted as an academic invitation to collaborate during an upcoming visiting research stay.  
 > - **Manuscript Draft (IEEE Double-Column PDF):** [`paper_q1/RUSH_EEG2Text_IEEE_TNSRE_Draft.pdf`](./paper_q1/RUSH_EEG2Text_IEEE_TNSRE_Draft.pdf)
 
 ---

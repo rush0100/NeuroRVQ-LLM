@@ -3,10 +3,10 @@
 # Estimated Unified Memory Footprint: ~18.5 GB (BF16 base + Rank-16 LoRA + EEG-RVQ Bridge)
 
 experiment:
-  name: "rush_eeg2text_qwen8b_lora_zuco"
+  name: "neurorvq_qwen8b_lora_zuco"
   seed: 42
-  output_dir: "./checkpoints/rush_eeg2text_qwen8b_lora"
-  log_dir: "./logs/rush_eeg2text_qwen8b_lora"
+  output_dir: "./checkpoints/neurorvq_qwen8b_lora"
+  log_dir: "./logs/neurorvq_qwen8b_lora"
 
 hardware:
   device: "cuda"

@@ -3,10 +3,10 @@
 # Estimated Unified Memory Footprint: ~26 GB (32B QLoRA) to ~46 GB (70B QLoRA) — fits on 1x DGX Spark!
 
 experiment:
-  name: "rush_eeg2text_32b_qlora_zuco_scaling"
+  name: "neurorvq_32b_qlora_zuco_scaling"
   seed: 42
-  output_dir: "./checkpoints/rush_eeg2text_32b_qlora"
-  log_dir: "./logs/rush_eeg2text_32b_qlora"
+  output_dir: "./checkpoints/neurorvq_32b_qlora"
+  log_dir: "./logs/neurorvq_32b_qlora"
 
 hardware:
   device: "cuda"

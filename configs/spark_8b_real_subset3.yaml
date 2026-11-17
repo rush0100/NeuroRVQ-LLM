@@ -3,10 +3,10 @@
 # + Qwen/Qwen2.5-7B-Instruct with Native Blackwell BF16 LoRA (~18.5 GB Unified Memory)
 
 experiment:
-  name: "rush_eeg2text_qwen7b_lora_zuco_real3sub"
+  name: "neurorvq_qwen7b_lora_zuco_real3sub"
   seed: 42
-  output_dir: "./checkpoints/rush_eeg2text_qwen7b_real3sub"
-  log_dir: "./logs/rush_eeg2text_qwen7b_real3sub"
+  output_dir: "./checkpoints/neurorvq_qwen7b_real3sub"
+  log_dir: "./logs/neurorvq_qwen7b_real3sub"
 
 hardware:
   device: "cuda"

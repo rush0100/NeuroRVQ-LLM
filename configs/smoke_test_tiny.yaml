@@ -2,7 +2,7 @@
 # Verifies Synthetic/Subset ZuCo -> Stage 1 (CET-RVQ) -> Stage 2 (Decoder LLM LoRA) -> TF-Free + Noise Sanity Eval
 
 experiment:
-  name: "smoke_test_rush_eeg2text"
+  name: "smoke_test_neurorvq"
   seed: 42
   output_dir: "./checkpoints/smoke_test"
   log_dir: "./logs/smoke_test"

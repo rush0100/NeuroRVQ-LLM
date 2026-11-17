@@ -24,9 +24,9 @@ docker run -d --gpus all --ipc=host --network=host \
     exec > >(tee -a /workspace/logs/q1_reviewer_defense/master_q1_defense.log) 2>&1
 
     echo "================================================================================"
-    echo "[Action 3 | ~10 min] Fair Backbone & Single-Task Controlled Baseline (RUSH-EEG2Text + BART-large 406M on task1-SR)"
+    echo "[Action 3 | ~10 min] Fair Backbone & Single-Task Controlled Baseline (NeuroRVQ + BART-large 406M on task1-SR)"
     echo "================================================================================"
-    if [[ ! -f "checkpoints/q1_action3_rush_eeg2text_bart_large_singletask/stage1_cet_rvq_best.pt" ]]; then
+    if [[ ! -f "checkpoints/q1_action3_neurorvq_bart_large_singletask/stage1_cet_rvq_best.pt" ]]; then
       /workspace/.venv/bin/python -u -m src.train_stage1 \
         --config configs/q1_action3_bart_large_singletask.yaml
     else

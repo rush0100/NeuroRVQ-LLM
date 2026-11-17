@@ -26,7 +26,7 @@ eeg_encoder:
   use_resampler: true
   num_latent_queries: 24
   use_task_conditioning: true
-  init_from_paper1_stage1: "./checkpoints/rush_eeg2text_full4task_champion_qwen7b/stage1_cet_rvq_best.pt"
+  init_from_paper1_stage1: "./checkpoints/neurorvq_full4task_champion_qwen7b/stage1_cet_rvq_best.pt"
 
 rvq:
   num_quantizers: 6

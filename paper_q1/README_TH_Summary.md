@@ -1,10 +1,12 @@
 # ร่างบทความวิจัยระดับ Q1 (Paper 1: NeuroRVQ-LLM) — พร้อมแผนภาพและสรุปภาษาไทยสำหรับทีมวิจัย
 
-* **คณะผู้วิจัย (Authors & Affiliations — ตามเกณฑ์ทุน สจล. ข้อ 9 & ข้อ 12.1):**
-  1. **Ratchaphon Khaemphukhiao** *(First Author — Ph.D. Student, Dept. of Biomedical Engineering, School of Engineering, KMITL)*
-  2. **Zhenxi Song** *(Co-Author — School of Computer Science & Technology / College of AI, Harbin Institute of Technology, Shenzhen)*
-  3. **Zhiguo Zhang** *(Co-Corresponding Author — Professor, Harbin Institute of Technology, Shenzhen)*
-  4. **Assoc. Prof. Pattarapong Phasukkit, D.Eng.** *(Principal Advisor & Corresponding Author — Dept. of Electronic Engineering, School of Engineering, KMITL, `pattarapong.ph@kmitl.ac.th`)*
+* **สถานะบทความวิจัยและข้อเสนอความร่วมมือ (Pre-Submission Draft & Collaboration Proposal):**
+  * งานวิจัยชิ้นนี้เป็นร่างบทความและต้นแบบวิจัยฉบับสมบูรณ์ที่พัฒนาขึ้นภายใต้ **ทุนโครงการส่งเสริมผู้มีศักยภาพเข้าศึกษาระดับปริญญาเอก สจล. (หมวด 10.2 ทุนสนับสนุนการไปทำวิจัยระยะสั้นในต่างประเทศ 400,000 บาท)** เพื่อใช้เป็นข้อเสนอทางวิชาการในการเชิญร่วมวิจัยและเดินทางไปทำวิจัยระยะสั้น ณ **Harbin Institute of Technology, Shenzhen (HIT Shenzhen)**
+* **รายนามคณะผู้วิจัยและช่องว่างเชิญร่วมวิจัย (Author Slots):**
+  1. **Ratchaphon Khaemphukhiao** *(First Author — Ph.D. Candidate, Dept. of Biomedical Engineering, School of Engineering, KMITL)*
+  2. **Assoc. Prof. Pattarapong Phasukkit, D.Eng.** *(Principal Advisor & Corresponding Author — Dept. of Electronic Engineering, School of Engineering, KMITL, `pattarapong.ph@kmitl.ac.th`)*
+  3. `[Invited Co-Author Slot: Dr. Zhenxi Song, Harbin Institute of Technology, Shenzhen]`
+  4. `[Invited Co-Author & Co-Corresponding Author Slot: Prof. Zhiguo Zhang, Harbin Institute of Technology, Shenzhen]`
 * **วารสารเป้าหมาย (Web of Science / Scimago Q1 — ตรงตามเกณฑ์ทุนปริญญาเอกพระจอมเกล้าลาดกระบัง ข้อ 12.1):**
   1. **IEEE Transactions on Neural Systems and Rehabilitation Engineering (TNSRE)** *(Q1, IF ~4.8–5.2 — วารสารเรือธงด้าน BCI & Neural Engineering)*
   2. **IEEE Journal of Biomedical and Health Informatics (JBHI)** *(Q1, IF ~6.7)*

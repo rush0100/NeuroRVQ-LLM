@@ -4,10 +4,10 @@
 # Dataset: ALL 4 ZuCo 1.0 & 2.0 Tasks (`task1-SR`, `task2-NR`, `task3-TSR`, `task2-NR-2.0` -> ~15,000+ EEG-Text trials across 29 unique subjects!)
 
 experiment:
-  name: "rush_eeg2text_full4task_champion_qwen7b_lora"
+  name: "neurorvq_full4task_champion_qwen7b_lora"
   seed: 42
-  output_dir: "./checkpoints/rush_eeg2text_full4task_champion_qwen7b"
-  log_dir: "./logs/rush_eeg2text_full4task_champion_qwen7b"
+  output_dir: "./checkpoints/neurorvq_full4task_champion_qwen7b"
+  log_dir: "./logs/neurorvq_full4task_champion_qwen7b"
 
 hardware:
   device: "cuda"

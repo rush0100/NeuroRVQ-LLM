@@ -17,7 +17,7 @@ class ZuCoEEGTextDataset(Dataset):
     """
     PyTorch Dataset yielding Dual-Stream Neuro-Connectome + 8-Metadata tensors.
     Supports `eeg_only_mode` for Q1 Clinical Applicability (Locked-In / Eye-Tracking-Free) ablations:
-      - `"none"`: Full RUSH-EEG2Text mode
+      - `"none"`: Full NeuroRVQ-LLM mode
       - `"eeg_only_no_oculomotor"`: Zeros out all pupil/fixation/saccade metadata & scanpath re-ordering
       - `"fixation_free_holistic"`: Pure whole-sentence continuous EEG + 500-Hz Connectome ONLY (`seq_len=1`, zero word fixations!)
     """

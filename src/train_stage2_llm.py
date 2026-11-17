@@ -22,7 +22,7 @@ from tqdm import tqdm
 from src.data.dataset import collate_eeg_text, load_and_split_zuco
 from src.evaluation.metrics import compute_bci_text_metrics
 from src.models.cet_rvq_pretrainer import CETRVQPretrainer
-from src.models.eeg_llm_bridge import RUSHEEG2TextForCausalDecoding, load_llm_and_tokenizer
+from src.models.eeg_llm_bridge import NeuroRVQForCausalDecoding, load_llm_and_tokenizer
 
 
 def resolve_device(device_cfg: str) -> torch.device:
@@ -45,7 +45,7 @@ def set_seed(seed: int) -> None:
 
 @torch.no_grad()
 def _encode_contextual_sentences(
-    model: RUSHEEG2TextForCausalDecoding,
+    model: NeuroRVQForCausalDecoding,
     texts: list[str],
     device: torch.device,
     batch_size: int = 32,
@@ -70,7 +70,7 @@ def _encode_contextual_sentences(
 
 
 def evaluate_teacher_forcing_free(
-    model: RUSHEEG2TextForCausalDecoding,
+    model: NeuroRVQForCausalDecoding,
     dataloader: DataLoader,
     device: torch.device,
     max_new_tokens: int = 48,
@@ -178,7 +178,7 @@ def evaluate_teacher_forcing_free(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Stage 2: Train & Evaluate RUSH-EEG2Text Decoder")
+    parser = argparse.ArgumentParser(description="Stage 2: Train & Evaluate NeuroRVQ-LLM Decoder")
     parser.add_argument("--config", type=str, required=True, help="Path to YAML config file")
     parser.add_argument("--eval-only", action="store_true", help="Skip training and run TF-Free + Noise Sanity evaluation")
     args = parser.parse_args()
@@ -263,7 +263,7 @@ def main() -> None:
         llm.to(device)
 
     freeze_cet_rvq = bool(s2_cfg.get("freeze_cet_rvq", False))
-    model = RUSHEEG2TextForCausalDecoding(
+    model = NeuroRVQForCausalDecoding(
         cet_rvq=cet_rvq,
         llm=llm,
         tokenizer=tokenizer,

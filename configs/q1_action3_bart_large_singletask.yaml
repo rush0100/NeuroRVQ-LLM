@@ -5,10 +5,10 @@
 #   - Evaluation: Strict Subject-Independent (`ZMG` unseen test, `ZJS` unseen val) + Teacher-Forcing-Free Beam Search (`B=4`) + Noise Sanity Check!
 
 experiment:
-  name: "q1_action3_rush_eeg2text_bart_large_singletask"
+  name: "q1_action3_neurorvq_bart_large_singletask"
   seed: 42
-  output_dir: "./checkpoints/q1_action3_rush_eeg2text_bart_large_singletask"
-  log_dir: "./logs/q1_action3_rush_eeg2text_bart_large_singletask"
+  output_dir: "./checkpoints/q1_action3_neurorvq_bart_large_singletask"
+  log_dir: "./logs/q1_action3_neurorvq_bart_large_singletask"
 
 hardware:
   device: "cuda"

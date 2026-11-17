@@ -50,7 +50,7 @@ model = CETRVQPretrainer(
     max_logit_scale=s1["max_logit_scale"],
 ).eval()
 ckpt = torch.load(
-    "checkpoints/q1_action3_rush_eeg2text_bart_large_singletask/stage1_cet_rvq_best.pt",
+    "checkpoints/q1_action3_neurorvq_bart_large_singletask/stage1_cet_rvq_best.pt",
     map_location="cpu",
     weights_only=False,
 )
@@ -180,6 +180,6 @@ with torch.no_grad():
         "sanity_gap_vs_noise_mrr": round(m_real["MRR"] - m_noise["MRR"], 2),
     }
     print(json.dumps(results, indent=2))
-    out_f = "logs/q1_action3_rush_eeg2text_bart_large_singletask/diagnostic_controls.json"
+    out_f = "logs/q1_action3_neurorvq_bart_large_singletask/diagnostic_controls.json"
     os.makedirs(os.path.dirname(out_f), exist_ok=True)
     open(out_f, "w").write(json.dumps(results, indent=2))

@@ -2,10 +2,10 @@
 # Directly compares against Ablation Row 1 (Vanilla VQ, 3 subjects) on Unseen Test Subjects!
 
 experiment:
-  name: "rush_eeg2text_emavq_qwen7b_lora_zuco_real10sub"
+  name: "neurorvq_emavq_qwen7b_lora_zuco_real10sub"
   seed: 42
-  output_dir: "./checkpoints/rush_eeg2text_emavq_qwen7b_real10sub"
-  log_dir: "./logs/rush_eeg2text_emavq_qwen7b_real10sub"
+  output_dir: "./checkpoints/neurorvq_emavq_qwen7b_real10sub"
+  log_dir: "./logs/neurorvq_emavq_qwen7b_real10sub"
 
 hardware:
   device: "cuda"

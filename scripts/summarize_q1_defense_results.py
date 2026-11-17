@@ -11,11 +11,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent / "logs"
 
 FILES = {
-    "Action 4 (Stage 1 Per-Subject Breakdown)": ROOT / "rush_eeg2text_full4task_champion_qwen7b" / "stage1_per_subject_eval.json",
-    "Action 4 (Stage 2 Per-Subject & Multi-Sub Examples)": ROOT / "rush_eeg2text_full4task_champion_qwen7b" / "test_evaluation_report_per_subject.json",
+    "Action 4 (Stage 1 Per-Subject Breakdown)": ROOT / "neurorvq_full4task_champion_qwen7b" / "stage1_per_subject_eval.json",
+    "Action 4 (Stage 2 Per-Subject & Multi-Sub Examples)": ROOT / "neurorvq_full4task_champion_qwen7b" / "test_evaluation_report_per_subject.json",
     "Action 1a (EEG-Only, Zero Oculomotor Metadata)": ROOT / "q1_action1a_eeg_only_no_oculomotor" / "stage1_summary.json",
     "Action 1b (100% Fixation-Free Holistic Locked-In Mode)": ROOT / "q1_action1b_fixation_free_holistic" / "stage1_summary.json",
-    "Action 3 (Fair Backbone: RUSH-EEG2Text + BART-large Single-Task)": ROOT / "q1_action3_rush_eeg2text_bart_large_singletask" / "test_evaluation_report.json",
+    "Action 3 (Fair Backbone: NeuroRVQ + BART-large Single-Task)": ROOT / "q1_action3_neurorvq_bart_large_singletask" / "test_evaluation_report.json",
     "Action 2 (Double Zero-Shot: Unseen Subj + Unseen Sent S1)": ROOT / "q1_action2_double_zeroshot" / "stage1_summary.json",
     "Action 2 (Double Zero-Shot: Unseen Subj + Unseen Sent S2)": ROOT / "q1_action2_double_zeroshot" / "test_evaluation_report.json",
 }
@@ -23,7 +23,7 @@ FILES = {
 
 def main() -> None:
     print("=" * 88)
-    print("PAPER 1 (`RUSH-EEG2Text`) — Q1 REVIEWER DEFENSE SUITE STATUS & METRICS")
+    print("PAPER 1 (`NeuroRVQ-LLM`) — Q1 REVIEWER DEFENSE SUITE STATUS & METRICS")
     print("=" * 88)
     for title, p in FILES.items():
         if not p.exists():
